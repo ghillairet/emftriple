@@ -1,0 +1,92 @@
+@namespace(uri="http://www.eclipselabs.org/emf/junit", prefix="org.eclipselabs.emf.junit")
+package model;
+
+class Person {
+  id attr String name;
+  ref Book[*]#authors books;
+}
+
+class Book {
+  id attr String title;
+  ref Person[*]#books authors;
+  attr String[*] tags;
+  attr char[*] data;
+}
+
+class Library {
+  !resolve val Book[*] books;
+  val Location location;
+  ref Book latestBook;
+}
+
+class Location {
+  attr String address;
+  ref Book featuredBook;
+  transient derived id attr EJavaObject ~id;
+}
+
+class ETypes {
+  attr EBigDecimal eBigDecimal;
+  attr EBigInteger eBigInteger;
+  attr boolean eBoolean;
+  attr byte eByte;
+  attr ecore.EByteArray eByteArray;
+  attr char eChar;
+  attr EDate eDate;
+  attr double eDouble;
+  attr float eFloat;
+  attr int eInt;
+  attr long eLong;
+  attr short eShort;
+  attr String eString;
+  attr URI[*] uris;
+}
+
+class MappedLibrary {
+  val Location location;
+
+  @ExtendedMetaData(group="#books")
+  volatile transient derived !resolve val Book[*] rareBooks;
+
+  @ExtendedMetaData(group="#books")
+  volatile transient derived !resolve val Book[*] regularBooks;
+
+  @ExtendedMetaData(kind="group")
+  attr ecore.EFeatureMapEntry books;
+}
+
+class PrimaryObject {
+  attr String name;
+  ref TargetObject singleNonContainmentReference;
+  ref TargetObject[*] multipleNonContainmentReference;
+  !resolve val TargetObject singleContainmentReferenceNoProxies;
+  !resolve val TargetObject[*] multipleContainmentReferenceNoProxies;
+  val TargetObject singleContainmentReferenceProxies;
+  val TargetObject[*] multipleContainmentReferenceProxies;
+
+  @ExtendedMetaData(group="#featureMapReferenceCollection")
+  volatile transient derived !resolve val TargetObject[*] featureMapReferenceType2;
+
+  @ExtendedMetaData(group="#featureMapReferenceCollection")
+  volatile transient derived !resolve val TargetObject[*] featureMapReferenceType1;
+
+  @ExtendedMetaData(kind="group")
+  attr ecore.EFeatureMapEntry featureMapReferenceCollection;
+
+  @ExtendedMetaData(group="#featureMapAttributeCollection")
+  volatile transient derived attr String[*] featureMapAttributeType1;
+
+  @ExtendedMetaData(group="#featureMapAttributeCollection")
+  volatile transient derived attr String[*] featureMapAttributeType2;
+
+  @ExtendedMetaData(kind="group")
+  attr ecore.EFeatureMapEntry[*] featureMapAttributeCollection;
+}
+
+class TargetObject {
+  attr String singleAttribute;
+  attr String[*] arrayAttribute;
+}
+
+datatype URI : org.eclipse.emf.common.util.URI;
+
