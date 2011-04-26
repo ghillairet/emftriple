@@ -18,6 +18,7 @@ import com.emftriple.ETriple;
 import com.emftriple.jena.JenaModule;
 import com.emftriple.jena.JenaTDB;
 import com.emftriple.jena.TDBResourceFactory;
+import com.emftriple.query.ETripleQueryImpl;
 import com.junit.model.ModelFactory;
 import com.junit.model.ModelPackage;
 import com.junit.model.Person;
@@ -25,13 +26,14 @@ import com.junit.model.Person;
 public class BasicTest {
 
 	Resource resource;
+	ResourceSet resourceSet;
 	
 	@Before
 	public void tearUp() {
 		Resource.Factory.Registry.INSTANCE.getProtocolToFactoryMap().put("emftriple", new TDBResourceFactory());
 		ETriple.init(ModelPackage.eINSTANCE, new JenaModule(JenaTDB.class, null));
 		
-		ResourceSet resourceSet = new ResourceSetImpl();
+		resourceSet = new ResourceSetImpl();
 		resource = resourceSet.createResource(URI.createURI("emftriple://data?graph=http://graph"));
 	}
 	
@@ -51,6 +53,19 @@ public class BasicTest {
 		
 		assertFalse(resource.getContents().isEmpty());
 		EObject obj = resource.getContents().get(0);
+		assertTrue(obj instanceof Person);
+		
+		System.out.println( ((Person) obj).getName() );
+	}
+	
+	@Test
+	public void testBasicQuery() throws IOException {
+		Resource query = resourceSet.createResource(new ETripleQueryImpl("select ?s where { ?s ?p ?o }",
+				URI.createURI("emftriple://data?graph=http://graph")).toURI());
+		query.load(null);
+		
+		assertFalse(query.getContents().isEmpty());
+		EObject obj = query.getContents().get(0);
 		assertTrue(obj instanceof Person);
 		
 		System.out.println( ((Person) obj).getName() );

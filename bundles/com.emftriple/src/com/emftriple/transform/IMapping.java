@@ -16,7 +16,6 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
 import com.emf4sw.rdf.NamedGraph;
-import com.emf4sw.rdf.Node;
 
 /**
  * 

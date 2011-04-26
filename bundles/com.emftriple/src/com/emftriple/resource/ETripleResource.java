@@ -34,7 +34,6 @@ import com.emftriple.datasources.IDataSourceFactoryModule;
 import com.emftriple.datasources.IMutableNamedGraphDataSource;
 import com.emftriple.datasources.INamedGraphDataSource;
 import com.emftriple.datasources.IResultSet;
-import com.emftriple.query.ETripleQuery;
 import com.emftriple.transform.IGetObject;
 import com.emftriple.transform.IPutObject;
 import com.emftriple.transform.impl.GetEObjectImpl;
@@ -51,7 +50,7 @@ public class ETripleResource extends ResourceImpl implements Resource {
 
 	private final ETripleResourceCacheImpl primaryCache;
 
-	private ETripleQuery find;
+	//	private ETripleQuery find;
 
 	public ETripleResource(URI uri, IDataSource dataSource) {
 		super(uri);
@@ -62,11 +61,11 @@ public class ETripleResource extends ResourceImpl implements Resource {
 	public ETripleResourceCacheImpl getPrimaryCache() {
 		return primaryCache;
 	}
-	
+
 	public IDataSource getDataSource() {
 		return dataSource;
 	}
-	
+
 	@Override
 	public void delete(Map<?, ?> options) throws IOException {
 		super.delete(options);
@@ -76,9 +75,9 @@ public class ETripleResource extends ResourceImpl implements Resource {
 	public void save(Map<?, ?> options) throws IOException {
 		final Map<String, String> queries = decodeQueryString(getURI().query());
 		if (queries.containsKey("graph")) {
-			IPutObject put = new PutObjectImpl(ETriple.mapping);
-			RDFGraph graph = getGraph(queries.get("graph"));
-			
+			final IPutObject put = new PutObjectImpl(ETriple.mapping);
+			final RDFGraph graph = getGraph(queries.get("graph"));
+
 			for (TreeIterator<EObject> it = getAllContents(); it.hasNext();){
 				EObject obj = it.next();
 				put.put(obj, graph);
@@ -90,23 +89,31 @@ public class ETripleResource extends ResourceImpl implements Resource {
 	@Override
 	public void load(Map<?, ?> options) throws IOException {
 		final Map<String, String> queries = decodeQueryString(getURI().query());
+		String query;
+		if (queries.containsKey("query")) {
+			query = queries.get("query"); 
+		} else {
+			query ="select ?s where { ?s ?p ?o }";
+		}
+		final IResultSet rs;
 		if (queries.containsKey("graph")) {
 			if (dataSource instanceof INamedGraphDataSource) {
-				IGetObject get = new GetEObjectImpl(this);
-
-				IResultSet rs = 
-					((INamedGraphDataSource) dataSource).selectQuery("select ?s where { ?s ?p ?o }", 
-							URI.createURI(queries.get("graph")));
-				
-				for (;rs.hasNext();) {
-					com.emf4sw.rdf.Resource res = rs.next().getResource("s");
-					EClass eClass = ETriple.mapping.findEClassByRdfType(selectAllTypes(dataSource, res.getURI()));
-					if (eClass != null) {
-						EObject object = get.get(eClass, URI.createURI(res.getURI()));
-						if (object != null) {
-							this.getContents().add(object);
-						}
-					}
+				rs =((INamedGraphDataSource) dataSource).selectQuery(query, URI.createURI(queries.get("graph")));
+			} else { 
+				throw new IllegalArgumentException(); 
+			}
+		} else {
+			rs = dataSource.selectQuery(query);
+		}
+		
+		final IGetObject get = new GetEObjectImpl(this);
+		for (;rs.hasNext();) {
+			com.emf4sw.rdf.Resource res = rs.next().getResource("s");
+			EClass eClass = ETriple.mapping.findEClassByRdfType(selectAllTypes(dataSource, res.getURI()));
+			if (eClass != null) {
+				EObject object = get.get(eClass, URI.createURI(res.getURI()));
+				if (object != null) {
+					this.getContents().add(object);
 				}
 			}
 		}
@@ -115,15 +122,19 @@ public class ETripleResource extends ResourceImpl implements Resource {
 	@Override
 	public EObject getEObject(String uriFragment) {
 		EObject proxy = null;
-		
+
 		if (uriFragment != null && uriFragment.startsWith("uri=")) 
 		{
 			final URI key = getProxyKey(uriFragment);
-			
+
 			if (primaryCache.containsKey(key.toString())) {
 				proxy = primaryCache.get(key);
 			} else {
-				proxy = find.node(key);
+				final IGetObject get = new GetEObjectImpl(this);
+				final EClass eClass = ETriple.mapping.findEClassByRdfType(selectAllTypes(dataSource, key.toString()));
+				if (eClass != null) {
+					proxy = get.get(eClass, key);
+				}
 			}
 			return proxy;
 		}
@@ -160,7 +171,7 @@ public class ETripleResource extends ResourceImpl implements Resource {
 			return super.canHandle(uri);
 		}
 	}
-	
+
 	protected RDFGraph getGraph(String graphURI) {
 		final RDFGraph graph;
 		if (graphURI != null) {

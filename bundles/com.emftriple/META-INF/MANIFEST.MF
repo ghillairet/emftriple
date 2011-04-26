@@ -9,6 +9,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: com.emftriple,
  com.emftriple.datasources,
  com.emftriple.datasources.impl,
+ com.emftriple.query,
  com.emftriple.resource,
  com.emftriple.transform,
  com.emftriple.transform.impl,
