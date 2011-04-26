@@ -1,0 +1,31 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: EMF Triple Jena Adapter
+Bundle-SymbolicName: com.emftriple.jena;singleton:=true
+Bundle-Version: 0.7.2.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: 
+ com.emftriple.jena,
+ com.emftriple.jena.util
+Bundle-ClassPath: .
+Bundle-Vendor: eclipselabs
+Import-Package: com.emf4sw.rdf,
+ com.emf4sw.rdf.jena,
+ com.emf4sw.rdf.resource,
+ com.emf4sw.rdf.resource.impl,
+ com.emftriple.datasources,
+ com.emftriple.datasources.impl,
+ com.emftriple.resource,
+ com.google.inject;version="2.0.0",
+ com.google.inject.internal;version="2.0.0",
+ com.hp.hpl.jena.query,
+ com.hp.hpl.jena.rdf.model,
+ com.hp.hpl.jena.sdb,
+ com.hp.hpl.jena.sdb.store,
+ com.hp.hpl.jena.shared,
+ com.hp.hpl.jena.sparql.resultset,
+ com.hp.hpl.jena.tdb,
+ com.hp.hpl.jena.update,
+ org.eclipse.emf.common.util,
+ org.eclipse.emf.ecore.resource,
+ org.eclipse.emf.ecore.resource.impl
