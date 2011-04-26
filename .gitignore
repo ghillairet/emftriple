@@ -1,0 +1,11 @@
+
+/bundles/com.emftriple/bin
+/bundles/com.emftriple/.settings
+/bundles/com.emftriple.jena/bin
+/bundles/com.emftriple.jena/.settings
+/bundles/com.emftriple.jpa/bin
+/bundles/com.emftriple.jpa/.settings
+/tests/com.emftriple.junit/.settings
+/tests/com.emftriple.junit/bin
+/bundles/com.emftriple.jpa
+/tests/com.emftriple.junit/data
