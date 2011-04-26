@@ -42,6 +42,7 @@ public interface Book extends EObject {
 	 * @see #setTitle(String)
 	 * @see com.junit.model.ModelPackage#getBook_Title()
 	 * @model id="true"
+	 *        annotation="Id base='http://ex.org/'"
 	 * @generated
 	 */
 	String getTitle();

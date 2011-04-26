@@ -1,5 +1,5 @@
 #Metadata: Location: data
-#Tue Apr 26 21:09:23 BST 2011
+#Tue Apr 26 23:49:10 BST 2011
 tdb.type=standalone
 tdb.record.triple=24
 tdb.record.quad=32
@@ -19,5 +19,5 @@ tdb.indexes.triples.primary=SPO
 tdb.indexes.triples=SPO,POS,OSP
 tdb.indexes.quads.primary=GSPO
 tdb.indexes.quads=GSPO,GPOS,GOSP,POSG,OSPG,SPOG
-tdb.created=2011-04-26T21\:09\:23.446+01\:00
+tdb.created=2011-04-26T23\:49\:09.947+01\:00
 tdb.create.version=0.8.8

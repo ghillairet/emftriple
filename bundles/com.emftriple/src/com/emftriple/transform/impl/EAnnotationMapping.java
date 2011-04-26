@@ -16,13 +16,10 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
-import com.emf4sw.rdf.Node;
 import com.emf4sw.rdf.Resource;
 import com.emftriple.transform.IMapping;
 import com.emftriple.util.EntityUtil;
 import com.google.common.collect.Maps;
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 /**
  * {@link EAnnotationMapping} stores correspondances between model and ontology classes 
@@ -41,7 +38,7 @@ public class EAnnotationMapping extends AbstractMapping implements IMapping {
 
 	protected Map<Class<?>, EClass> mappedClasses;
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	
 	//	@Inject
 	//	public EAnnotationMapping(@Named("Packages") List packages, @Named("Properties") List properties) {
 

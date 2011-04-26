@@ -48,9 +48,7 @@ public class JenaTDB extends ModelNamedGraphDataSource implements ITransactionEn
 
 	@Override
 	public Model getModel(URI graph) {
-		if (dataSet.containsNamedModel(graph.toString()))
-			return dataSet.getNamedModel(graph.toString());
-		return null;
+		return dataSet.getNamedModel(graph.toString());
 	}
 
 	@Override

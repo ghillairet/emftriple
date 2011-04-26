@@ -7,6 +7,8 @@
  */
 package com.emftriple.resource;
 
+import static com.emftriple.util.SparqlQueries.selectAllTypes;
+
 import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
@@ -22,10 +24,8 @@ import org.eclipse.emf.ecore.resource.impl.URIHandlerImpl;
 
 import com.emf4sw.rdf.RDFFactory;
 import com.emf4sw.rdf.RDFGraph;
-import com.emf4sw.rdf.Triple;
 import com.emf4sw.rdf.notify.ModelAdapterImpl;
 import com.emf4sw.rdf.resource.RDFResource;
-import com.emf4sw.rdf.resource.RDFResourceImpl;
 import com.emf4sw.rdf.resource.TTLResource;
 import com.emftriple.ETriple;
 import com.emftriple.cache.ETripleResourceCacheImpl;
@@ -39,7 +39,6 @@ import com.emftriple.transform.IGetObject;
 import com.emftriple.transform.IPutObject;
 import com.emftriple.transform.impl.GetEObjectImpl;
 import com.emftriple.transform.impl.PutObjectImpl;
-import com.emftriple.util.SparqlQueries;
 
 /**
  * 
@@ -77,10 +76,8 @@ public class ETripleResource extends ResourceImpl implements Resource {
 	public void save(Map<?, ?> options) throws IOException {
 		final Map<String, String> queries = decodeQueryString(getURI().query());
 		if (queries.containsKey("graph")) {
-			IPutObject put = new PutObjectImpl(ETriple.mapping, dataSource);
-			RDFGraph graph = getGraph(URI.createURI(queries.get("graph")));
-			System.out.println(graph);
-			System.out.println(graph.eResource());
+			IPutObject put = new PutObjectImpl(ETriple.mapping);
+			RDFGraph graph = getGraph(queries.get("graph"));
 			
 			for (TreeIterator<EObject> it = getAllContents(); it.hasNext();){
 				EObject obj = it.next();
@@ -95,17 +92,15 @@ public class ETripleResource extends ResourceImpl implements Resource {
 		final Map<String, String> queries = decodeQueryString(getURI().query());
 		if (queries.containsKey("graph")) {
 			if (dataSource instanceof INamedGraphDataSource) {
-				System.out.println("querying");
 				IGetObject get = new GetEObjectImpl(this);
-//				graph <"+queries.get("graph")+">
+
 				IResultSet rs = 
-					dataSource.selectQuery("select ?s where {  { ?s ?p ?o } }");
+					((INamedGraphDataSource) dataSource).selectQuery("select ?s where { ?s ?p ?o }", 
+							URI.createURI(queries.get("graph")));
 				
 				for (;rs.hasNext();) {
 					com.emf4sw.rdf.Resource res = rs.next().getResource("s");
-					System.out.println(res);
-					EClass eClass = ETriple.mapping.findEClassByRdfType(SparqlQueries.selectAllTypes(dataSource, res.getURI()));
-					System.out.println(eClass);
+					EClass eClass = ETriple.mapping.findEClassByRdfType(selectAllTypes(dataSource, res.getURI()));
 					if (eClass != null) {
 						EObject object = get.get(eClass, URI.createURI(res.getURI()));
 						if (object != null) {
@@ -166,10 +161,11 @@ public class ETripleResource extends ResourceImpl implements Resource {
 		}
 	}
 	
-	protected RDFGraph getGraph(URI graphURI) {
+	protected RDFGraph getGraph(String graphURI) {
 		final RDFGraph graph;
 		if (graphURI != null) {
 			graph = RDFFactory.eINSTANCE.createDocumentGraph();
+			graph.setURI(graphURI);
 		} else {
 			graph = RDFFactory.eINSTANCE.createDocumentGraph();
 		}

@@ -36,7 +36,6 @@ import com.emf4sw.rdf.RDFSeq;
 import com.emf4sw.rdf.Resource;
 import com.emf4sw.rdf.operations.DatatypeConverter;
 import com.emf4sw.rdf.vocabulary.RDF;
-import com.emftriple.datasources.IDataSource;
 import com.emftriple.transform.IMapping;
 import com.emftriple.transform.IPutObject;
 import com.emftriple.util.EntityUtil;
@@ -57,13 +56,13 @@ public class PutObjectImpl implements IPutObject {
 
 	private Map<EObject, String> objectIdCache;
 
-	private IDataSource manager;
-	
-	private IDGenerator idGen = new IDGenerator();
+//	private IDataSource manager;
+//	
+//	private IDGenerator idGen = new IDGenerator();
 
-	public PutObjectImpl(IMapping mapping, IDataSource manager) {
+	public PutObjectImpl(IMapping mapping) {
 		this.mapping = mapping;
-		this.manager = manager;
+//		this.manager = manager;
 		this.objectCache = Collections.synchronizedMap(new HashMap<String, Resource>());
 		this.objectIdCache = Collections.synchronizedMap(new HashMap<EObject, String>());
 	}
@@ -255,7 +254,6 @@ public class PutObjectImpl implements IPutObject {
 					id = objectIdCache.get(aObject);
 				} else {
 					id = IDGenerator.getId(aObject).toString();
-					System.out.println(id);
 					objectIdCache.put(aObject, id);
 				}
 

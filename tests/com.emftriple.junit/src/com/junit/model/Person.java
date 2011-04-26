@@ -40,6 +40,7 @@ public interface Person extends EObject {
 	 * @see #setName(String)
 	 * @see com.junit.model.ModelPackage#getPerson_Name()
 	 * @model id="true"
+	 *        annotation="Id base='http://ex.org/'"
 	 * @generated
 	 */
 	String getName();

@@ -833,8 +833,32 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 		createResource(eNS_URI);
 
 		// Create annotations
+		// Id
+		createIdAnnotations();
 		// http:///org/eclipse/emf/ecore/util/ExtendedMetaData
 		createExtendedMetaDataAnnotations();
+	}
+
+	/**
+	 * Initializes the annotations for <b>Id</b>.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void createIdAnnotations() {
+		String source = "Id";		
+		addAnnotation
+		  (getPerson_Name(), 
+		   source, 
+		   new String[] {
+			 "base", "http://ex.org/"
+		   });		
+		addAnnotation
+		  (getBook_Title(), 
+		   source, 
+		   new String[] {
+			 "base", "http://ex.org/"
+		   });									
 	}
 
 	/**
@@ -844,7 +868,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * @generated
 	 */
 	protected void createExtendedMetaDataAnnotations() {
-		String source = "http:///org/eclipse/emf/ecore/util/ExtendedMetaData";		
+		String source = "http:///org/eclipse/emf/ecore/util/ExtendedMetaData";				
 		addAnnotation
 		  (getMappedLibrary_RareBooks(), 
 		   source, 
