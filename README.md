@@ -1,13 +1,16 @@
-# EmfTriple
 
-EmfTriple lets you store and retrieve EMF domain models from RDF repositories.
+emfriple lets you store and retrieve EMF domain models from RDF repositories.
 
-## Basic Usage
+googlecode project : http://code.google.com/a/eclipselabs.org/p/emftriple/
 
-Storing objects
+# Basic Usage
 
+Init emftriple
+	
 	Resource.Factory.Registry.INSTANCE.getProtocolToFactoryMap().put("emftriple", new TDBResourceFactory());
 	ETriple.Registry.INSTANCE.register(ModelPackage.eINSTANCE);
+
+Storing objects
 	
 	ResourceSet resourceSet = new ResourceSetImpl();
 	Resource resource = resourceSet.createResource(URI.createURI("emftriple://data?graph=http://graph"));
@@ -18,5 +21,12 @@ Storing objects
 	resource.getContents().add(person);
 	resource.save(null);
 
+Loading objects
 	
-googlecode project : http://code.google.com/a/eclipselabs.org/p/emftriple/
+	ResourceSet resourceSet = new ResourceSetImpl();
+	Resource resource = resourceSet.createResource(URI.createURI("emftriple://data?graph=http://graph"));
+	resource.load(null);
+
+	Person obj = (Person) EcoreUtil.getObjectByType(resource.getContents(), ModelPackage.eINSTANCE.getPerson());
+
+
