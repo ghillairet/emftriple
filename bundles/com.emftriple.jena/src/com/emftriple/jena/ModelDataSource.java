@@ -12,7 +12,7 @@ import com.hp.hpl.jena.shared.Lock;
 
 public abstract class ModelDataSource extends AbstractDataSource implements IDataSource, JenaDataSource {
 	
-	ModelDataSource(String name) {
+	public ModelDataSource(String name) {
 		super(name);
 	}
 
@@ -20,6 +20,8 @@ public abstract class ModelDataSource extends AbstractDataSource implements IDat
 	public IResultSet selectQuery(String query) {
 		IResultSet rs = null;
 		final Model model = getModel();
+		
+		model.write(System.out);
 		
 		model.enterCriticalSection(Lock.READ);
 		try {

@@ -7,9 +7,9 @@
  */
 package com.emftriple.datasources;
 
-import org.eclipse.emf.common.util.URI;
-
 import com.emf4sw.rdf.NamedGraph;
+import com.emf4sw.rdf.RDFGraph;
+import com.emf4sw.rdf.Triple;
 
 /**
  * The {@link IMutableNamedGraphDataSource} interface represents {@link IDataSource} being both mutable 
@@ -27,14 +27,17 @@ public interface IMutableNamedGraphDataSource extends INamedGraphDataSource, IMu
 	 * 
 	 * @param graph
 	 */
-	void deleteGraph(URI graph);
+	void deleteGraph(String graph);
 	
 	/**
 	 * 
 	 * @param graph
 	 * @throws DataSourceException
 	 */
-	void add(NamedGraph graph);
+	void add(RDFGraph graph, String namedGraphURI);
+	
+	
+	void add(Iterable<Triple> triples, String namedGraphURI);
 	
 	/**
 	 * 

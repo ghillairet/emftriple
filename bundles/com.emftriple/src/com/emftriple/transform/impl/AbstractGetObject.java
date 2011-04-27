@@ -7,14 +7,13 @@
  */
 package com.emftriple.transform.impl;
 
-import java.util.Map;
-
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
+import com.emftriple.cache.ETripleCache;
 import com.emftriple.datasources.IDataSource;
 import com.emftriple.resource.ETripleResource;
 import com.emftriple.transform.IGetObject;
@@ -29,7 +28,7 @@ public abstract class AbstractGetObject implements IGetObject {
 
 	protected final ETripleResource resource;
 
-	protected final Map<String, EObject> cache;
+	protected final ETripleCache cache;
 
 	protected final IDataSource dataSource;
 	

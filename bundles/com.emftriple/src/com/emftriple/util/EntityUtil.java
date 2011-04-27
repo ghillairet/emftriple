@@ -99,7 +99,7 @@ public class EntityUtil {
 	}
 
 	public static List<URI> getRdfTypes(EClass eClass) {
-		if (cache .containsKey(eClass)) {
+		if (cache.containsKey(eClass)) {
 			return cache.get(eClass);
 		}
 		
@@ -232,7 +232,7 @@ public class EntityUtil {
 		else {
 			nsURI = object.eClass().getEPackage().getNsURI();
 		}
-		return nsURI.endsWith("/") || nsURI.endsWith("#") ? nsURI : nsURI + "/";
+		return wellFormedURI(nsURI);
 	}
 
 	public static String validNamespace(String namespace) {

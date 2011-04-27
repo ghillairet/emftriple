@@ -100,14 +100,15 @@ public class JenaResultSet implements IResultSet {
 
 		@Override
 		public boolean isLiteral(String varName) {
-			// TODO Auto-generated method stub
-			return false;
+			return solution.get(varName).isLiteral();
 		}
 
 		@Override
 		public Literal getLiteral(String varName) {
-			// TODO Auto-generated method stub
-			return null;
+			Literal lit = RDFFactory.eINSTANCE.createLiteral();
+			lit.setLexicalForm(solution.getLiteral(varName).getLexicalForm());
+			
+			return lit; 
 		}
 		
 	}

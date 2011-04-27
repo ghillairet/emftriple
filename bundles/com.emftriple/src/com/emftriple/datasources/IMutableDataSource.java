@@ -8,6 +8,7 @@
 package com.emftriple.datasources;
 
 import com.emf4sw.rdf.RDFGraph;
+import com.emf4sw.rdf.Triple;
 
 /**
  * {@link IMutableDataSource} extends {@link IDataSource} with support for add and remove operations.
@@ -25,6 +26,8 @@ public interface IMutableDataSource extends IDataSource {
 	 * @throws DataSourceException
 	 */
 	void add(RDFGraph graph);
+	
+	void add(Iterable<Triple> triples);
 	 
 	/**
 	 * Removes the {@link RDFGraph} from the {@link IDataSource}
@@ -33,5 +36,10 @@ public interface IMutableDataSource extends IDataSource {
 	 * @throws DataSourceException
 	 */
 	void remove(RDFGraph graph);
+
+	/**
+	 * Delete the content of the {@link IDataSource}.
+	 */
+	void delete();
 	
 }

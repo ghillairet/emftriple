@@ -34,8 +34,8 @@ public class GetProxyObjectImpl extends AbstractGetObject implements IGetObject 
 	public <T> T get(Class<T> entityClass, URI key) {
 		T proxy = null;
 		
-		if (cache.containsKey(key.toString())) {
-			proxy = (T) cache.get(key.toString());
+		if (cache.hasKey(key.toString())) {
+			proxy = (T) cache.getObjectByKey(key.toString());
 		}
 
 		if (proxy == null)
@@ -49,8 +49,8 @@ public class GetProxyObjectImpl extends AbstractGetObject implements IGetObject 
 	@Override
 	public EObject get(EClass eClass, URI key) {
 		EObject proxy = null;
-		if (cache.containsKey(key.toString())) {
-			proxy = (EObject) cache.get(key.toString());
+		if (cache.hasKey(key.toString())) {
+			proxy = (EObject) cache.getObjectByKey(key.toString());
 		}
 		
 		proxy = EcoreUtil.create(eClass);
@@ -60,8 +60,15 @@ public class GetProxyObjectImpl extends AbstractGetObject implements IGetObject 
 		}
 		((InternalEObject)proxy).eSetProxyURI(uri);
 		resource.getContents().add(proxy);
+		resource.getPrimaryCache().cache(key.toString(), proxy);
 		
 		return proxy;
+	}
+
+	@Override
+	public EObject getProxy(EObject proxy, EClass eClass, URI key) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

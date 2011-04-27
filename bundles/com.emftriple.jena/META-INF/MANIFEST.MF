@@ -6,7 +6,10 @@ Bundle-Version: 0.7.2.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: 
  com.emftriple.jena,
- com.emftriple.jena.util
+ com.emftriple.jena.file,
+ com.emftriple.jena.sdb,
+ com.emftriple.jena.service,
+ com.emftriple.jena.tdb
 Bundle-ClassPath: .
 Bundle-Vendor: eclipselabs
 Import-Package: com.emf4sw.rdf,

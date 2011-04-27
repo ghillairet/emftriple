@@ -17,6 +17,7 @@ import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.URIHandler;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
@@ -24,6 +25,7 @@ import org.eclipse.emf.ecore.resource.impl.URIHandlerImpl;
 
 import com.emf4sw.rdf.RDFFactory;
 import com.emf4sw.rdf.RDFGraph;
+import com.emf4sw.rdf.Triple;
 import com.emf4sw.rdf.notify.ModelAdapterImpl;
 import com.emf4sw.rdf.resource.RDFResource;
 import com.emf4sw.rdf.resource.TTLResource;
@@ -31,6 +33,7 @@ import com.emftriple.ETriple;
 import com.emftriple.cache.ETripleResourceCacheImpl;
 import com.emftriple.datasources.IDataSource;
 import com.emftriple.datasources.IDataSourceFactoryModule;
+import com.emftriple.datasources.IMutableDataSource;
 import com.emftriple.datasources.IMutableNamedGraphDataSource;
 import com.emftriple.datasources.INamedGraphDataSource;
 import com.emftriple.datasources.IResultSet;
@@ -50,8 +53,6 @@ public class ETripleResource extends ResourceImpl implements Resource {
 
 	private final ETripleResourceCacheImpl primaryCache;
 
-	//	private ETripleQuery find;
-
 	public ETripleResource(URI uri, IDataSource dataSource) {
 		super(uri);
 		this.dataSource = dataSource;
@@ -65,55 +66,82 @@ public class ETripleResource extends ResourceImpl implements Resource {
 	public IDataSource getDataSource() {
 		return dataSource;
 	}
+	
+	public String getGraph() {
+		return decodeQueryString(getURI().query()).get("graph");
+	}
 
 	@Override
 	public void delete(Map<?, ?> options) throws IOException {
-		super.delete(options);
+		if (dataSource instanceof IMutableDataSource) {
+			final Map<String, String> queries = decodeQueryString(getURI().query());
+			if (queries.containsKey("graph")) {
+				((IMutableNamedGraphDataSource)dataSource).deleteGraph(queries.get("graph"));
+			} else {
+				((IMutableDataSource)dataSource).delete();
+			}
+		}
 	}
 
 	@Override
 	public void save(Map<?, ?> options) throws IOException {
+		if (!(dataSource instanceof IMutableDataSource)) {
+			throw new IllegalStateException("Cannot save in a non mutable RDF Store");
+		}
 		final Map<String, String> queries = decodeQueryString(getURI().query());
-		if (queries.containsKey("graph")) {
-			final IPutObject put = new PutObjectImpl(ETriple.mapping);
-			final RDFGraph graph = getGraph(queries.get("graph"));
+		final IPutObject put = new PutObjectImpl(ETriple.mapping, this);
 
-			for (TreeIterator<EObject> it = getAllContents(); it.hasNext();){
-				EObject obj = it.next();
-				put.put(obj, graph);
+
+		boolean inGraph = queries.containsKey("graph");
+		if (inGraph && !(dataSource instanceof INamedGraphDataSource)) {
+			throw new IllegalStateException("RDF Store does not support named graphs");
+		}
+		
+		for (TreeIterator<EObject> it = getAllContents(); it.hasNext();){
+			Iterable<Triple> triples = put.put(it.next());
+			if (inGraph) {
+				((IMutableNamedGraphDataSource)dataSource).add(triples, queries.get("graph"));
+			} else {
+				((IMutableDataSource)dataSource).add(triples);
 			}
-			((IMutableNamedGraphDataSource)dataSource).add(graph);
 		}
 	}
 
 	@Override
 	public void load(Map<?, ?> options) throws IOException {
 		final Map<String, String> queries = decodeQueryString(getURI().query());
+
 		String query;
 		if (queries.containsKey("query")) {
-			query = queries.get("query"); 
+			query = queries.get("query").replaceAll("%20", " ").replaceAll("%23", "#"); 
 		} else {
 			query ="select ?s where { ?s ?p ?o }";
 		}
+
 		final IResultSet rs;
 		if (queries.containsKey("graph")) {
 			if (dataSource instanceof INamedGraphDataSource) {
-				rs =((INamedGraphDataSource) dataSource).selectQuery(query, URI.createURI(queries.get("graph")));
+				rs =((INamedGraphDataSource) dataSource).selectQuery(query, queries.get("graph"));
 			} else { 
-				throw new IllegalArgumentException(); 
+				throw new IllegalArgumentException("RDF Store does not support named graphs"); 
 			}
 		} else {
 			rs = dataSource.selectQuery(query);
 		}
-		
+
 		final IGetObject get = new GetEObjectImpl(this);
 		for (;rs.hasNext();) {
 			com.emf4sw.rdf.Resource res = rs.next().getResource("s");
-			EClass eClass = ETriple.mapping.findEClassByRdfType(selectAllTypes(dataSource, res.getURI()));
-			if (eClass != null) {
-				EObject object = get.get(eClass, URI.createURI(res.getURI()));
-				if (object != null) {
-					this.getContents().add(object);
+			if (!primaryCache.hasKey(res.getURI())) {
+				EClass eClass = ETriple.mapping.findEClassByRdfType(
+						selectAllTypes(dataSource, res.getURI(), queries.get("graph")));
+				
+				if (eClass != null) {
+					EObject object = get.get(eClass, URI.createURI(res.getURI()));
+					if (object != null) {
+						this.getContents().add(object);
+						primaryCache.cache(res.getURI(), object);
+					}
 				}
 			}
 		}
@@ -126,12 +154,16 @@ public class ETripleResource extends ResourceImpl implements Resource {
 		if (uriFragment != null && uriFragment.startsWith("uri=")) 
 		{
 			final URI key = getProxyKey(uriFragment);
+			final IGetObject get = new GetEObjectImpl(this);
 
-			if (primaryCache.containsKey(key.toString())) {
-				proxy = primaryCache.get(key);
+			if (primaryCache.hasKey(key.toString())) {
+				proxy = primaryCache.getObjectByKey(key.toString());
+				if (((InternalEObject)proxy).eIsProxy()) {
+					proxy = get.getProxy(proxy, proxy.eClass(), key); 
+				}
 			} else {
-				final IGetObject get = new GetEObjectImpl(this);
-				final EClass eClass = ETriple.mapping.findEClassByRdfType(selectAllTypes(dataSource, key.toString()));
+				final EClass eClass = ETriple.mapping.findEClassByRdfType(
+						selectAllTypes(dataSource, key.toString(), null));
 				if (eClass != null) {
 					proxy = get.get(eClass, key);
 				}
@@ -155,7 +187,8 @@ public class ETripleResource extends ResourceImpl implements Resource {
 		final String[] qryParts = qryStr.split("&");
 		for (final String qryPart : qryParts) {
 			final String fieldName = qryPart.substring(0, qryPart.indexOf('='));
-			final String fieldValue = URI.decode(qryPart.substring(qryPart.indexOf('=') + 1));
+
+			final String fieldValue = qryPart.substring(qryPart.indexOf('=') + 1);
 			result.put(fieldName, fieldValue);
 		}
 

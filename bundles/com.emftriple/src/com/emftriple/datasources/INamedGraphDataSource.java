@@ -7,8 +7,6 @@
  */
 package com.emftriple.datasources;
 
-import org.eclipse.emf.common.util.URI;
-
 import com.emf4sw.rdf.NamedGraph;
 import com.emf4sw.rdf.RDFGraph;
 
@@ -28,7 +26,7 @@ public interface INamedGraphDataSource extends IDataSource {
 	 * @param graphURI
 	 * @return NamedGraph.
 	 */
-	NamedGraph getNamedGraph(URI graphURI);
+	NamedGraph getNamedGraph(String graphURI);
 	
 	/**
 	 * Returns all Named Graphs URIs.
@@ -41,7 +39,7 @@ public interface INamedGraphDataSource extends IDataSource {
 	 * @param graph
 	 * @return true if graph is created.
 	 */
-	boolean containsGraph(URI graph);
+	boolean containsGraph(String graph);
 	
 	/**
 	 * Executes the select query on the specified named graph.
@@ -50,7 +48,7 @@ public interface INamedGraphDataSource extends IDataSource {
 	 * @param graph uri
 	 * @return query result.
 	 */
-	IResultSet selectQuery(String query, URI graph);
+	IResultSet selectQuery(String query, String graph);
 	
 	/**
 	 * Executes the construct query on the specified named graph.
@@ -60,7 +58,7 @@ public interface INamedGraphDataSource extends IDataSource {
 	 * @return query result.
 	 * @throws MalformedQueryException 
 	 */
-	RDFGraph constructQuery(String query, URI graph);
+	RDFGraph constructQuery(String query, String graph);
 	
 	/**
 	 * Executes the describe query on the specified named graph.
@@ -69,7 +67,7 @@ public interface INamedGraphDataSource extends IDataSource {
 	 * @param graph
 	 * @return query result.
 	 */
-	RDFGraph describeQuery(String query, URI graph);
+	RDFGraph describeQuery(String query, String graph);
 	
 	/**
 	 * Executes the ask query on the specified named graph.
@@ -78,6 +76,6 @@ public interface INamedGraphDataSource extends IDataSource {
 	 * @param graph
 	 * @return query result.
 	 */
-	boolean askQuery(String query, URI graph);
+	boolean askQuery(String query, String graph);
 	
 }

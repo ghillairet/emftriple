@@ -22,4 +22,6 @@ public interface IGetObject {
 	
 	EObject get(EClass eClass, URI key);
 	
+	EObject getProxy(EObject proxy, EClass eClass, URI key);
+	
 }

@@ -9,6 +9,7 @@ package com.emftriple.datasources.impl;
 
 import com.emf4sw.rdf.RDFFactory;
 import com.emf4sw.rdf.RDFGraph;
+import com.emf4sw.rdf.Triple;
 import com.emftriple.datasources.IDataSource;
 import com.emftriple.datasources.IMutableDataSource;
 import com.emftriple.datasources.IResultSet;
@@ -145,6 +146,18 @@ public class TransactionDataSource extends AbstractDataSource implements IMutabl
 	@Override
 	public void describeQuery(String aQuery, RDFGraph aGraph) throws MalformedQueryException {
 		dataSource.describeQuery(aQuery, aGraph);
+	}
+
+	@Override
+	public void delete() {
+		if (dataSource instanceof IMutableDataSource)
+			((IMutableDataSource) dataSource).delete();
+	}
+
+	@Override
+	public void add(Iterable<Triple> triples) {
+		if (dataSource instanceof IMutableDataSource)
+			((IMutableDataSource) dataSource).add(triples);
 	}
 
 }

@@ -8,7 +8,7 @@ public class ETripleQueryImpl implements ETripleQuery {
 	private final URI resource;
 
 	public ETripleQueryImpl(String query, URI resource) {
-		this.query = query;
+		this.query = query.replaceAll(" ", "%20").replaceAll("#", "%23");
 		this.resource = resource;
 	}
 

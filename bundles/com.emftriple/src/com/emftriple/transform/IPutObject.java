@@ -9,7 +9,7 @@ package com.emftriple.transform;
 
 import org.eclipse.emf.ecore.EObject;
 
-import com.emf4sw.rdf.RDFGraph;
+import com.emf4sw.rdf.Triple;
 
 /**
  * 
@@ -18,8 +18,6 @@ import com.emf4sw.rdf.RDFGraph;
  */
 public interface IPutObject {
 
-	RDFGraph put(EObject from, RDFGraph graph);
-
-	void clearCache();
+	Iterable<Triple> put(EObject from);
 	
 }

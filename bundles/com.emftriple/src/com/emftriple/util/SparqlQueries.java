@@ -15,7 +15,7 @@ import com.emf4sw.rdf.Node;
 import com.emf4sw.rdf.URIElement;
 import com.emf4sw.rdf.vocabulary.RDF;
 import com.emftriple.datasources.IDataSource;
-import com.emftriple.datasources.IDataSourceManager;
+import com.emftriple.datasources.INamedGraphDataSource;
 import com.emftriple.datasources.IResultSet;
 import com.emftriple.datasources.IResultSet.Solution;
 import com.google.common.collect.Lists;
@@ -41,40 +41,13 @@ public class SparqlQueries {
 	public static String describe(URI from, URI graph) {
 		return "DESCRIBE <" + from.toString()+ ">";
 	}
-
-	public static List<String> selectAllTypes(IDataSourceManager dataSourceManager, URI from) {
-		if (from != null) 
-		{
-			return selectAllTypes(dataSourceManager, from.toString());
-		}
-		return Lists.newArrayList();
-	}
 	
-	public static List<String> selectAllTypes(IDataSource dataSource, String key) {
+	public static List<String> selectAllTypes(IDataSource dataSource, String key, String graph) {
 		final List<String> types = Lists.newArrayList();
 		final String query = typeOf(key);
-		final IResultSet resultSet = dataSource.selectQuery(query);
-
-		if (resultSet == null) {
-			return null;
-		}
-		
-		while (resultSet.hasNext()) {
-			Solution solution = resultSet.next();
-			Node node = solution.get("type");
-			if (node instanceof URIElement)
-			{
-				types.add( ((URIElement) node).getURI() );
-			}
-		}
-		
-		return types;
-	}
-	
-	public static List<String> selectAllTypes(IDataSourceManager dataSourceManager, String key) {
-		final List<String> types = Lists.newArrayList();
-		final String query = typeOf(key);
-		final IResultSet resultSet = dataSourceManager.executeSelectQuery(query);
+		final IResultSet resultSet = graph!= null?
+				((INamedGraphDataSource)dataSource).selectQuery(query, graph): 
+				dataSource.selectQuery(query);
 
 		if (resultSet == null) {
 			return null;
