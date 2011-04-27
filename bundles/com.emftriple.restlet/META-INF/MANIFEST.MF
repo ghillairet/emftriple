@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: EmfTriple Restlet
+Bundle-SymbolicName: com.emftriple.restlet
+Bundle-Version: 0.1.0.qualifier
+Bundle-Vendor: eclipselabs
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: com.emftriple.restlet
+Import-Package: com.emf4sw.rdf,
+ com.emf4sw.rdf.resource,
+ com.emftriple.impl,
+ com.emftriple.transform,
+ com.emftriple.transform.impl,
+ javax.persistence;version="2.0.1",
+ org.eclipse.emf.ecore,
+ org.eclipse.emf.ecore.resource
