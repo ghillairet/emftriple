@@ -13,8 +13,6 @@ public interface ISparqlUpdateDataSource extends IMutableDataSource {
 	 * Executes the update query.
 	 * 
 	 * @param query to execute
-	 * @throws MalformedQueryException
-	 * @throws {@link UnsupportedOperationException}
 	 */
 	void update(String query);
 	

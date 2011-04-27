@@ -60,27 +60,9 @@ public abstract class SailDataSource extends AbstractNamedGraphDataSource implem
 	
 	@Override
 	public void add(Iterable<Triple> triples) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public void add(Iterable<Triple> triples, String namedGraphURI) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public void add(RDFGraph graph, String namedGraphURI) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void add(RDFGraph graph) {
 		checkIsConnected();
 
-		final Graph aGraph = new RDFGraph2SesameGraph(graph).extract();
+		final Graph aGraph = RDFGraph2SesameGraph.extract(triples);
 		try {
 			connection.add(aGraph);
 		} catch (RepositoryException e) {
@@ -91,12 +73,18 @@ public abstract class SailDataSource extends AbstractNamedGraphDataSource implem
 			}
 		}
 	}
-
+	
 	@Override
-	public void remove(RDFGraph graph) {
+	public void add(Iterable<Triple> triples, String namedGraphURI) {
+		// TODO Auto-generated method stub
+		
+	}
+		
+	@Override
+	public void remove(Iterable<Triple> triples) {
 		checkIsConnected();
 
-		Graph aGraph = new RDFGraph2SesameGraph(graph).extract();
+		Graph aGraph = RDFGraph2SesameGraph.extract(triples);
 		try {
 			connection.remove(aGraph);
 		} catch (RepositoryException e) {
@@ -105,12 +93,13 @@ public abstract class SailDataSource extends AbstractNamedGraphDataSource implem
 			} catch (RepositoryException re) {
 				re.printStackTrace();
 			}
-		}		
+		}	
 	}
-
+	
 	@Override
-	public void remove(NamedGraph graph) {
-		remove((RDFGraph)graph);
+	public void remove(Iterable<Triple> triples, String namedGraphURI) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override

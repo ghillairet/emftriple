@@ -2,7 +2,6 @@ package com.emftriple.jena;
 
 import com.emf4sw.rdf.NamedGraph;
 import com.emf4sw.rdf.RDFGraph;
-import com.emf4sw.rdf.Triple;
 import com.emf4sw.rdf.jena.NamedGraphInjector;
 import com.emftriple.datasources.IMutableNamedGraphDataSource;
 import com.emftriple.datasources.IResultSet;
@@ -54,7 +53,7 @@ public abstract class ModelNamedGraphDataSource extends ModelDataSource implemen
 		try {
 			final QueryExecution queryExec = QueryExecutionFactory.create(query, model);
 			final Model result = queryExec.execConstruct();
-			res = result == null ? null : new NamedGraphInjector(result).inject();
+			res = result == null ? null : NamedGraphInjector.inject(result);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -73,7 +72,7 @@ public abstract class ModelNamedGraphDataSource extends ModelDataSource implemen
 		try {
 			QueryExecution qexec = QueryExecutionFactory.create(query, model);
 			final Model result = qexec.execDescribe();
-			graph = result == null ? null : new NamedGraphInjector(result).inject();
+			graph = result == null ? null : NamedGraphInjector.inject(result);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -97,21 +96,5 @@ public abstract class ModelNamedGraphDataSource extends ModelDataSource implemen
 			model.leaveCriticalSection();
 		}
 		return result;
-	}
-
-	@Override
-	public abstract void add(RDFGraph graph);
-
-	@Override
-	public abstract void remove(RDFGraph graph);
-
-	@Override
-	public abstract void deleteGraph(String graph);
-
-	@Override
-	public abstract void add(Iterable<Triple> triples);
-	
-	@Override
-	public abstract void remove(NamedGraph graph);
-	
+	}	
 }

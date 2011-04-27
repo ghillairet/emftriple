@@ -10,11 +10,8 @@ package com.emftriple.jena.tdb;
 import org.eclipse.emf.common.util.URI;
 
 import com.emf4sw.rdf.NamedGraph;
-import com.emf4sw.rdf.RDFGraph;
 import com.emf4sw.rdf.Triple;
-import com.emf4sw.rdf.jena.RDFGraphExtractor;
 import com.emf4sw.rdf.jena.TripleExtractor;
-import com.emf4sw.rdf.resource.RDFResource;
 import com.emf4sw.rdf.resource.impl.NTriplesResourceImpl;
 import com.emftriple.datasources.ISparqlUpdateDataSource;
 import com.emftriple.datasources.ITransactionEnableDataSource;
@@ -24,6 +21,7 @@ import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.shared.Lock;
 import com.hp.hpl.jena.tdb.TDBFactory;
 import com.hp.hpl.jena.update.GraphStore;
@@ -100,19 +98,6 @@ public class JenaTDB extends ModelNamedGraphDataSource implements ITransactionEn
 	}
 
 	@Override
-	public void add(RDFGraph graph) {
-		final Model model = getModel();
-		
-		model.enterCriticalSection(Lock.WRITE);
-		try {
-			model.add( (Model) ((RDFResource)graph.eResource()).getDelegate() );	
-		} finally { 
-			model.leaveCriticalSection();
-			model.commit();
-		}	
-	}
-
-	@Override
 	public void add(Iterable<Triple> triples) {
 		final Model model = getModel();
 		
@@ -139,25 +124,29 @@ public class JenaTDB extends ModelNamedGraphDataSource implements ITransactionEn
 	}
 	
 	@Override
-	public void add(RDFGraph graph, String namedGraphURI) {
+	public void remove(Iterable<Triple> triples) {
 		final Model model = getModel();
+		final Model removeModel = ModelFactory.createDefaultModel();
+		TripleExtractor.extract(triples, removeModel);
 		
 		model.enterCriticalSection(Lock.WRITE);
 		try {
-			RDFGraphExtractor.extract(graph, model);
+			model.remove( removeModel );
 		} finally { 
 			model.leaveCriticalSection();
 			model.commit();
-		}	
+		}
 	}
 	
 	@Override
-	public void remove(RDFGraph graph) {
-		final Model model = getModel();
+	public void remove(Iterable<Triple> triples, String namedGraphURI) {
+		final Model model = getModel(namedGraphURI);
+		final Model removeModel = ModelFactory.createDefaultModel();
+		TripleExtractor.extract(triples, removeModel);
 		
 		model.enterCriticalSection(Lock.WRITE);
 		try {
-			model.remove( (Model) ((RDFResource)graph.eResource()).getDelegate() );
+			model.remove( removeModel );
 		} finally { 
 			model.leaveCriticalSection();
 			model.commit();
@@ -169,19 +158,6 @@ public class JenaTDB extends ModelNamedGraphDataSource implements ITransactionEn
 		if (containsGraph(graph)) {
 			dataSet.getNamedModel(graph.toString()).removeAll();
 			dataSet.getNamedModel(graph.toString()).removeAll().commit();
-		}
-	}
-
-	@Override
-	public void remove(NamedGraph graph) {
-		final Model model = getModel(graph.getURI());
-		
-		model.enterCriticalSection(Lock.WRITE);
-		try {
-			model.remove( (Model) ((RDFResource)graph.eResource()).getDelegate() );
-		} finally { 
-			model.leaveCriticalSection();
-			model.commit();
 		}
 	}
 	

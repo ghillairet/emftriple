@@ -11,9 +11,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
-import com.emf4sw.rdf.RDFGraph;
 import com.emf4sw.rdf.Triple;
-import com.emf4sw.rdf.jena.RDFGraphExtractor;
 import com.emf4sw.rdf.jena.TripleExtractor;
 import com.emftriple.datasources.ISparqlUpdateDataSource;
 import com.emftriple.jena.JenaDataSourceFactory;
@@ -21,6 +19,7 @@ import com.emftriple.jena.ModelDataSource;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.shared.Lock;
 import com.hp.hpl.jena.update.GraphStore;
 import com.hp.hpl.jena.update.GraphStoreFactory;
@@ -63,26 +62,13 @@ public class JenaFile extends ModelDataSource implements ISparqlUpdateDataSource
 	}
 
 	@Override
-	public void add(RDFGraph graph) {
+	public void remove(Iterable<Triple> triples) {
 		model.enterCriticalSection(Lock.WRITE);
 		try {
-			model.add( RDFGraphExtractor.extract(graph) );
-			try {
-				model.write(new FileOutputStream(new File(fileLocation)), fileFormat);
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
-		} finally { 
-			model.leaveCriticalSection();
-		}
-	}
-
-	@Override
-	public void remove(RDFGraph graph) {
-		model.enterCriticalSection(Lock.WRITE);
-		try {
-			Model removeModel = RDFGraphExtractor.extract(graph);
-			if (removeModel != null && !removeModel.isEmpty()) {
+			Model removeModel = ModelFactory.createDefaultModel(); 
+			TripleExtractor.extract(triples, removeModel);
+			
+			if (!removeModel.isEmpty()) {
 				model.remove( removeModel );
 			}
 			try {

@@ -10,9 +10,7 @@ package com.emftriple.jena.sdb;
 import org.eclipse.emf.common.util.URI;
 
 import com.emf4sw.rdf.NamedGraph;
-import com.emf4sw.rdf.RDFGraph;
 import com.emf4sw.rdf.Triple;
-import com.emf4sw.rdf.jena.RDFGraphExtractor;
 import com.emf4sw.rdf.resource.impl.NTriplesResourceImpl;
 import com.emftriple.datasources.ISparqlUpdateDataSource;
 import com.emftriple.datasources.ITransactionEnableDataSource;
@@ -51,12 +49,6 @@ public class JenaSDB extends ModelNamedGraphDataSource implements ISparqlUpdateD
 	}
 
 	@Override
-	public void add(RDFGraph graph) {
-		final Dataset ds = DatasetStore.create(store);
-		ds.getDefaultModel().add(RDFGraphExtractor.extract(graph));
-	}
-	
-	@Override
 	public void add(Iterable<Triple> triples) {
 		// TODO Auto-generated method stub
 		
@@ -69,23 +61,15 @@ public class JenaSDB extends ModelNamedGraphDataSource implements ISparqlUpdateD
 	}
 	
 	@Override
-	public void add(RDFGraph graph, String namedGraphURI) {
+	public void remove(Iterable<Triple> triples) {
 		// TODO Auto-generated method stub
 		
 	}
 	
 	@Override
-	public void remove(RDFGraph graph) {
-		final Dataset ds = DatasetStore.create(store);
-		ds.getDefaultModel().remove(RDFGraphExtractor.extract(graph));
-	}
-
-	@Override
-	public void remove(NamedGraph graph) {
-		final Dataset ds = DatasetStore.create(store);
-		if (ds.containsNamedModel(graph.getURI())) {
-			ds.getNamedModel(graph.getURI()).remove(RDFGraphExtractor.extract(graph));
-		}
+	public void remove(Iterable<Triple> triples, String namedGraphURI) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override

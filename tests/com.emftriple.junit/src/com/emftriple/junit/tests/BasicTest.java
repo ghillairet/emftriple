@@ -38,7 +38,7 @@ public class BasicTest {
 	@Test
 	public void testDelete() throws IOException {
 		ResourceSet resourceSet = new ResourceSetImpl();
-		Resource resource = resourceSet.createResource(URI.createURI("emftriple://data?graph=http://graph"));
+		Resource resource = resourceSet.createResource(URI.createURI("emftriple://data"));
 		
 		resource.delete(null);
 		
@@ -48,7 +48,47 @@ public class BasicTest {
 	}
 	
 	@Test
+	public void testDeleteGraph() throws IOException {
+		ResourceSet resourceSet = new ResourceSetImpl();
+		Resource resource = resourceSet.createResource(URI.createURI("emftriple://data?graph=http://graph"));
+		
+		resource.delete(null);
+		
+		Dataset ds = TDBFactory.createDataset("data");
+		assertTrue(ds.getDefaultModel().isEmpty());
+		assertTrue(ds.getNamedModel("http://graph").isEmpty());
+		ds.close();
+	}
+	
+	@Test
 	public void testCreateAndStore() throws IOException {
+		ResourceSet resourceSet = new ResourceSetImpl();
+		Resource resource = resourceSet.createResource(URI.createURI("emftriple://data"));
+		resource.load(null);
+		
+		assertTrue(resource.getContents().isEmpty());
+		
+		Person person = ModelFactory.eINSTANCE.createPerson();
+		person.setName("John Doe");
+		
+		Book book = ModelFactory.eINSTANCE.createBook();
+		book.setTitle("Valley Of Thing");
+		
+		person.getBooks().add(book);
+		
+		resource.getContents().add(person);
+		resource.getContents().add(book);
+		resource.save(null);
+		
+		Dataset ds = TDBFactory.createDataset("data");
+		assertFalse(ds.getDefaultModel().isEmpty());
+		
+		assertTrue(ds.getDefaultModel().listSubjects().toList().size() == 2);
+		ds.close();
+	}
+		
+	@Test
+	public void testCreateAndStoreInGraph() throws IOException {
 		ResourceSet resourceSet = new ResourceSetImpl();
 		Resource resource = resourceSet.createResource(URI.createURI("emftriple://data?graph=http://graph"));
 		resource.load(null);
@@ -68,20 +108,41 @@ public class BasicTest {
 		resource.save(null);
 		
 		Dataset ds = TDBFactory.createDataset("data");
-		assertTrue(ds.getDefaultModel().isEmpty());
 		Model m = ds.getNamedModel("http://graph");
 		assertFalse(m.isEmpty());
 		
-//		for (com.hp.hpl.jena.rdf.model.Statement r: m.listStatements().toList())
-//			System.out.println(r.getSubject().getURI());
-		
-//		System.out.println("res: "+m.listSubjects().toList());
 		assertTrue(m.listSubjects().toList().size() == 2);
 		ds.close();
 	}
 	
 	@Test
 	public void testLoadResource() throws IOException {
+		ResourceSet resourceSet = new ResourceSetImpl();
+		Resource resource = resourceSet.createResource(URI.createURI("emftriple://data"));
+		
+		assertNotNull(resource);
+		resource.load(null);
+		
+		assertFalse(resource.getContents().isEmpty());
+		assertTrue(resource.getContents().size() == 2);
+		
+		Object obj = EcoreUtil.getObjectByType(resource.getContents(), ModelPackage.eINSTANCE.getPerson());
+		
+		assertTrue(obj instanceof Person);
+		assertFalse( ((Person)obj).getBooks().isEmpty() );
+		assertEquals( ((Person)obj).getBooks().size(), 1 );
+		
+//		System.out.println(((Person) obj).getBooks());
+		
+		Book b = ((Person)obj).getBooks().get(0);
+		
+		assertFalse(b.eIsProxy());
+		assertNotNull(b.getTitle());
+		assertEquals(b.getTitle(), "Valley Of Thing");
+	}
+	
+	@Test
+	public void testLoadResourceFromGraph() throws IOException {
 		ResourceSet resourceSet = new ResourceSetImpl();
 		Resource resource = resourceSet.createResource(URI.createURI("emftriple://data?graph=http://graph"));
 		

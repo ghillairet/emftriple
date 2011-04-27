@@ -56,7 +56,6 @@ public interface INamedGraphDataSource extends IDataSource {
 	 * @param query
 	 * @param graph
 	 * @return query result.
-	 * @throws MalformedQueryException 
 	 */
 	RDFGraph constructQuery(String query, String graph);
 	

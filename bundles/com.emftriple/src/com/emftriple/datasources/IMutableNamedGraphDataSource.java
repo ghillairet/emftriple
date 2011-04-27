@@ -7,8 +7,6 @@
  */
 package com.emftriple.datasources;
 
-import com.emf4sw.rdf.NamedGraph;
-import com.emf4sw.rdf.RDFGraph;
 import com.emf4sw.rdf.Triple;
 
 /**
@@ -24,26 +22,24 @@ import com.emf4sw.rdf.Triple;
 public interface IMutableNamedGraphDataSource extends INamedGraphDataSource, IMutableDataSource {
 
 	/**
-	 * 
-	 * @param graph
+	 * Deletes the content of the named graph.
 	 */
 	void deleteGraph(String graph);
 	
 	/**
+	 * Adds triples to a named graph.
 	 * 
-	 * @param graph
-	 * @throws DataSourceException
-	 */
-	void add(RDFGraph graph, String namedGraphURI);
-	
-	
+	 * @param list of triples
+	 * @param named graph URI
+	 */	
 	void add(Iterable<Triple> triples, String namedGraphURI);
 	
 	/**
+	 * Deletes triples from a named graph.
 	 * 
-	 * @param graph
-	 * @throws DataSourceException
+	 * @param list of triples
+	 * @param named graph URI
 	 */
-	void remove(NamedGraph graph);
+	void remove(Iterable<Triple> triples, String namedGraphURI);
 	
 }
