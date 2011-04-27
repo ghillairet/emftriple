@@ -24,6 +24,8 @@ import com.emf4sw.rdf.NamedGraph;
  */
 public interface IMapping {
 
+	void addEPackage(EPackage ePackage);
+	
 	/**
 	 * @return the EPackage currently mapped.
 	 */

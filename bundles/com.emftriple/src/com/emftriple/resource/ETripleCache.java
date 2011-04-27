@@ -1,4 +1,4 @@
-package com.emftriple.cache;
+package com.emftriple.resource;
 
 import org.eclipse.emf.ecore.EObject;
 

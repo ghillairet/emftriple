@@ -7,6 +7,8 @@
  */
 package com.emftriple.transform;
 
+import java.util.Collection;
+
 import org.eclipse.emf.ecore.EObject;
 
 import com.emf4sw.rdf.Triple;
@@ -18,6 +20,6 @@ import com.emf4sw.rdf.Triple;
  */
 public interface IPutObject {
 
-	Iterable<Triple> put(EObject from);
+	Collection<Triple> put(EObject from);
 	
 }

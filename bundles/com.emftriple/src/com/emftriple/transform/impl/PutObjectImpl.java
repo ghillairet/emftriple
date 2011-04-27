@@ -26,6 +26,7 @@ import com.emf4sw.rdf.Resource;
 import com.emf4sw.rdf.Triple;
 import com.emf4sw.rdf.operations.DatatypeConverter;
 import com.emf4sw.rdf.vocabulary.RDF;
+import com.emftriple.ETriple;
 import com.emftriple.resource.ETripleResource;
 import com.emftriple.transform.IMapping;
 import com.emftriple.transform.IPutObject;
@@ -44,13 +45,13 @@ public class PutObjectImpl implements IPutObject {
 
 	private ETripleResource context;
 
-	public PutObjectImpl(IMapping mapping, ETripleResource context) {
-		this.mapping = mapping;
+	public PutObjectImpl(ETripleResource context) {
+		this.mapping = ETriple.Registry.INSTANCE.getMapping();
 		this.context = context;
 	}
 
 	@Override
-	public Iterable<Triple> put(EObject object) {
+	public Collection<Triple> put(EObject object) {
 		final List<Triple> triples = new ArrayList<Triple>();
 		final Resource sbj = factory.createResource();
 		

@@ -1,11 +1,12 @@
 package com.emftriple.restlet;
 
+import java.util.Collection;
+
 import org.restlet.data.Language;
 import org.restlet.data.Reference;
 import org.restlet.ext.rdf.Graph;
 
 import com.emf4sw.rdf.Literal;
-import com.emf4sw.rdf.RDFGraph;
 import com.emf4sw.rdf.Triple;
 import com.emf4sw.rdf.URIElement;
 
@@ -16,14 +17,12 @@ import com.emf4sw.rdf.URIElement;
  */
 final class RDFGraph2RestletGraph {
 
-	private RDFGraph2RestletGraph() {
-		// TODO Auto-generated constructor stub
-	}
+	private RDFGraph2RestletGraph() {}
 	
-	public static Graph toGraph(RDFGraph aGraph) {
-		Graph rGraph = new Graph();
+	public static Graph toGraph(Collection<Triple> triples) {
+		final Graph rGraph = new Graph();
 		
-		for (Triple t: aGraph.getTriples()) {
+		for (Triple t: triples) {
 			Reference sbj = new Reference(((URIElement) t.getSubject()).getURI());
 			Reference prop = new Reference(t.getPredicate().getURI());
 			if (t.getObject() instanceof Literal)

@@ -13,8 +13,8 @@ import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
-import com.emftriple.cache.ETripleCache;
 import com.emftriple.datasources.IDataSource;
+import com.emftriple.resource.ETripleCache;
 import com.emftriple.resource.ETripleResource;
 import com.emftriple.transform.IGetObject;
 import com.emftriple.util.EntityUtil;

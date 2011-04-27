@@ -7,6 +7,7 @@
  */
 package com.emftriple.datasources;
 
+
 /**
  * The {@link ITransactionEnableDataSource} interface represents a {@link IDataSource} that supports 
  * transactions.

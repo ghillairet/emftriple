@@ -40,7 +40,7 @@ public class GetProxyObjectImpl extends AbstractGetObject implements IGetObject 
 
 		if (proxy == null)
 		{
-			proxy = (T) get(ETriple.mapping.getEClass(entityClass), key);
+			proxy = (T) get(ETriple.Registry.INSTANCE.getMapping().getEClass(entityClass), key);
 		}
 		
 		return proxy;

@@ -1,4 +1,4 @@
-package com.emftriple.cache;
+package com.emftriple.resource;
 
 import java.util.HashMap;
 

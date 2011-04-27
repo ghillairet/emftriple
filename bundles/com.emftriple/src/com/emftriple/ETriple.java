@@ -13,13 +13,13 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EPackage;
 
-import com.emftriple.transform.impl.EAnnotationMapping;
+import com.emftriple.resource.ETripleRegistryImpl;
+import com.emftriple.transform.IMapping;
 import com.emftriple.util.Functions;
 import com.google.common.base.Function;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
-import com.google.inject.internal.Lists;
 
 /**
  * 
@@ -33,8 +33,6 @@ public class ETriple {
 	
 	private static List<Module> modules = new ArrayList<Module>();
 
-	public static EAnnotationMapping mapping;
-
 	private ETriple() {}
 
 	public static ETriple getInstance() {
@@ -43,13 +41,8 @@ public class ETriple {
 		}
 		return INSTANCE;
 	}
-
-	public static synchronized void init(EPackage ePackage) {
-		mapping = new EAnnotationMapping(Lists.newArrayList(ePackage));
-	}
 	
-	public static synchronized void init(EPackage ePackage, Module... modules) {
-		mapping = new EAnnotationMapping(Lists.newArrayList(ePackage));
+	public static synchronized void init(Module... modules) {
 		ETriple.modules.addAll(Arrays.asList(modules));
 	}
 
@@ -74,6 +67,16 @@ public class ETriple {
 			}
 			return null;
 		}
+	}
+	
+	public interface Registry {
+		
+		public Registry INSTANCE = new ETripleRegistryImpl();
+		
+		void register(EPackage ePackage);
+		
+		IMapping getMapping();
+		
 	}
 
 }

@@ -27,16 +27,17 @@ public abstract class AbstractMapping implements IMapping {
 	protected List<EPackage> ePackages;
 
 	private List<EClass> eClasses;
-
-	protected boolean isConfigured = false;
-
-//	protected List<Property> properties;
 	
-	AbstractMapping(List<EPackage> packages) {
-		this.ePackages = packages;
-//		this.properties = properties;
+	protected AbstractMapping() {
+		this.ePackages = new ArrayList<EPackage>();
 	}
 
+	@Override
+	public void addEPackage(EPackage ePackage) {
+		ePackages.add(ePackage);
+		eClasses = computeMappedClasses();
+	}
+	
 	@Override
 	public List<EPackage> getEPackages() {
 		return ePackages;

@@ -30,7 +30,6 @@ import com.emf4sw.rdf.notify.ModelAdapterImpl;
 import com.emf4sw.rdf.resource.RDFResource;
 import com.emf4sw.rdf.resource.TTLResource;
 import com.emftriple.ETriple;
-import com.emftriple.cache.ETripleResourceCacheImpl;
 import com.emftriple.datasources.IDataSource;
 import com.emftriple.datasources.IDataSourceFactoryModule;
 import com.emftriple.datasources.IMutableDataSource;
@@ -38,6 +37,7 @@ import com.emftriple.datasources.IMutableNamedGraphDataSource;
 import com.emftriple.datasources.INamedGraphDataSource;
 import com.emftriple.datasources.IResultSet;
 import com.emftriple.transform.IGetObject;
+import com.emftriple.transform.IMapping;
 import com.emftriple.transform.IPutObject;
 import com.emftriple.transform.impl.GetEObjectImpl;
 import com.emftriple.transform.impl.PutObjectImpl;
@@ -89,7 +89,7 @@ public class ETripleResource extends ResourceImpl implements Resource {
 			throw new IllegalStateException("Cannot save in a non mutable RDF Store");
 		}
 		final Map<String, String> queries = decodeQueryString(getURI().query());
-		final IPutObject put = new PutObjectImpl(ETriple.mapping, this);
+		final IPutObject put = new PutObjectImpl(this);
 
 
 		boolean inGraph = queries.containsKey("graph");
@@ -133,7 +133,7 @@ public class ETripleResource extends ResourceImpl implements Resource {
 		for (;rs.hasNext();) {
 			com.emf4sw.rdf.Resource res = rs.next().getResource("s");
 			if (!primaryCache.hasKey(res.getURI())) {
-				EClass eClass = ETriple.mapping.findEClassByRdfType(
+				EClass eClass = getMapping().findEClassByRdfType(
 						selectAllTypes(dataSource, res.getURI(), queries.get("graph")));
 				
 				if (eClass != null) {
@@ -145,6 +145,10 @@ public class ETripleResource extends ResourceImpl implements Resource {
 				}
 			}
 		}
+	}
+
+	private IMapping getMapping() {
+		return ETriple.Registry.INSTANCE.getMapping();
 	}
 
 	@Override
@@ -162,7 +166,7 @@ public class ETripleResource extends ResourceImpl implements Resource {
 					proxy = get.getProxy(proxy, proxy.eClass(), key); 
 				}
 			} else {
-				final EClass eClass = ETriple.mapping.findEClassByRdfType(
+				final EClass eClass = getMapping().findEClassByRdfType(
 						selectAllTypes(dataSource, key.toString(), null));
 				if (eClass != null) {
 					proxy = get.get(eClass, key);

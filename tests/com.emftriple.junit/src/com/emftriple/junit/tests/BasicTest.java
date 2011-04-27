@@ -17,8 +17,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.emftriple.ETriple;
-import com.emftriple.jena.JenaModule;
-import com.emftriple.jena.tdb.JenaTDB;
 import com.emftriple.jena.tdb.TDBResourceFactory;
 import com.emftriple.query.ETripleQueryImpl;
 import com.hp.hpl.jena.query.Dataset;
@@ -34,7 +32,7 @@ public class BasicTest {
 	@Before
 	public void tearUp() {
 		Resource.Factory.Registry.INSTANCE.getProtocolToFactoryMap().put("emftriple", new TDBResourceFactory());
-		ETriple.init(ModelPackage.eINSTANCE, new JenaModule(JenaTDB.class, null));
+		ETriple.Registry.INSTANCE.register(ModelPackage.eINSTANCE);
 	}
 	
 	@Test

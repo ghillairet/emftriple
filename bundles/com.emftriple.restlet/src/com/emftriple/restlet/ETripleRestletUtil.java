@@ -1,17 +1,15 @@
 package com.emftriple.restlet;
 
-import javax.persistence.EntityManager;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.restlet.data.MediaType;
 import org.restlet.ext.rdf.RdfRepresentation;
 
-import com.emf4sw.rdf.RDFFactory;
-import com.emf4sw.rdf.RDFGraph;
 import com.emf4sw.rdf.Triple;
-import com.emf4sw.rdf.resource.RDFResourceImpl;
-import com.emftriple.impl.EObjectEntityManager;
+import com.emftriple.resource.ETripleResource;
 import com.emftriple.transform.IPutObject;
 import com.emftriple.transform.impl.PutObjectImpl;
 
@@ -22,62 +20,33 @@ import com.emftriple.transform.impl.PutObjectImpl;
  */
 public class ETripleRestletUtil {
 	
-	public static RdfRepresentation getRepresentation(Resource resource, EntityManager em, MediaType mediaType) {
-		final IPutObject put = new PutObjectImpl(((EObjectEntityManager)em).getMapping(), 
-				((EObjectEntityManager)em).getDelegate());
+	public static RdfRepresentation getRepresentation(Resource resource, MediaType mediaType) {
+		final IPutObject put = new PutObjectImpl((ETripleResource) resource);
 		
-		final RDFGraph aGraph = RDFFactory.eINSTANCE.createDocumentGraph();
-		final Resource res = new RDFResourceImpl() {			
-			@Override
-			public Object getDelegate() { return null; }
-			
-			@Override
-			public void addDelegate(Triple obj) {}
-		};
-		res.getContents().add(aGraph);
-		
+		final Collection<Triple> triples = new ArrayList<Triple>();
 		for (EObject obj: resource.getContents())
-			put.put(obj, aGraph);
+			triples.addAll(put.put(obj));
 		
-		return new RdfRepresentation(RDFGraph2RestletGraph.toGraph(aGraph), mediaType);
+		return new RdfRepresentation(RDFGraph2RestletGraph.toGraph(triples), mediaType);
 	}
 	
-	public static RdfRepresentation getRepresentation(Iterable<? extends EObject> objects, EntityManager em, MediaType mediaType) {
-		final IPutObject put = new PutObjectImpl(((EObjectEntityManager)em).getMapping(), 
-				((EObjectEntityManager)em).getDelegate());
+	public static RdfRepresentation getRepresentation(Resource resource, Iterable<? extends EObject> objects, MediaType mediaType) {
+		final IPutObject put = new PutObjectImpl((ETripleResource) resource);
 		
-		final RDFGraph aGraph = RDFFactory.eINSTANCE.createDocumentGraph();
-		final Resource res = new RDFResourceImpl() {			
-			@Override
-			public Object getDelegate() { return null; }
-			
-			@Override
-			public void addDelegate(Triple obj) {}
-		};
-		res.getContents().add(aGraph);
+		final Collection<Triple> triples = new ArrayList<Triple>();
+		for (EObject o: objects) {
+			triples.addAll(put.put(o));
+		}
 		
-		for (EObject o: objects)
-			put.put(o, aGraph);
-		
-		return new RdfRepresentation(RDFGraph2RestletGraph.toGraph(aGraph), mediaType);
+		return new RdfRepresentation(RDFGraph2RestletGraph.toGraph(triples), mediaType);
 	}
 	
-	public static RdfRepresentation getRepresentation(EObject object, EntityManager em, MediaType mediaType) {
-		final IPutObject put = new PutObjectImpl(((EObjectEntityManager)em).getMapping(), 
-				((EObjectEntityManager)em).getDelegate());
+	public static RdfRepresentation getRepresentation(Resource resource, EObject object, MediaType mediaType) {
+		final IPutObject put = new PutObjectImpl((ETripleResource) resource);
 		
-		final RDFGraph aGraph = RDFFactory.eINSTANCE.createDocumentGraph();
-		final Resource res = new RDFResourceImpl() {			
-			@Override
-			public Object getDelegate() { return null; }
-			
-			@Override
-			public void addDelegate(Triple obj) {}
-		};
-		res.getContents().add(aGraph);
+		final Collection<Triple> triples = new ArrayList<Triple>();
+		triples.addAll(put.put(object));
 		
-		put.put(object, aGraph);
-		
-		return new RdfRepresentation(RDFGraph2RestletGraph.toGraph(aGraph), mediaType);
+		return new RdfRepresentation(RDFGraph2RestletGraph.toGraph(triples), mediaType);
 	}
 }

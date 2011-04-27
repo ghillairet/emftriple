@@ -22,13 +22,13 @@ import com.emftriple.util.EntityUtil;
 import com.google.common.collect.Maps;
 
 /**
- * {@link EAnnotationMapping} stores correspondances between model and ontology classes 
+ * {@link ETripleMappingImpl} stores correspondances between model and ontology classes 
  * according to model annotations.
  * 
  * @author <a href="mailto:g.hillairet at gmail.com">Guillaume Hillairet</a>
  * @since 0.5.5
  */
-public class EAnnotationMapping extends AbstractMapping implements IMapping {
+public class ETripleMappingImpl extends AbstractMapping implements IMapping {
 
 	protected Map<URI, EClass> rdfTypeMap;
 
@@ -38,17 +38,16 @@ public class EAnnotationMapping extends AbstractMapping implements IMapping {
 
 	protected Map<Class<?>, EClass> mappedClasses;
 
-	
-	//	@Inject
-	//	public EAnnotationMapping(@Named("Packages") List packages, @Named("Properties") List properties) {
-
-	public EAnnotationMapping(List<EPackage> packages) {
-		super(packages);
+	public ETripleMappingImpl() {
 		this.rdfTypeMap = Maps.newHashMap();
 		this.featureMap = Maps.newHashMap();
 		this.mappedClasses = Maps.newHashMap();
 		this.classMap = Maps.newHashMap();
-
+	}
+	
+	public void addEPackage(EPackage ePackage) {
+		super.addEPackage(ePackage);
+		
 		for (EClass eClass: getEClasses()) 
 		{
 			classMap.put(eClass, EntityUtil.getRdfTypes(eClass));
