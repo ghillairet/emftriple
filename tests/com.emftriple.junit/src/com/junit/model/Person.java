@@ -39,8 +39,7 @@ public interface Person extends EObject {
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
 	 * @see com.junit.model.ModelPackage#getPerson_Name()
-	 * @model id="true"
-	 *        annotation="Id base='http://ex.org/'"
+	 * @model
 	 * @generated
 	 */
 	String getName();

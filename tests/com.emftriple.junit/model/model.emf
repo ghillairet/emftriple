@@ -2,14 +2,12 @@
 package model;
 
 class Person {
-  @Id(base="http://ex.org/")
-  id attr String name;
+  attr String name;
   ref Book[*]#authors books;
 }
 
 class Book {
-  @Id(base="http://ex.org/")
-  id attr String title;
+  attr String title;
   ref Person[*]#books authors;
   attr String[*] tags;
   attr char[*] data;

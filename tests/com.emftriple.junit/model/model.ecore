@@ -4,22 +4,12 @@
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="model"
     nsURI="http://www.eclipselabs.org/emf/junit" nsPrefix="org.eclipselabs.emf.junit">
   <eClassifiers xsi:type="ecore:EClass" name="Person">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
-        iD="true">
-      <eAnnotations source="Id">
-        <details key="base" value="http://ex.org/"/>
-      </eAnnotations>
-    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="books" upperBound="-1"
         eType="#//Book" eOpposite="#//Book/authors"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Book">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="title" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
-        iD="true">
-      <eAnnotations source="Id">
-        <details key="base" value="http://ex.org/"/>
-      </eAnnotations>
-    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="title" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="authors" upperBound="-1"
         eType="#//Person" eOpposite="#//Person/books"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="tags" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>

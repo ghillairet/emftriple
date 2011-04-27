@@ -41,8 +41,7 @@ public interface Book extends EObject {
 	 * @return the value of the '<em>Title</em>' attribute.
 	 * @see #setTitle(String)
 	 * @see com.junit.model.ModelPackage#getBook_Title()
-	 * @model id="true"
-	 *        annotation="Id base='http://ex.org/'"
+	 * @model
 	 * @generated
 	 */
 	String getTitle();

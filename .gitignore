@@ -10,3 +10,10 @@
 /bundles/com.emftriple.jpa
 /tests/com.emftriple.junit/data/*
 
+
+/bundles/com.emftriple.restlet/.settings
+/bundles/com.emftriple.neo4j/.settings
+/bundles/com.emftriple.sesame/.settings
+/bundles/com.emftriple.neo4j
+/bundles/com.emftriple.restlet/bin
+/bundles/com.emftriple.sesame/bin
