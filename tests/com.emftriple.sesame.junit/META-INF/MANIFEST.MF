@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Emftriple Sesame Junit
+Bundle-SymbolicName: com.emftriple.sesame.junit;singleton:=true
+Bundle-Version: 0.7.2.qualifier
+Bundle-Vendor: eclipselabs
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
