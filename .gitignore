@@ -1,4 +1,7 @@
 
+bin/
+*/*/target/
+
 /bundles/com.emftriple/bin
 /bundles/com.emftriple/.settings
 /bundles/com.emftriple.jena/bin
@@ -17,3 +20,4 @@
 /bundles/com.emftriple.neo4j
 /bundles/com.emftriple.restlet/bin
 /bundles/com.emftriple.sesame/bin
+/tests/com.emftriple.sesame.junit/.settings
