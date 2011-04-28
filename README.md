@@ -8,7 +8,6 @@ googlecode project : http://code.google.com/a/eclipselabs.org/p/emftriple/
 Init emftriple:
     
     Resource.Factory.Registry.INSTANCE.getProtocolToFactoryMap().put("emftriple", new TDBResourceFactory());
-    ETriple.Registry.INSTANCE.register(ModelPackage.eINSTANCE);
 
 Storing objects:
     
