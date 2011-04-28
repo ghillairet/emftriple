@@ -1,10 +1,13 @@
-/**
- * Copyright (c) 2009 L3i ( http://l3i.univ-larochelle.fr ).
+/*******************************************************************************
+ * Copyright (c) 2011 Guillaume Hillairet.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
- */
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Guillaume Hillairet - initial API and implementation
+ *******************************************************************************/
 package com.emftriple.util;
 
 import static com.emftriple.util.Functions.transform;
@@ -25,6 +28,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
+import com.emftriple.transform.IMapping;
 import com.google.common.base.Function;
 
 /**
@@ -34,9 +38,9 @@ import com.google.common.base.Function;
  */
 public class EntityUtil {
 	
-	private static final Map<EClass, List<URI>> cache = new HashMap<EClass, List<URI>>();
+	private static final Map<EClass, List<String>> cache = new HashMap<EClass, List<String>>();
 
-	private static final Map<EStructuralFeature, URI> cacheFeature = new HashMap<EStructuralFeature, URI>();
+	private static final Map<EStructuralFeature, String> cacheFeature = new HashMap<EStructuralFeature, String>();
 	
 	private static final Map<EClass, EAttribute> cacheid = new HashMap<EClass, EAttribute>();
 	
@@ -49,7 +53,7 @@ public class EntityUtil {
 		return element.getEAnnotation("etriple." + name);
 	}
 	
-	public static URI getNamedGraph(EClass aClass) {
+	public static String getNamedGraph(EClass aClass) {
 		EAnnotation graphURI = getETripleAnnotation(aClass, "NamedGraph");
 		if (graphURI == null) 
 		{
@@ -68,7 +72,7 @@ public class EntityUtil {
 			graphURI = getETripleAnnotation(aClass.getEPackage(), "NamedGraph");
 		}
 		
-		return graphURI == null ? null : URI.createURI(graphURI.getDetails().get("uri"));
+		return graphURI == null ? null : graphURI.getDetails().get("uri");
 	}
 	
 	public static String getDataSet(EClass eClass) {
@@ -98,17 +102,21 @@ public class EntityUtil {
 		}
 	}
 
-	public static List<URI> getRdfTypes(EClass eClass) {
+	public static List<String> getRdfTypes(EClass eClass) {
 		if (cache.containsKey(eClass)) {
 			return cache.get(eClass);
 		}
 		
-		final List<URI> uris = new ArrayList<URI>();
+		if (!IMapping.ETriplePackageRegistry.INSTANCE.hasPackage(eClass.getEPackage())) {
+			IMapping.ETriplePackageRegistry.INSTANCE.register(eClass.getEPackage());
+		}
+		
+		final List<String> uris = new ArrayList<String>();
 		
 		for (EAnnotation annotation: eClass.getEAnnotations()) {
 			if (annotation.getSource().contains("Entity") || annotation.getSource().contains("OWLClass")) {
 				try {
-					uris.add( URI.createURI( annotation.getDetails().get("uri") ) );
+					uris.add( annotation.getDetails().get("uri") );
 				} catch (IllegalArgumentException e) {
 					e.printStackTrace();
 				}
@@ -118,7 +126,7 @@ public class EntityUtil {
 		if (uris.isEmpty()) 
 		{
 			try {
-				uris.add( URI.createURI(wellFormedURI(getPackageNamespace(eClass.getEPackage())) + eClass.getName()) );
+				uris.add( wellFormedURI(getPackageNamespace(eClass.getEPackage())) + eClass.getName() );
 			}  catch (IllegalArgumentException e) {
 				e.printStackTrace();
 			}
@@ -129,9 +137,13 @@ public class EntityUtil {
 		return uris;
 	}
 
-	public static URI getRdfType(EStructuralFeature feature) {
+	public static String getRdfType(EStructuralFeature feature) {
 		if (cacheFeature.containsKey(feature)) {
 			return cacheFeature.get(feature);
+		}
+		
+		if (!IMapping.ETriplePackageRegistry.INSTANCE.hasPackage(feature.getEContainingClass().getEPackage())) {
+			IMapping.ETriplePackageRegistry.INSTANCE.register(feature.getEContainingClass().getEPackage());
 		}
 		
 		EAnnotation ann = getETripleAnnotation(feature, "DataProperty");
@@ -161,9 +173,9 @@ public class EntityUtil {
 			annotationURI = wellFormedURI(getPackageNamespace(feature.getEContainingClass().getEPackage())) + feature.getName();
 		}
 		
-		cacheFeature.put(feature, URI.createURI(annotationURI));
+		cacheFeature.put(feature, annotationURI);
 		
-		return URI.createURI(annotationURI);
+		return annotationURI;
 	}
 	
 	public static URI URI(Object key) {

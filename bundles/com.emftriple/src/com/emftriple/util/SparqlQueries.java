@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2011 Guillaume Hillairet.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Guillaume Hillairet - initial API and implementation
+ *******************************************************************************/
 package com.emftriple.util;
 
 import static com.emftriple.util.EntityUtil.getRdfTypes;
@@ -30,8 +40,8 @@ public class SparqlQueries {
 
 	public static String ask(URI from, EClass eClass) {
 		final StringBuffer buffer = new StringBuffer("ASK { " + from.toString());
-		for (URI aURI: getRdfTypes(eClass)) {
-			buffer.append( " <" + RDF.type + "> <" + aURI.toString() + "> ");
+		for (String aURI: getRdfTypes(eClass)) {
+			buffer.append( " <" + RDF.type + "> <" + aURI + "> ");
 		}
 		buffer.append(" }");
 
@@ -67,7 +77,7 @@ public class SparqlQueries {
 
 	public static Integer countObjectsByType(IDataSource source, EClass from) {
 		String query = "SELECT ?n WHERE { ";
-		List<URI> uris = getRdfTypes(from);
+		List<String> uris = getRdfTypes(from);
 
 		query += "{ ?n <" + RDF.type + "> <" + uris.get(0) + "> } ";
 		for (int i=1;i<uris.size();i++) {
@@ -83,18 +93,13 @@ public class SparqlQueries {
 		return i;
 	}
 
-	public static String graphQuery(URI graph) {
-		return "CONSTRUCT { ?s ?p ?o } WHERE { GRAPH <" + graph.toString()+ "> { ?s ?p ?o} }";
+	public static String graphQuery(String graph) {
+		return "CONSTRUCT { ?s ?p ?o } WHERE { GRAPH <" +graph+ "> { ?s ?p ?o} }";
 	}
 
-	public static String typeOf(URI resource, URI uri) {
+	public static String typeOf(String resource, String uri) {
 		return "ASK WHERE { <" + 
-		resource.toString() + "> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <" + uri.toString() + "> }";
-	}
-
-	public static String typeOf(URI resource) {
-		return "SELECT ?type WHERE { <" + 
-		resource.toString() + "> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?type }";
+		resource + "> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <" + uri + "> }";
 	}
 
 	public static String typeOf(String resourceURI) {
@@ -102,15 +107,15 @@ public class SparqlQueries {
 		resourceURI + "> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?type }";
 	}
 
-	public static String constructSubject(URI key, Object object) {
+	public static String constructSubject(String key, Object object) {
 		return "CONSTRUCT { <" + key + "> ?p ?o } WHERE { <" + key + "> ?p ?o }";
 	}
 
-	public static String constructSubject(URI key, EClass eClass) {
+	public static String constructSubject(String key, EClass eClass) {
 		return constructSubject(key, eClass, eClass.getEAllStructuralFeatures()).get(0);
 	}
 
-	public static List<String> constructSubjectService(URI key, EClass eClass) {
+	public static List<String> constructSubjectService(String key, EClass eClass) {
 		final List<String> queries = new ArrayList<String>();
 		final List<EAttribute> attrs = eClass.getEAllAttributes();
 		final List<EReference> refs = eClass.getEAllReferences();
@@ -146,7 +151,7 @@ public class SparqlQueries {
 		return ret;
 	}
 
-	private static List<String> constructSubject(URI key, EClass eClass, List<? extends EStructuralFeature> feats) {
+	private static List<String> constructSubject(String key, EClass eClass, List<? extends EStructuralFeature> feats) {
 		final List<String> queries = new ArrayList<String>();
 		final StringBuffer constructPattern = new StringBuffer("CONSTRUCT { ");
 		final StringBuffer wherePattern = new StringBuffer("WHERE { <" + key + "> a ?o . ");
@@ -154,7 +159,7 @@ public class SparqlQueries {
 
 		for (EStructuralFeature aFeature: feats) {
 			if (EntityUtil.getId(eClass) != null && !EntityUtil.getId(eClass).equals(aFeature)) {
-				URI rdfType = EntityUtil.getRdfType(aFeature);
+				String rdfType = EntityUtil.getRdfType(aFeature);
 				constructPattern.append(" <" + key + "> <" + rdfType + "> ?" + aFeature.getName() + " . ");
 				wherePattern.append(" OPTIONAL { <" + key + "> <" + rdfType + "> ?" + aFeature.getName() + " } ");
 			}
@@ -178,7 +183,7 @@ public class SparqlQueries {
 	public static String selectObjectByClass(EClass eClass, String uri) {
 		String query = prefixes + "\n select " + getVarFrom(eClass.getEAllStructuralFeatures());
 		query+= "\n where { ";
-		for (final URI type: EntityUtil.getRdfTypes(eClass))
+		for (final String type: EntityUtil.getRdfTypes(eClass))
 			query+="<"+uri+"> rdf:type <"+type+"> . \n";
 		for (final EStructuralFeature feature: eClass.getEAllStructuralFeatures()) {
 			if (feature.getLowerBound() < 1) {

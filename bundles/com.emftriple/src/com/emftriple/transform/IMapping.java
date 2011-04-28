@@ -1,97 +1,90 @@
-/**
- * Copyright (c) 2009 L3i ( http://l3i.univ-larochelle.fr ).
+/*******************************************************************************
+ * Copyright (c) 2011 Guillaume Hillairet.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
- */
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Guillaume Hillairet - initial API and implementation
+ *******************************************************************************/
 package com.emftriple.transform;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EStructuralFeature;
 
-import com.emf4sw.rdf.NamedGraph;
+import com.emftriple.transform.impl.ETripleMappingImpl;
+import com.emftriple.transform.impl.ETriplePackageRegistryImpl;
 
 /**
+ * IMapping
  * 
- * @author <a href="mailto:g.hillairet at gmail.com">Guillaume Hillairet</a>
- * @since 0.5.5
  */
 public interface IMapping {
-
-	void addEPackage(EPackage ePackage);
+	
+	IMapping INSTANCE = new ETripleMappingImpl();
 	
 	/**
-	 * @return the EPackage currently mapped.
+	 * 
+	 * @param uri
+	 * @return
 	 */
-	List<EPackage> getEPackages();
+	EClass getEClassByRdfType(String uri);
+	
+	/**
+	 * 
+	 * @param uris
+	 * @return
+	 */
+	EClass getEClassByRdfType(List<String> uris);
+	
+	/**
+	 * Gets the e class.
+	 *
+	 * @param aClass the a class
+	 * @return the e class
+	 * @throws IllegalArgumentException the illegal argument exception
+	 */
+	EClass getEClass(Class<?> aClass);
+	
+	/**
+	 * 
+	 * 
+	 *
+	 */
+	interface ETriplePackageRegistry {
 		
-    /**
-     * @return the List of EClass being part of the mapping.
-     */
-    List<EClass> getEClasses();
-    
-	/**
-	 * 
-	 * @param aClass
-	 * @return
-	 */
-	boolean isMappedClass(Class<?> aClass);
+		ETriplePackageRegistry INSTANCE = new ETriplePackageRegistryImpl();
 	
-	/**
-	 * 
-	 * @param aClass
-	 * @return
-	 */
-	EClass getEClass(Class<?> aClass) throws IllegalArgumentException;
+		/**
+		 * 
+		 * @return
+		 */
+		Map<String,EClass> values();
+		
+		/**
+		 * 
+		 * @param ePackage
+		 */
+		void register(EPackage ePackage);
 
-	/**
-	 * 
-	 * @param string
-	 * @return
-	 */
-	EClass getEClassWithRdfType(String URI);
-	
-	/**
-	 * 
-	 * @param eClass
-	 * @return
-	 */
-	List<URI> getRdfTypes(EClass eClass);
-	
-	/**
-	 * 
-	 * @param eFeature
-	 * @return
-	 */
-	URI getRdfType(EStructuralFeature eFeature);
-	
-	/**
-	 * 
-	 * @param aClass
-	 * @return URI of the {@link NamedGraph} or null
-	 */
-	<T> URI getNamedGraph(Class<T> aClass) throws IllegalArgumentException;
+		/**
+		 * 
+		 * @return
+		 */
+		Collection<EPackage> getRegisteredPackages();
 
-	/**
-	 * Returns the EClass corresponding to a list of rdf types. The most relevant type in the list 
-	 * of types is selected. 
-	 * 
-	 * @param types
-	 * @return
-	 */
-	EClass findEClassByRdfType(List<String> types);
-
-	/**
-	 * 
-	 * @param types
-	 * @return
-	 */
-	EClass findEClassByRdfType(EList<com.emf4sw.rdf.Resource> types);
+		/**
+		 * 
+		 * @param ePackage
+		 * @return
+		 */
+		boolean hasPackage(EPackage ePackage);
+		
+	}
 	
 }

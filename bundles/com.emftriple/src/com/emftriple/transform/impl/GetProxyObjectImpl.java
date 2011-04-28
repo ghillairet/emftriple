@@ -1,10 +1,13 @@
-/**
- * Copyright (c) 2009 L3i ( http://l3i.univ-larochelle.fr ).
+/*******************************************************************************
+ * Copyright (c) 2011 Guillaume Hillairet.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
- */
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Guillaume Hillairet - initial API and implementation
+ *******************************************************************************/
 package com.emftriple.transform.impl;
 
 import org.eclipse.emf.common.util.URI;
@@ -13,10 +16,10 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
-import com.emftriple.ETriple;
 import com.emftriple.resource.ETripleResource;
 import com.emftriple.resource.URIBuilder;
 import com.emftriple.transform.IGetObject;
+import com.emftriple.transform.IMapping;
 
 /**
  * 
@@ -40,7 +43,7 @@ public class GetProxyObjectImpl extends AbstractGetObject implements IGetObject 
 
 		if (proxy == null)
 		{
-			proxy = (T) get(ETriple.Registry.INSTANCE.getMapping().getEClass(entityClass), key);
+			proxy = (T) get(IMapping.INSTANCE.getEClass(entityClass), key);
 		}
 		
 		return proxy;

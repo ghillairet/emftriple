@@ -1,17 +1,19 @@
-/**
- * Copyright (c) 2009 L3i ( http://l3i.univ-larochelle.fr ).
+/*******************************************************************************
+ * Copyright (c) 2011 Guillaume Hillairet.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
- */
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Guillaume Hillairet - initial API and implementation
+ *******************************************************************************/
 package com.emftriple.transform.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
@@ -26,9 +28,7 @@ import com.emf4sw.rdf.Resource;
 import com.emf4sw.rdf.Triple;
 import com.emf4sw.rdf.operations.DatatypeConverter;
 import com.emf4sw.rdf.vocabulary.RDF;
-import com.emftriple.ETriple;
 import com.emftriple.resource.ETripleResource;
-import com.emftriple.transform.IMapping;
 import com.emftriple.transform.IPutObject;
 import com.emftriple.util.EntityUtil;
 
@@ -41,12 +41,12 @@ public class PutObjectImpl implements IPutObject {
 
 	private static final RDFFactory factory = RDFFactory.eINSTANCE;
 
-	private final IMapping mapping;
+//	private final IMapping mapping;
 
 	private ETripleResource context;
 
 	public PutObjectImpl(ETripleResource context) {
-		this.mapping = ETriple.Registry.INSTANCE.getMapping();
+//		this.mapping = IMapping.INSTANCE;
 		this.context = context;
 	}
 
@@ -66,9 +66,9 @@ public class PutObjectImpl implements IPutObject {
 		final Property rdfType = factory.createProperty();
 		rdfType.setURI(RDF.type);
 
-		for (URI type: EntityUtil.getRdfTypes(object.eClass())) {
+		for (String type: EntityUtil.getRdfTypes(object.eClass())) {
 			Resource eType = factory.createResource();
-			eType.setURI(type.toString());
+			eType.setURI(type);
 			
 			Triple triple = factory.createTriple();
 			triple.setSubject(sbj);
@@ -244,7 +244,7 @@ public class PutObjectImpl implements IPutObject {
 
 	private Property getProperty(EStructuralFeature aFeature) {
 		final Property property = factory.createProperty();
-		property.setURI(mapping.getRdfType(aFeature).toString());		
+		property.setURI(EntityUtil.getRdfType(aFeature));		
 		
 		return property;
 	}

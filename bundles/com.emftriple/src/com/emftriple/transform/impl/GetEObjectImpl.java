@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2011 Guillaume Hillairet.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Guillaume Hillairet - initial API and implementation
+ *******************************************************************************/
 package com.emftriple.transform.impl;
 
 import static com.emftriple.transform.impl.GetUtil.getURI;
@@ -24,12 +34,12 @@ import com.emf4sw.rdf.Node;
 import com.emf4sw.rdf.Resource;
 import com.emf4sw.rdf.URIElement;
 import com.emf4sw.rdf.operations.DatatypeConverter;
-import com.emftriple.ETriple;
 import com.emftriple.datasources.INamedGraphDataSource;
 import com.emftriple.datasources.IResultSet;
 import com.emftriple.datasources.IResultSet.Solution;
 import com.emftriple.resource.ETripleResource;
 import com.emftriple.transform.IGetObject;
+import com.emftriple.transform.IMapping;
 import com.emftriple.util.EntityUtil;
 import com.google.inject.internal.Maps;
 
@@ -58,7 +68,7 @@ public class GetEObjectImpl extends AbstractGetObject implements IGetObject {
 		}
 		
 		final EClass aClass = getEClass(key);
-		final EClass requestedEClass = ETriple.Registry.INSTANCE.getMapping().getEClass(entityClass);
+		final EClass requestedEClass = IMapping.INSTANCE.getEClass(entityClass);
 
 		T object = null;
 		if (aClass.equals(requestedEClass) || aClass.getESuperTypes().contains(requestedEClass)) {
@@ -69,10 +79,20 @@ public class GetEObjectImpl extends AbstractGetObject implements IGetObject {
 	}
 
 	private EClass getEClass(URI key) {
-		return ETriple.Registry.INSTANCE.getMapping().findEClassByRdfType(
+		return IMapping.INSTANCE.getEClassByRdfType(
 				selectAllTypes(dataSource, key.toString(), resource.getGraph()));
 	}
 
+	private EClass getClass(Node node, EClass eType) {
+		checkNotNull(eType);
+
+		return 	(node instanceof URIElement) ?
+				IMapping.INSTANCE
+					.getEClassByRdfType( 
+							selectAllTypes(dataSource, ((URIElement) node).getURI(), resource.getGraph()))
+				: null;
+	}
+	
 	@Override
 	public EObject get(EClass eClass, URI key) {
 		if (hasProxyInCache(key)) {
@@ -241,15 +261,5 @@ public class GetEObjectImpl extends AbstractGetObject implements IGetObject {
 //		}
 //		return null;
 //	}
-
-	private EClass getClass(Node node, EClass eType) {
-		checkNotNull(eType);
-
-		return 	(node instanceof URIElement) ?
-				ETriple.Registry.INSTANCE.getMapping()
-					.findEClassByRdfType( 
-							selectAllTypes(dataSource, ((URIElement) node).getURI(), resource.getGraph()))
-				: null;
-	}
 
 }
