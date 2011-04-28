@@ -10,9 +10,6 @@
  *******************************************************************************/
 package com.emftriple.query;
 
-import static com.emftriple.query.Sparql.OptionalGraphPattern.optional;
-import static com.emftriple.query.Sparql.TripleGraphPattern.triple;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -108,21 +105,6 @@ public class Sparql implements ETripleQuery {
 		}
 	}
 	
-	public static void main(String[] args) {
-		System.out.println(
-				new Sparql()
-				.select("?s")
-				.select("?p")
-				.select("?o")
-				.where( 
-						triple("?s", "?p", "?o"),
-						optional(
-								triple("?s", "?p", "?o"),
-								triple("?o", "?p", "?s") 
-						) )
-				.toURI(URI.createURI("emftriple://data?graph=http://graph")));
-	}
-
 	@Override
 	public URI toURI(URI resourceURI) {
 		String query = get().replaceAll(" ", "%20").replaceAll("#", "%23");

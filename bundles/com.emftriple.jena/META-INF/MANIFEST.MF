@@ -12,23 +12,9 @@ Export-Package:
  com.emftriple.jena.tdb
 Bundle-ClassPath: .
 Bundle-Vendor: eclipselabs
-Import-Package: com.emf4sw.rdf,
+Require-Bundle: org.eclipse.emf.ecore,
  com.emf4sw.rdf.jena,
- com.emf4sw.rdf.resource,
- com.emf4sw.rdf.resource.impl,
- com.emftriple.datasources,
- com.emftriple.datasources.impl,
- com.emftriple.resource,
- com.google.inject;version="2.0.0",
- com.google.inject.internal;version="2.0.0",
- com.hp.hpl.jena.query,
- com.hp.hpl.jena.rdf.model,
- com.hp.hpl.jena.sdb,
- com.hp.hpl.jena.sdb.store,
- com.hp.hpl.jena.shared,
- com.hp.hpl.jena.sparql.resultset,
- com.hp.hpl.jena.tdb,
- com.hp.hpl.jena.update,
- org.eclipse.emf.common.util,
- org.eclipse.emf.ecore.resource,
- org.eclipse.emf.ecore.resource.impl
+ com.google.inject,
+ com.emf4sw.rdf,
+ com.emftriple,
+ org.openjena

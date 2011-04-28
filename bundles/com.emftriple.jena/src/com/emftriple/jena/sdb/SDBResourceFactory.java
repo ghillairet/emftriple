@@ -23,6 +23,7 @@ public class SDBResourceFactory extends ResourceFactoryImpl {
 		return new ETripleResource(uri, new JenaSDB("sdb", null));
 	}
 
+	@SuppressWarnings("unused")
 	private String getLocation(URI uri) {
 		if (!uri.scheme().equals("emftriple"))
 			throw new IllegalArgumentException("URI is not well formed.");

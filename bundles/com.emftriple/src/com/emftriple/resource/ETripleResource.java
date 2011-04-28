@@ -26,15 +26,8 @@ import org.eclipse.emf.ecore.resource.URIHandler;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.resource.impl.URIHandlerImpl;
 
-import com.emf4sw.rdf.RDFFactory;
-import com.emf4sw.rdf.RDFGraph;
 import com.emf4sw.rdf.Triple;
-import com.emf4sw.rdf.notify.ModelAdapterImpl;
-import com.emf4sw.rdf.resource.RDFResource;
-import com.emf4sw.rdf.resource.TTLResource;
-import com.emftriple.ETriple;
 import com.emftriple.datasources.IDataSource;
-import com.emftriple.datasources.IDataSourceFactoryModule;
 import com.emftriple.datasources.IMutableDataSource;
 import com.emftriple.datasources.IMutableNamedGraphDataSource;
 import com.emftriple.datasources.INamedGraphDataSource;
@@ -212,19 +205,4 @@ public class ETripleResource extends ResourceImpl implements Resource {
 		}
 	}
 
-	protected RDFGraph getGraph(String graphURI) {
-		final RDFGraph graph;
-		if (graphURI != null) {
-			graph = RDFFactory.eINSTANCE.createDocumentGraph();
-			graph.setURI(graphURI);
-		} else {
-			graph = RDFFactory.eINSTANCE.createDocumentGraph();
-		}
-
-		final RDFResource aResource = ETriple.inject(ETriple.get(IDataSourceFactoryModule.class)).getInstance(TTLResource.class);
-		aResource.getContents().add(graph);
-		graph.eAdapters().add(new ModelAdapterImpl());
-
-		return graph;
-	}
 }
