@@ -20,8 +20,8 @@ import org.eclipse.emf.ecore.resource.Resource;
  */
 public class URIBuilder {
 	
-	public static URI build(Resource resource, URI key) {
-		final String fragment = "uri=" + key.toString().replaceAll("#", "%23");
+	public static URI build(Resource resource, String key) {
+		final String fragment = "uri=" + key.replaceAll("#", "%23");
 		if (!fragment.startsWith("uri=http://")) {
 			throw new IllegalArgumentException();
 		}
@@ -29,4 +29,5 @@ public class URIBuilder {
 		
 		return uriFragment;
 	}
+	
 }

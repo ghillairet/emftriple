@@ -10,8 +10,6 @@
  *******************************************************************************/
 package com.emftriple.transform.impl;
 
-import static com.emftriple.transform.impl.GetUtil.getURI;
-import static com.emftriple.util.EntityUtil.URI;
 import static com.emftriple.util.SparqlQueries.selectAllTypes;
 import static com.emftriple.util.SparqlQueries.selectObjectByClass;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -37,10 +35,11 @@ import com.emf4sw.rdf.operations.DatatypeConverter;
 import com.emftriple.datasources.INamedGraphDataSource;
 import com.emftriple.datasources.IResultSet;
 import com.emftriple.datasources.IResultSet.Solution;
-import com.emftriple.resource.ETripleResource;
+import com.emftriple.resource.ETripleResourceImpl;
+import com.emftriple.resource.URIBuilder;
 import com.emftriple.transform.IGetObject;
-import com.emftriple.transform.IMapping;
-import com.emftriple.util.EntityUtil;
+import com.emftriple.transform.Metamodel;
+import com.emftriple.util.ETripleEcoreUtil;
 import com.google.inject.internal.Maps;
 
 /**
@@ -50,78 +49,27 @@ import com.google.inject.internal.Maps;
  */
 public class GetEObjectImpl extends AbstractGetObject implements IGetObject {
 
-	private final GetProxyObjectImpl proxyFactory;
-
-	public GetEObjectImpl(ETripleResource resource) {
+	public GetEObjectImpl(ETripleResourceImpl resource) {
 		super(resource);
-		this.proxyFactory = new GetProxyObjectImpl(resource);
-	}
-
-	@SuppressWarnings("unchecked")
-	public <T> T get(Class<T> entityClass, URI key) {
-		if (hasProxyInCache(key)) {
-			return (T) getProxy((EObject) cache(key), getEClass(key), key);
-		}
-		
-		if (inCache(key)) {
-			return (T) cache(key);
-		}
-		
-		final EClass aClass = getEClass(key);
-		final EClass requestedEClass = IMapping.INSTANCE.getEClass(entityClass);
-
-		T object = null;
-		if (aClass.equals(requestedEClass) || aClass.getESuperTypes().contains(requestedEClass)) {
-			object = (T) doGet( aClass, key );
-		}
-
-		return object;
-	}
-
-	private EClass getEClass(URI key) {
-		return IMapping.INSTANCE.getEClassByRdfType(
-				selectAllTypes(dataSource, key.toString(), resource.getGraph()));
-	}
-
-	private EClass getClass(Node node, EClass eType) {
-		checkNotNull(eType);
-
-		return 	(node instanceof URIElement) ?
-				IMapping.INSTANCE
-					.getEClassByRdfType( 
-							selectAllTypes(dataSource, ((URIElement) node).getURI(), resource.getGraph()))
-				: null;
-	}
-	
-	@Override
-	public EObject get(EClass eClass, URI key) {
-		if (hasProxyInCache(key)) {
-			return getProxy((EObject) cache(key), eClass, key);
-		}
-		
-		if (inCache(key)) {
-			return (EObject) cache(key);
-		}
-		
-		return doGet( eClass, key );
-	}
-	
-	protected Object cache(URI key) {
-		return cache.getObjectByKey(key.toString()).eIsProxy();
-	}
-	
-	protected boolean inCache(URI key) {
-		return cache.hasKey(key.toString());
-	}
-	
-	protected boolean hasProxyInCache(URI key) {
-		return cache.hasKey(key.toString()) && cache.getObjectByKey(key.toString()).eIsProxy();
 	}
 
 	@Override
-	public EObject getProxy(EObject obj, EClass eClass, URI key) {
-		final EAttribute attrId = EntityUtil.getId(eClass);
-		setIdValue(obj, key.toString(), attrId);
+	public EObject get(EClass eClass, String key) {
+		final EObject returnedObject = EcoreUtil.create(eClass);
+		final EAttribute attrId = ETripleEcoreUtil.getId(eClass);
+		setIdValue(returnedObject, key.toString(), attrId);
+		
+		resource.getContents().add(returnedObject);
+
+		fillObject(returnedObject, eClass, key);
+		
+		return returnedObject;
+	}
+	
+	@Override
+	public EObject resolveProxy(EObject obj, EClass eClass, String key) {
+		final EAttribute attrId = ETripleEcoreUtil.getId(eClass);
+		setIdValue(obj, key, attrId);
 		((InternalEObject)obj).eSetProxyURI(null);
 
 		fillObject(obj, eClass, key);
@@ -129,27 +77,13 @@ public class GetEObjectImpl extends AbstractGetObject implements IGetObject {
 		return obj;
 	}
 
-	private EObject doGet(EClass eClass, URI key) {
-		final EObject returnedObject = EcoreUtil.create(eClass);
-		final EAttribute attrId = EntityUtil.getId(eClass);
-		setIdValue(returnedObject, key.toString(), attrId);
-		
-		resource.getContents().add(returnedObject);
-
-		fillObject(returnedObject, eClass, key);
-
-		cache.cache(key.toString(), returnedObject);
-
-		return returnedObject;
-	}
-
-	private EObject fillObject(EObject object, EClass eClass, URI key) {
+	private EObject fillObject(EObject object, EClass eClass, String key) {
 		final IResultSet resultSet; 
 		if (resource.getGraph() != null) {
 			resultSet = ((INamedGraphDataSource)dataSource).selectQuery(
-					selectObjectByClass(eClass, key.toString()), resource.getGraph());
+					selectObjectByClass(eClass, key), resource.getGraph());
 		} else {
-			resultSet = dataSource.selectQuery(selectObjectByClass(eClass, key.toString()));
+			resultSet = dataSource.selectQuery(selectObjectByClass(eClass, key));
 		}
 		
 		final Map<EStructuralFeature, String> previous = Maps.newHashMap();
@@ -196,16 +130,16 @@ public class GetEObjectImpl extends AbstractGetObject implements IGetObject {
 			final EList<Object> list = (EList<Object>) returnedObject.eGet(feature);
 
 			if (feature.isContainment()) {
-				list.add( get(getClass(node, (EClass) feature.getEType()), URI(node.getURI())) );
+				list.add( get(getClass(node, (EClass) feature.getEType()), node.getURI()) );
 			} else {
-				EObject prox = doProxy(node, getClass(node, (EClass) feature.getEType()));
+				EObject prox = createProxy(node, getClass(node, (EClass) feature.getEType()));
 				list.add( prox );
 			}
 		} else {
 			if (feature.isContainment()) {
-				returnedObject.eSet(feature, get(getClass(node, (EClass) feature.getEType()), URI(node.getURI())));
+				returnedObject.eSet(feature, get(getClass(node, (EClass) feature.getEType()), node.getURI()));
 			} else {
-				returnedObject.eSet(feature, doProxy(node, getClass(node, (EClass) feature.getEType())));
+				returnedObject.eSet(feature, createProxy(node, getClass(node, (EClass) feature.getEType())));
 			}
 		}
 	}
@@ -228,14 +162,31 @@ public class GetEObjectImpl extends AbstractGetObject implements IGetObject {
 		}
 	}
 
-	private EObject doProxy(Node node, EClass eType) {
-		final URI nodeURI = getURI(node);
-
-		if (cache.hasKey(nodeURI.toString())) {
-			return cache.getObjectByKey(nodeURI.toString());
+	private EObject createProxy(Resource node, EClass eType) {
+		if (resource.getPrimaryCache().hasKey(node.getURI())) {
+			return resource.getPrimaryCache().getObjectByKey(node.getURI());
 		} else {
-			return proxyFactory.get(eType, nodeURI);
+			EObject proxy = EcoreUtil.create(eType);
+			URI uri = URIBuilder.build(resource, node.getURI());
+			if (!uri.fragment().startsWith("uri=")) {
+				throw new IllegalArgumentException();
+			}
+			((InternalEObject)proxy).eSetProxyURI(uri);
+			resource.getContents().add(proxy);
+			resource.getPrimaryCache().cache(node.getURI(), proxy);
+			
+			return proxy;
 		}
+	}
+
+	private EClass getClass(Node node, EClass eType) {
+		checkNotNull(eType);
+	
+		return 	(node instanceof URIElement) ?
+				Metamodel.INSTANCE
+					.getEClassByRdfType( 
+							selectAllTypes(dataSource, ((URIElement) node).getURI(), resource.getGraph()))
+				: null;
 	}
 
 //	private boolean isLangSpecific(EAttribute attribute) {

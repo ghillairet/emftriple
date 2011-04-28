@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: EMF Triple Sesame Adapter
+Bundle-Name: emftriple sesame adapter
 Bundle-SymbolicName: com.emftriple.sesame;singleton:=true
 Bundle-Version: 0.7.2.qualifier
 Bundle-ClassPath: .

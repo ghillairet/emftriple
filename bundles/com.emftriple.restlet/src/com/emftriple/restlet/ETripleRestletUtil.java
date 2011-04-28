@@ -19,7 +19,7 @@ import org.restlet.data.MediaType;
 import org.restlet.ext.rdf.RdfRepresentation;
 
 import com.emf4sw.rdf.Triple;
-import com.emftriple.resource.ETripleResource;
+import com.emftriple.resource.ETripleResourceImpl;
 import com.emftriple.transform.IPutObject;
 import com.emftriple.transform.impl.PutObjectImpl;
 
@@ -31,7 +31,7 @@ import com.emftriple.transform.impl.PutObjectImpl;
 public class ETripleRestletUtil {
 	
 	public static RdfRepresentation getRepresentation(Resource resource, MediaType mediaType) {
-		final IPutObject put = new PutObjectImpl((ETripleResource) resource);
+		final IPutObject put = new PutObjectImpl((ETripleResourceImpl) resource);
 		
 		final Collection<Triple> triples = new ArrayList<Triple>();
 		for (EObject obj: resource.getContents())
@@ -41,7 +41,7 @@ public class ETripleRestletUtil {
 	}
 	
 	public static RdfRepresentation getRepresentation(Resource resource, Iterable<? extends EObject> objects, MediaType mediaType) {
-		final IPutObject put = new PutObjectImpl((ETripleResource) resource);
+		final IPutObject put = new PutObjectImpl((ETripleResourceImpl) resource);
 		
 		final Collection<Triple> triples = new ArrayList<Triple>();
 		for (EObject o: objects) {
@@ -52,7 +52,7 @@ public class ETripleRestletUtil {
 	}
 	
 	public static RdfRepresentation getRepresentation(Resource resource, EObject object, MediaType mediaType) {
-		final IPutObject put = new PutObjectImpl((ETripleResource) resource);
+		final IPutObject put = new PutObjectImpl((ETripleResourceImpl) resource);
 		
 		final Collection<Triple> triples = new ArrayList<Triple>();
 		triples.addAll(put.put(object));

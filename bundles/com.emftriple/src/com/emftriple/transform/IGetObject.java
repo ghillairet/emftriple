@@ -10,7 +10,6 @@
  *******************************************************************************/
 package com.emftriple.transform;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 
@@ -22,21 +21,11 @@ public interface IGetObject {
 	/**
 	 * Gets the.
 	 *
-	 * @param <T> the generic type
-	 * @param entityClass the entity class
-	 * @param key the key
-	 * @return the t
-	 */
-	<T> T get(Class<T> entityClass, URI key);
-	
-	/**
-	 * Gets the.
-	 *
 	 * @param eClass the e class
 	 * @param key the key
 	 * @return the e object
 	 */
-	EObject get(EClass eClass, URI key);
+	EObject get(EClass eClass, String key);
 	
 	/**
 	 * Gets the proxy.
@@ -46,6 +35,6 @@ public interface IGetObject {
 	 * @param key the key
 	 * @return the proxy
 	 */
-	EObject getProxy(EObject proxy, EClass eClass, URI key);
+	EObject resolveProxy(EObject proxy, EClass eClass, String key);
 	
 }

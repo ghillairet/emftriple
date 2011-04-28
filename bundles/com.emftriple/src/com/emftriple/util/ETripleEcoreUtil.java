@@ -10,19 +10,24 @@
  *******************************************************************************/
 package com.emftriple.util;
 
-import java.util.ArrayList;
+import static com.emftriple.util.Functions.transform;
+
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EAnnotation;
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EStructuralFeature;
+
+import com.google.common.base.Function;
 
 /**
  * {@link ETripleEcoreUtil}
@@ -33,6 +38,8 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
  * @since 0.5.5
  */
 public class ETripleEcoreUtil {
+
+	private static final Map<EClass, EAttribute> cacheid = new HashMap<EClass, EAttribute>();
 
 	/**
 	 * Get all sub hierarchy of a given {@link EClass} from a given set. 
@@ -50,74 +57,102 @@ public class ETripleEcoreUtil {
 		}
 		return allSubClasses;
 	}
-	
-	public static Set<Resource> createSetByType(Collection<?> objects, EClass type, Resource.Factory factory) {
-		final Set<Resource> resources = new HashSet<Resource>();
 
-		for (Object eObject : EcoreUtil.getObjectsByType(objects, type)) {	
-			Resource aResource = factory.createResource(URI.createURI("dummy:/query.sparql"));
-			EObject copyObject = EcoreUtil.copy((EObject) eObject);
-			aResource.getContents().add( copyObject );
-			
-			resources.add(aResource);
-		}
-		return resources;
-	}
-
-	public static Collection<EObject> filterRootObjects(Collection<EObject> collection) {
-		final Collection<EObject> roots = new ArrayList<EObject>();
-		for (EObject obj: collection) {
-			if (obj.eContainer() == null) {
-				roots.add(obj);
-			}
-		}
-		return roots;
-	}
-
-	public static <T> List<T> newListOf(EList<T> first, EList<T> second) {
-		final List<T> all = new ArrayList<T>();
-		all.addAll(first);
-		all.addAll(second);
-		return all;
-	}
-
-	@SuppressWarnings("unchecked")
-	public static  <T> EList<T> filter(EList<? extends EObject> eObjects, Class<T> aClass) {
-		final EList<T> list = new BasicEList<T>();
-		for (EObject eObject: eObjects) 
+	public static EAnnotation getETripleAnnotation(EModelElement element, String name) {
+		EAnnotation ann = element.getEAnnotation(name);
+		if (ann != null)
 		{
-			if (aClass.isInstance(eObject)) 
-			{
-				list.add((T) eObject);
-			}
+			return ann;
 		}
-		return list;
+		return element.getEAnnotation("etriple." + name);
 	}
 
-//	public static EList<EObject> collect(String method, Collection<Object> values) {
-//		EList<EObject> ret = new BasicEList<EObject>();
-//		for (Object obj: values)
-//		{
-//			try {
-//				Method m = obj.getClass().getMethod(method, new Class<?>[]{});
-//				Object val = m.invoke(obj, new Object[]{});
-//				if (val instanceof EObject)
-//				{
-//					ret.add((EObject) val);
-//				}
-//			} catch (SecurityException e) {
-//				e.printStackTrace();
-//			} catch (NoSuchMethodException e) {
-//				e.printStackTrace();
-//			} catch (IllegalArgumentException e) {
-//				e.printStackTrace();
-//			} catch (IllegalAccessException e) {
-//				e.printStackTrace();
-//			} catch (InvocationTargetException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		return ret;
-//	}
+	public static EAttribute getId(EClass eClass) {
+		if (cacheid.containsKey(eClass)) {
+			return cacheid.get(eClass);
+		}
+
+		EAttribute theId = eClass.getEIDAttribute();
+		if (theId != null) {
+			cacheid.put(eClass, theId);
+			return theId;
+		}
+
+		theId = getId(eClass, eClass.getEAttributes());
+		if (theId == null) {
+			theId = getId(eClass, eClass.getEAllAttributes());
+		}
+
+		return theId;
+	}
+
+	private static EAttribute getId(EClass eClass, EList<EAttribute> attributes) {
+		for (EAttribute eAttribute: attributes) {
+			for (EAnnotation ann: eAttribute.getEAnnotations()) {
+				if (ann.getSource().contains("Id")) { // || ann.getSource().equals("GeneratedId") || ann.getSource().equals("CompositeId")) {
+					cacheid.put(eClass, eAttribute);
+					return eAttribute;
+				}
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Return the namespace of an EObject corresponding to its EPackage nsURI value.
+	 */
+	public static String namespace(EObject object) {
+		String nsURI = null;
+		if (object instanceof EPackage) {
+			nsURI = ((EPackage) object).getNsURI();
+		}
+		if (object instanceof EClassifier) {
+			nsURI = ((EClassifier) object).getEPackage().getNsURI();
+		}
+		else if (object instanceof EStructuralFeature) {
+			nsURI = ((EStructuralFeature) object).getEContainingClass().getEPackage().getNsURI();
+		}
+		else {
+			nsURI = object.eClass().getEPackage().getNsURI();
+		}
+		return nsURI.endsWith("/") || nsURI.endsWith("#") ? nsURI : nsURI + "/";
+	}
+
+
+	public static String getPackageNamespace(EPackage ePackage) {
+		EAnnotation ann = getETripleAnnotation(ePackage, "Ontology");
+		String namespace = null;
+		if (ann != null)
+		{
+			namespace = ann.getDetails().get("uri");
+		}
+		if (namespace == null) 
+		{
+			namespace = ePackage.getNsURI();
+		}
+		return namespace;
+	}
+
+	public static String validNamespace(String namespace) {
+		return transform(namespace, new URIValidator());
+	}
+
+	public static String wellFormedURI(String namespace) {
+		return 
+		!((namespace.endsWith("#") || namespace.endsWith("/"))) ? 
+				namespace + "#" : 
+					namespace;
+	}
+
+	public static class URIValidator implements Function<String, String> {
+		private static final String HTTP = "http://";
+
+		@Override
+		public String apply(String from) {
+			return ((from.indexOf(":") > -1) ? 
+					(from.charAt(from.indexOf(":") + 1 ) == '/') ? from : 
+						from.replaceFirst(":", "://") : HTTP + from).replaceAll("\\s", "_");
+		}	
+	}
 
 }

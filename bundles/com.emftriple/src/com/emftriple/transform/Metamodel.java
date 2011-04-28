@@ -16,17 +16,31 @@ import java.util.Map;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EStructuralFeature;
 
-import com.emftriple.transform.impl.ETripleMappingImpl;
-import com.emftriple.transform.impl.ETriplePackageRegistryImpl;
+import com.emftriple.transform.impl.MetamodelImpl;
+import com.emftriple.transform.impl.MetamodelRegistryImpl;
 
 /**
- * IMapping
- * 
+ * {@link Metamodel}
  */
-public interface IMapping {
+public interface Metamodel {
 	
-	IMapping INSTANCE = new ETripleMappingImpl();
+	Metamodel INSTANCE = new MetamodelImpl();
+	
+	/**
+	 * 
+	 * @param eClass
+	 * @return
+	 */
+	List<String> getRdfTypes(EClass eClass);
+	
+	/**
+	 * 
+	 * @param feature
+	 * @return
+	 */
+	String getRdfType(EStructuralFeature feature);
 	
 	/**
 	 * 
@@ -52,39 +66,37 @@ public interface IMapping {
 	EClass getEClass(Class<?> aClass);
 	
 	/**
-	 * 
-	 * 
+	 *	{@link Registry} 
 	 *
 	 */
-	interface ETriplePackageRegistry {
+	interface Registry {
 		
-		ETriplePackageRegistry INSTANCE = new ETriplePackageRegistryImpl();
+		Registry INSTANCE = new MetamodelRegistryImpl();
 	
 		/**
-		 * 
-		 * @return
+		 * Returns classes currently registered as entity classes.
 		 */
-		Map<String,EClass> values();
+		Map<String, EClass> mapOfEntities();
 		
 		/**
+		 * Register a {@link EPackage} in the metamodel registry.
 		 * 
 		 * @param ePackage
 		 */
 		void register(EPackage ePackage);
 
 		/**
-		 * 
-		 * @return
+		 * Returns the collection of registered {@link EPackage}.
 		 */
 		Collection<EPackage> getRegisteredPackages();
 
 		/**
-		 * 
+		 * Tests if the {@link EPackage} is registered.
 		 * @param ePackage
-		 * @return
+		 * @return true if {@link EPackage} is registered.
 		 */
 		boolean hasPackage(EPackage ePackage);
 		
 	}
-	
+
 }

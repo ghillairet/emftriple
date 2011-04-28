@@ -17,10 +17,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import com.emftriple.datasources.IDataSource;
-import com.emftriple.resource.ETripleCache;
-import com.emftriple.resource.ETripleResource;
+import com.emftriple.resource.ETripleResourceImpl;
 import com.emftriple.transform.IGetObject;
-import com.emftriple.util.EntityUtil;
+import com.emftriple.util.ETripleEcoreUtil;
 
 /**
  * 
@@ -29,15 +28,15 @@ import com.emftriple.util.EntityUtil;
  */
 public abstract class AbstractGetObject implements IGetObject {
 
-	protected final ETripleResource resource;
+	protected final ETripleResourceImpl resource;
 
-	protected final ETripleCache cache;
+//	protected final ETripleCache cache;
 
 	protected final IDataSource dataSource;
 	
-	protected AbstractGetObject(ETripleResource resource) {
+	protected AbstractGetObject(ETripleResourceImpl resource) {
 		this.resource = resource;
-		this.cache = this.resource.getPrimaryCache();
+//		this.cache = this.resource.getPrimaryCache();
 		this.dataSource = this.resource.getDataSource();
 	}
 
@@ -45,14 +44,11 @@ public abstract class AbstractGetObject implements IGetObject {
 		if (id == null)
 			return;
 
-		EAnnotation ann = EntityUtil.getETripleAnnotation(id, "Id");
+		EAnnotation ann = ETripleEcoreUtil.getETripleAnnotation(id, "Id");
 
 		if (ann == null) {
-			ann = EntityUtil.getETripleAnnotation(id, "GeneratedValue");
-			if (ann == null) {
-				returnedObject.eSet(id, key);
-				return;
-			}
+			returnedObject.eSet(id, key);
+			return;
 		}
 
 		if (ann.getDetails().containsKey("base")) {

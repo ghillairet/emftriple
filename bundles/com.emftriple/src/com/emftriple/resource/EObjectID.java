@@ -8,8 +8,9 @@
  * Contributors:
  *    Guillaume Hillairet - initial API and implementation
  *******************************************************************************/
-package com.emftriple.transform.impl;
+package com.emftriple.resource;
 
+import static com.emftriple.util.ETripleEcoreUtil.getETripleAnnotation;
 import static com.emftriple.util.Functions.transform;
 
 import java.util.UUID;
@@ -21,7 +22,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
-import com.emftriple.util.EntityUtil;
+import com.emftriple.util.ETripleEcoreUtil;
 import com.google.common.base.Function;
 
 final class EObjectID {
@@ -34,7 +35,7 @@ final class EObjectID {
 	 * Return the value of object id.
 	 */
 	public static String getId(EObject object) {
-		final EAttribute attrId = EntityUtil.getId(object.eClass());
+		final EAttribute attrId = ETripleEcoreUtil.getId(object.eClass());
 		if (isURI(attrId)) {
 			return valueOf(object, attrId);
 		} else {
@@ -55,13 +56,13 @@ final class EObjectID {
 		}
 
 		String value = null;
-		final EAnnotation eAnnotation = EntityUtil.getETripleAnnotation(id, ID);
+		final EAnnotation eAnnotation = getETripleAnnotation(id, ID);
 		final Boolean annotatedId = eAnnotation != null;
 		final Boolean hasBase = annotatedId ? eAnnotation.getDetails().containsKey(BASE) : false;
 		final Boolean conExpr = hasBase ? containsExpr(eAnnotation) : false;
 
 		if (!annotatedId) {
-			value = EntityUtil.namespace(object) + valueOf(object, id);
+			value = ETripleEcoreUtil.namespace(object) + valueOf(object, id);
 		} else if (hasBase) {
 			final String base;
 			if (conExpr) {
@@ -72,7 +73,7 @@ final class EObjectID {
 			}
 			Object val = valueOf(object, id);
 			value = val == null ? null : 
-				transform(base + val.toString(), new EntityUtil.URIValidator());
+				transform(base + val.toString(), new ETripleEcoreUtil.URIValidator());
 		}
 
 		return value;

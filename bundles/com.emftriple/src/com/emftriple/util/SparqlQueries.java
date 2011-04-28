@@ -10,8 +10,6 @@
  *******************************************************************************/
 package com.emftriple.util;
 
-import static com.emftriple.util.EntityUtil.getRdfTypes;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +26,7 @@ import com.emftriple.datasources.IDataSource;
 import com.emftriple.datasources.INamedGraphDataSource;
 import com.emftriple.datasources.IResultSet;
 import com.emftriple.datasources.IResultSet.Solution;
+import com.emftriple.transform.Metamodel;
 import com.google.common.collect.Lists;
 
 /**
@@ -38,9 +37,11 @@ import com.google.common.collect.Lists;
  */
 public class SparqlQueries {
 
+	private static final Metamodel metamodel = Metamodel.INSTANCE;
+	
 	public static String ask(URI from, EClass eClass) {
 		final StringBuffer buffer = new StringBuffer("ASK { " + from.toString());
-		for (String aURI: getRdfTypes(eClass)) {
+		for (String aURI: metamodel.getRdfTypes(eClass)) {
 			buffer.append( " <" + RDF.type + "> <" + aURI + "> ");
 		}
 		buffer.append(" }");
@@ -77,7 +78,7 @@ public class SparqlQueries {
 
 	public static Integer countObjectsByType(IDataSource source, EClass from) {
 		String query = "SELECT ?n WHERE { ";
-		List<String> uris = getRdfTypes(from);
+		List<String> uris = metamodel.getRdfTypes(from);
 
 		query += "{ ?n <" + RDF.type + "> <" + uris.get(0) + "> } ";
 		for (int i=1;i<uris.size();i++) {
@@ -158,8 +159,8 @@ public class SparqlQueries {
 		constructPattern.append(" <" + key + "> a ?o . ");
 
 		for (EStructuralFeature aFeature: feats) {
-			if (EntityUtil.getId(eClass) != null && !EntityUtil.getId(eClass).equals(aFeature)) {
-				String rdfType = EntityUtil.getRdfType(aFeature);
+			if (ETripleEcoreUtil.getId(eClass) != null && !ETripleEcoreUtil.getId(eClass).equals(aFeature)) {
+				String rdfType = metamodel.getRdfType(aFeature);
 				constructPattern.append(" <" + key + "> <" + rdfType + "> ?" + aFeature.getName() + " . ");
 				wherePattern.append(" OPTIONAL { <" + key + "> <" + rdfType + "> ?" + aFeature.getName() + " } ");
 			}
@@ -183,13 +184,13 @@ public class SparqlQueries {
 	public static String selectObjectByClass(EClass eClass, String uri) {
 		String query = prefixes + "\n select " + getVarFrom(eClass.getEAllStructuralFeatures());
 		query+= "\n where { ";
-		for (final String type: EntityUtil.getRdfTypes(eClass))
+		for (final String type: metamodel.getRdfTypes(eClass))
 			query+="<"+uri+"> rdf:type <"+type+"> . \n";
 		for (final EStructuralFeature feature: eClass.getEAllStructuralFeatures()) {
 			if (feature.getLowerBound() < 1) {
-				query+=" optional { \n <"+uri+"> <"+EntityUtil.getRdfType(feature)+"> ?"+feature.getName()+" \n } \n";
+				query+=" optional { \n <"+uri+"> <"+metamodel.getRdfType(feature)+"> ?"+feature.getName()+" \n } \n";
 			} else {
-				query+="<"+uri+"> <"+EntityUtil.getRdfType(feature)+"> ?"+feature.getName()+" . \n ";
+				query+="<"+uri+"> <"+metamodel.getRdfType(feature)+"> ?"+feature.getName()+" . \n ";
 			}
 		}
 		query+=" }";

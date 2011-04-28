@@ -28,9 +28,9 @@ import com.emf4sw.rdf.Resource;
 import com.emf4sw.rdf.Triple;
 import com.emf4sw.rdf.operations.DatatypeConverter;
 import com.emf4sw.rdf.vocabulary.RDF;
-import com.emftriple.resource.ETripleResource;
+import com.emftriple.resource.ETripleResourceImpl;
 import com.emftriple.transform.IPutObject;
-import com.emftriple.util.EntityUtil;
+import com.emftriple.transform.Metamodel;
 
 /**
  * 
@@ -41,12 +41,9 @@ public class PutObjectImpl implements IPutObject {
 
 	private static final RDFFactory factory = RDFFactory.eINSTANCE;
 
-//	private final IMapping mapping;
+	private ETripleResourceImpl context;
 
-	private ETripleResource context;
-
-	public PutObjectImpl(ETripleResource context) {
-//		this.mapping = IMapping.INSTANCE;
+	public PutObjectImpl(ETripleResourceImpl context) {
 		this.context = context;
 	}
 
@@ -55,18 +52,12 @@ public class PutObjectImpl implements IPutObject {
 		final List<Triple> triples = new ArrayList<Triple>();
 		final Resource sbj = factory.createResource();
 		
-		if (context.getPrimaryCache().hasObject(object)) {
-			sbj.setURI(context.getPrimaryCache().getObjectId(object));	
-		} else {
-			String id = EObjectID.getId(object);
-			sbj.setURI(id);
-			context.getPrimaryCache().cache(id, object);
-		}
+		sbj.setURI(context.getID(object).toString());
 		
 		final Property rdfType = factory.createProperty();
 		rdfType.setURI(RDF.type);
 
-		for (String type: EntityUtil.getRdfTypes(object.eClass())) {
+		for (String type: Metamodel.INSTANCE.getRdfTypes(object.eClass())) {
 			Resource eType = factory.createResource();
 			eType.setURI(type);
 			
@@ -108,40 +99,9 @@ public class PutObjectImpl implements IPutObject {
 		return triples;
 	}
 
-//	@SuppressWarnings("unused")
-//	private void createListTriple(EObject aObject, EStructuralFeature aFeature, Object value) {
-//		if (Collection.class.isInstance(value)) {
-//			final Collection<?> all = (Collection<?>) value;
-//			if (all.isEmpty())
-//				return;
-//
-//			final Resource subject = objectCache.get(objectIdCache.get(aObject));
-//			final Property property = getProperty((EReference)aFeature, graph);
-//
-//			final RDFSeq aList = RDFFactory.eINSTANCE.createRDFSeq();
-//			graph.getBlankNodes().add(aList);
-//
-//			for (final Object obj: all) 
-//			{
-//				Resource object = getResource((EObject) obj, graph);
-//				aList.getElements().add(object);
-//
-//				if (((EReference)aFeature).isContainment()) {
-//					containedObjects.add((EObject) obj);
-//				}
-//			}
-//		}
-//	}
-
 	private Triple createTriple(Resource sbj, Property property, EReference aFeature, Object value) {
 		final Resource object = factory.createResource();
-		if (context.getPrimaryCache().hasObject((EObject) value)) {
-			object.setURI(context.getPrimaryCache().getObjectId((EObject) value));
-		} else {
-			String id = EObjectID.getId((EObject) value);
-			context.getPrimaryCache().cache(id, (EObject) value);
-			object.setURI(id);
-		}
+		object.setURI(context.getID((EObject) value).toString());
 		
 		final Triple triple = factory.createTriple();
 		triple.setSubject(sbj);
@@ -201,84 +161,11 @@ public class PutObjectImpl implements IPutObject {
 		return triple;
 	}
 
-//	private void doAddNamespaces(RDFGraph aGraph, EClass eClass) {
-//		final String namespace = doGetEPackageNamespace(eClass);
-//		final String prefix = doGetEPackagePrefix(eClass);
-//
-//		final Namespace aNamespace = factory.createNamespace();
-//		aNamespace.setPrefix(prefix);
-//		aNamespace.setURI(namespace);
-//		aNamespace.setGraph((DocumentGraph) aGraph);
-//	}
-
-//	private void createTypeTriple(EObject aObject, RDFGraph aGraph) {
-//		checkIsMappedObject(aObject, mapping);
-//
-//		for (URI aURI: mapping.getRdfTypes(aObject.eClass())) {
-//			final Resource subject = getResource(aObject, aGraph);
-//			final Property property = aGraph.getProperty(RDF.type);
-//			final Resource object = aGraph.getResource(aURI.toString());
-//
-//			aGraph.addTriple(subject, property, object);
-//		}
-//	}
-
-//	private Resource getResource(EObject aObject, RDFGraph aGraph) {
-//		String id = null;
-//
-//		synchronized (this) {
-//			if (objectIdCache.containsKey(aObject)) {
-//				id = objectIdCache.get(aObject);
-//			} else {
-//				id = EObjectID.getId(aObject).toString();
-//				objectIdCache.put(aObject, id);
-//			}
-//
-//			if (id == null) {
-//				throw new IllegalArgumentException();
-//			}	
-//		}
-//
-//		return aGraph.getResource(id.toString());
-//	}
-
 	private Property getProperty(EStructuralFeature aFeature) {
 		final Property property = factory.createProperty();
-		property.setURI(EntityUtil.getRdfType(aFeature));		
+		property.setURI(Metamodel.INSTANCE.getRdfType(aFeature));		
 		
 		return property;
 	}
 
-//	private Property getProperty(EReference aFeature, RDFGraph aGraph) {
-//		return aGraph.getProperty(mapping.getRdfType(aFeature).toString());
-//	}
-//
-//	private String doGetEPackageNamespace(EClass aClass) {
-//		String namespace = EcoreUtil.getAnnotation(aClass.getEPackage(), "Ontology", "uri");
-//		if (namespace == null) {
-//			namespace = aClass.getEPackage().getNsURI();
-//		}
-//		return namespace;
-//	}
-//
-//	private String doGetEPackagePrefix(EClass aClass) {
-//		String prefix = EcoreUtil.getAnnotation(aClass.getEPackage(), "Ontology", "prefix");
-//		if (prefix == null) {
-//			prefix = aClass.getEPackage().getNsPrefix();
-//		}
-//		return prefix;
-//	}
-//}
-
-//private static void checkIsMappedObject(EObject aObject, IMapping mapping) {
-//	checkNotNull(mapping);
-//
-//	if (mapping == null) {
-//		throw new IllegalStateException("Cannot execute runtime transformation with no mapping set.");
-//	}
-//
-//	if (!mapping.getEPackages().contains( aObject.eClass().getEPackage()) ) {
-//		throw new IllegalArgumentException("EObject is not mapped by current mapping.");
-//	}
-//}
 }

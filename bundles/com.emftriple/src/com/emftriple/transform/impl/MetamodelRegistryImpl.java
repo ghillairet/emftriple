@@ -18,16 +18,16 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
 
-import com.emftriple.transform.IMapping.ETriplePackageRegistry;
-import com.emftriple.util.EntityUtil;
+import com.emftriple.transform.Metamodel;
+import com.emftriple.transform.Metamodel.Registry;
 
-public class ETriplePackageRegistryImpl implements ETriplePackageRegistry {
+public class MetamodelRegistryImpl implements Registry {
 
 	private static final Map<String,EClass> mapOfRdfTypes = new HashMap<String,EClass>();
 	
 	private static final Map<String, EPackage> registeredPackages = new HashMap<String, EPackage>();
 	
-	public ETriplePackageRegistryImpl() {
+	public MetamodelRegistryImpl() {
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class ETriplePackageRegistryImpl implements ETriplePackageRegistry {
 		final Map<String, EClass> mapOfRdfTypes = new HashMap<String, EClass>();
 		for (EClassifier eClass: ePackage.getEClassifiers()) {
 			if (eClass instanceof EClass) {
-				for (String s: EntityUtil.getRdfTypes((EClass) eClass)) {
+				for (String s: Metamodel.INSTANCE.getRdfTypes((EClass) eClass)) {
 					mapOfRdfTypes.put(s, (EClass) eClass);
 				}
 			}
@@ -68,7 +68,7 @@ public class ETriplePackageRegistryImpl implements ETriplePackageRegistry {
 	}
 
 	@Override
-	public Map<String, EClass> values() {
+	public Map<String, EClass> mapOfEntities() {
 		return mapOfRdfTypes;
 	}
 

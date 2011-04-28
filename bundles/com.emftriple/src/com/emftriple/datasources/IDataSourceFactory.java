@@ -23,6 +23,8 @@ import java.util.Map;
  * @since 0.5.5
  */
 public interface IDataSourceFactory {
+	
+	String OPTION_URL = "OPTION_URL";
 
 	/**
 	 * Returns True if the {@link IDataSourceFactory} can create a {@link IDataSource} with the given options.
