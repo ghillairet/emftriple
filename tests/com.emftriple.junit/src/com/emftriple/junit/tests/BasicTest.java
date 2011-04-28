@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2011 Guillaume Hillairet.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Guillaume Hillairet - initial API and implementation
+ *******************************************************************************/
 package com.emftriple.junit.tests;
 
 import static org.junit.Assert.assertEquals;
@@ -9,6 +19,7 @@ import java.io.IOException;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -16,9 +27,8 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.emftriple.ETriple;
 import com.emftriple.jena.tdb.TDBResourceFactory;
-import com.emftriple.query.ETripleQueryImpl;
+import com.emftriple.query.SparqlString;
 import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.tdb.TDBFactory;
@@ -32,7 +42,7 @@ public class BasicTest {
 	@Before
 	public void tearUp() {
 		Resource.Factory.Registry.INSTANCE.getProtocolToFactoryMap().put("emftriple", new TDBResourceFactory());
-		ETriple.Registry.INSTANCE.register(ModelPackage.eINSTANCE);
+		EPackage.Registry.INSTANCE.put(ModelPackage.eNS_URI, ModelPackage.eINSTANCE);
 	}
 	
 	@Test
@@ -172,10 +182,10 @@ public class BasicTest {
 		ResourceSet resourceSet = new ResourceSetImpl();
 		
 		Resource query = resourceSet.createResource(
-				new ETripleQueryImpl(
+				new SparqlString(
 						"prefix m: <http://www.eclipselabs.org/emf/junit#> " +
-						"select ?s where { ?s a m:Person }",
-				URI.createURI("emftriple://data?graph=http://graph")).toURI());
+						"select ?s where { ?s a m:Person }").toURI(
+				URI.createURI("emftriple://data?graph=http://graph")));
 		query.load(null);
 		
 		assertFalse(query.getContents().isEmpty());
