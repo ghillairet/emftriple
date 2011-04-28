@@ -1,0 +1,142 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.emftriple</groupId>
+	<artifactId>build</artifactId>
+	<version>0.7.2-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>../../../bundles/com.emftriple</module>
+		<module>../../../features/com.emftriple.feature</module>
+		<module>../../../bundles/com.emftriple.jena</module>
+		<module>../../../features/com.emftriple.jena.feature</module>
+		<module>../../../bundles/com.emftriple.sesame</module>
+		<module>../../../features/com.emftriple.sesame.feature</module>
+		<module>../../com.emftriple.repository</module>
+		
+		<module>../../../../../emf4sw/0.7.1/bundles/com.emf4sw.rdf</module>
+		<module>../../../../../emf4sw/0.7.1/features/com.emf4sw.rdf.feature</module>
+		<module>../../../../../emf4sw/0.7.1/bundles/com.emf4sw.rdf.jena</module>
+		<module>../../../../../emf4sw/0.7.1/features/com.emf4sw.rdf.jena.feature</module>
+		<module>../../../../../emf4sw/0.7.1/bundles/com.emf4sw.rdf.sesame</module>
+		<module>../../../../../emf4sw/0.7.1/features/com.emf4sw.rdf.sesame.feature</module>
+		<module>../../../../../emf4sw/0.7.1/bundles/org.openjena</module>
+		<module>../../../../../emf4sw/0.7.1/features/org.openjena.feature</module>
+		<module>../../../../../emf4sw/0.7.1/bundles/org.openrdf</module>
+		<module>../../../../../emf4sw/0.7.1/features/org.openrdf.feature</module>
+	</modules>
+
+	<properties>
+		<tycho-version>0.10.0</tycho-version>
+		<targets>../../../com.emftriple.repository/target/</targets>
+	</properties>
+
+	<repositories>
+		<!-- <repository> -->
+		<!-- <id>EMF</id> -->
+		<!-- <layout>p2</layout> -->
+		<!-- <url>http://quickiemart.springfieldusa.net/Targets/EMF/</url> -->
+		<!-- </repository> -->
+<!-- 		<repository> -->
+<!-- 			<id>jena</id> -->
+<!-- 			<url>http://openjena.org/repo</url> -->
+<!-- 		</repository> -->
+		
+		<repository>
+			<id>helios</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/releases/helios</url>
+		</repository>
+	</repositories>
+
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<plugins>
+			<plugin>
+				<groupId>org.sonatype.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<groupId>org.sonatype.tycho</groupId>
+				<artifactId>maven-osgi-compiler-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+<!-- 			<plugin> -->
+<!-- 				<groupId>org.sonatype.tycho</groupId> -->
+<!-- 				<artifactId>maven-osgi-source-plugin</artifactId> -->
+<!-- 				<version>${tycho-version}</version> -->
+<!-- 				<executions> -->
+<!-- 					<execution> -->
+<!-- 						<id>attach-source</id> -->
+<!-- 						<phase>process-classes</phase> -->
+<!-- 						<goals> -->
+<!-- 							<goal>plugin-source</goal> -->
+<!-- 						</goals> -->
+<!-- 					</execution> --> 
+<!-- 						<goals> <goal>plugin-source</goal> </goals> </execution> --> 
+<!-- 				</executions> -->
+<!-- 			</plugin> -->
+
+			<plugin>
+				<groupId>org.sonatype.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<!-- recommended: use p2-based target platform resolver -->
+					<resolver>p2</resolver>
+					<pomDependenciesConsider>true</pomDependenciesConsider>
+					<!-- configure the p2 target environments for multi-platform build -->
+					<environments>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86</arch>
+						</environment>
+					</environments>
+				</configuration>
+			</plugin>
+
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.sonatype.tycho</groupId>
+						<artifactId>target-platform-configuration</artifactId>
+						<version>${tycho-version}</version>
+						<configuration>
+							<environments combine.children="append">
+								<environment>
+									<os>win32</os>
+									<ws>win32</ws>
+									<arch>x86</arch>
+								</environment>
+							</environments>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>

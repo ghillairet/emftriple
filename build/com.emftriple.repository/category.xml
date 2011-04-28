@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+	<feature
+		url="features/com.emf4sw.rdf.feature_0.7.1.qualifier.jar"
+		id="com.emf4sw.rdf.feature" version="0.7.1.qualifier">
+		<category name="emf4sw" />
+	</feature>
+	<feature
+		url="features/com.emf4sw.rdf.jena.feature_0.7.1.qualifier.jar"
+		id="com.emf4sw.rdf.jena.feature" version="0.7.1.qualifier">
+		<category name="emf4sw" />
+	</feature>
+	<feature
+		url="features/com.emf4sw.rdf.sesame.feature_0.7.1.qualifier.jar"
+		id="com.emf4sw.rdf.sesame.feature" version="0.7.1.qualifier">
+		<category name="emf4sw" />
+	</feature>
+	<feature
+		url="features/org.openjena.feature_2.6.4.jar"
+		id="org.openjena.feature" version="2.6.4">
+		<category name="emf4sw" />
+	</feature>
+	<feature
+		url="features/org.openrdf.feature_2.3.2.jar"
+		id="org.openrdf.feature" version="2.3.2">
+		<category name="emf4sw" />
+	</feature>
+	<feature
+		url="features/com.emftriple.feature_0.7.2.qualifier.jar"
+		id="com.emftriple.feature" version="0.7.2.qualifier">
+		<category name="emftriple" />
+	</feature>
+	<feature
+		url="features/com.emftriple.jena.feature_0.7.2.qualifier.jar"
+		id="com.emftriple.jena.feature" version="0.7.2.qualifier">
+		<category name="emftriple" />
+	</feature>
+	<feature
+		url="features/com.emftriple.sesame.feature_0.7.2.qualifier.jar"
+		id="com.emftriple.sesame.feature" version="0.7.2.qualifier">
+		<category name="emftriple" />
+	</feature>
+	<category-def name="emftriple" label="emftriple">
+		<description>
+			EMF binding for RDF.
+      </description>
+	</category-def>
+	<category-def name="emf4sw" label="emf4sw">
+		<description>
+			Eclipse Modeling for Semantic Web. 
+      </description>
+	</category-def>
+	<category-def name="emftriple-source" label="emftriple source" />
+</site>
