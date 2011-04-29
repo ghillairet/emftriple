@@ -15,21 +15,10 @@
 		<module>../../../bundles/com.emftriple.sesame</module>
 		<module>../../../features/com.emftriple.sesame.feature</module>
 		<module>../../com.emftriple.repository</module>
-		
-		<module>../../../../../emf4sw/0.7.1/bundles/com.emf4sw.rdf</module>
-		<module>../../../../../emf4sw/0.7.1/features/com.emf4sw.rdf.feature</module>
-		<module>../../../../../emf4sw/0.7.1/bundles/com.emf4sw.rdf.jena</module>
-		<module>../../../../../emf4sw/0.7.1/features/com.emf4sw.rdf.jena.feature</module>
-		<module>../../../../../emf4sw/0.7.1/bundles/com.emf4sw.rdf.sesame</module>
-		<module>../../../../../emf4sw/0.7.1/features/com.emf4sw.rdf.sesame.feature</module>
-		<module>../../../../../emf4sw/0.7.1/bundles/org.openjena</module>
-		<module>../../../../../emf4sw/0.7.1/features/org.openjena.feature</module>
-		<module>../../../../../emf4sw/0.7.1/bundles/org.openrdf</module>
-		<module>../../../../../emf4sw/0.7.1/features/org.openrdf.feature</module>
 	</modules>
 
 	<properties>
-		<tycho-version>0.10.0</tycho-version>
+		<tycho-version>0.11.1</tycho-version>
 		<targets>../../../com.emftriple.repository/target/</targets>
 	</properties>
 
