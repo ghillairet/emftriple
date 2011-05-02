@@ -73,6 +73,7 @@ public class GetEObjectImpl extends AbstractGetObject implements IGetObject {
 		((InternalEObject)obj).eSetProxyURI(null);
 
 		fillObject(obj, eClass, key);
+		resource.getPrimaryCache().cache(key, obj);
 
 		return obj;
 	}
@@ -164,7 +165,12 @@ public class GetEObjectImpl extends AbstractGetObject implements IGetObject {
 
 	private EObject createProxy(Resource node, EClass eType) {
 		if (resource.getPrimaryCache().hasKey(node.getURI())) {
-			return resource.getPrimaryCache().getObjectByKey(node.getURI());
+			EObject obj = resource.getPrimaryCache().getObjectByKey(node.getURI());
+			if (obj.eResource() == null) {
+				System.out.println("no resource");
+				resource.getContents().add(obj);
+			}
+			return obj;
 		} else {
 			EObject proxy = EcoreUtil.create(eType);
 			URI uri = URIBuilder.build(resource, node.getURI());

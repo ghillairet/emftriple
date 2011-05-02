@@ -10,15 +10,13 @@
  *******************************************************************************/
 package com.junit.model.util;
 
-import com.junit.model.ModelPackage;
-
 import java.util.Map;
 
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.resource.Resource;
-
 import org.eclipse.emf.ecore.xmi.util.XMLProcessor;
+
+import com.junit.model.ModelPackage;
 
 /**
  * This class contains helper methods to serialize and deserialize XML documents

@@ -10,18 +10,24 @@
  *******************************************************************************/
 package com.junit.model.impl;
 
-import com.junit.model.*;
-
 import org.eclipse.emf.common.util.URI;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
-
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
+
+import com.junit.model.Book;
+import com.junit.model.ETypes;
+import com.junit.model.Library;
+import com.junit.model.Location;
+import com.junit.model.MappedLibrary;
+import com.junit.model.ModelFactory;
+import com.junit.model.ModelPackage;
+import com.junit.model.Person;
+import com.junit.model.PrimaryObject;
+import com.junit.model.TargetObject;
 
 /**
  * <!-- begin-user-doc -->

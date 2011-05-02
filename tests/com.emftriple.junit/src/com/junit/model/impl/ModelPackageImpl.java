@@ -10,6 +10,13 @@
  *******************************************************************************/
 package com.junit.model.impl;
 
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.impl.EPackageImpl;
+
 import com.junit.model.Book;
 import com.junit.model.ETypes;
 import com.junit.model.Library;
@@ -20,14 +27,6 @@ import com.junit.model.ModelPackage;
 import com.junit.model.Person;
 import com.junit.model.PrimaryObject;
 import com.junit.model.TargetObject;
-
-import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EDataType;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EReference;
-
-import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -498,7 +497,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getPrimaryObject_Name() {
+	public EAttribute getPrimaryObject_Id() {
 		return (EAttribute)primaryObjectEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -507,8 +506,8 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getPrimaryObject_SingleNonContainmentReference() {
-		return (EReference)primaryObjectEClass.getEStructuralFeatures().get(1);
+	public EAttribute getPrimaryObject_Name() {
+		return (EAttribute)primaryObjectEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -516,7 +515,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getPrimaryObject_MultipleNonContainmentReference() {
+	public EReference getPrimaryObject_SingleNonContainmentReference() {
 		return (EReference)primaryObjectEClass.getEStructuralFeatures().get(2);
 	}
 
@@ -525,7 +524,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getPrimaryObject_SingleContainmentReferenceNoProxies() {
+	public EReference getPrimaryObject_MultipleNonContainmentReference() {
 		return (EReference)primaryObjectEClass.getEStructuralFeatures().get(3);
 	}
 
@@ -534,7 +533,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getPrimaryObject_MultipleContainmentReferenceNoProxies() {
+	public EReference getPrimaryObject_SingleContainmentReferenceNoProxies() {
 		return (EReference)primaryObjectEClass.getEStructuralFeatures().get(4);
 	}
 
@@ -543,7 +542,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getPrimaryObject_SingleContainmentReferenceProxies() {
+	public EReference getPrimaryObject_MultipleContainmentReferenceNoProxies() {
 		return (EReference)primaryObjectEClass.getEStructuralFeatures().get(5);
 	}
 
@@ -552,7 +551,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getPrimaryObject_MultipleContainmentReferenceProxies() {
+	public EReference getPrimaryObject_SingleContainmentReferenceProxies() {
 		return (EReference)primaryObjectEClass.getEStructuralFeatures().get(6);
 	}
 
@@ -561,7 +560,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getPrimaryObject_FeatureMapReferenceType2() {
+	public EReference getPrimaryObject_MultipleContainmentReferenceProxies() {
 		return (EReference)primaryObjectEClass.getEStructuralFeatures().get(7);
 	}
 
@@ -570,7 +569,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getPrimaryObject_FeatureMapReferenceType1() {
+	public EReference getPrimaryObject_FeatureMapReferenceType2() {
 		return (EReference)primaryObjectEClass.getEStructuralFeatures().get(8);
 	}
 
@@ -579,8 +578,8 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getPrimaryObject_FeatureMapReferenceCollection() {
-		return (EAttribute)primaryObjectEClass.getEStructuralFeatures().get(9);
+	public EReference getPrimaryObject_FeatureMapReferenceType1() {
+		return (EReference)primaryObjectEClass.getEStructuralFeatures().get(9);
 	}
 
 	/**
@@ -588,7 +587,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getPrimaryObject_FeatureMapAttributeType1() {
+	public EAttribute getPrimaryObject_FeatureMapReferenceCollection() {
 		return (EAttribute)primaryObjectEClass.getEStructuralFeatures().get(10);
 	}
 
@@ -597,7 +596,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getPrimaryObject_FeatureMapAttributeType2() {
+	public EAttribute getPrimaryObject_FeatureMapAttributeType1() {
 		return (EAttribute)primaryObjectEClass.getEStructuralFeatures().get(11);
 	}
 
@@ -606,8 +605,17 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getPrimaryObject_FeatureMapAttributeCollection() {
+	public EAttribute getPrimaryObject_FeatureMapAttributeType2() {
 		return (EAttribute)primaryObjectEClass.getEStructuralFeatures().get(12);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getPrimaryObject_FeatureMapAttributeCollection() {
+		return (EAttribute)primaryObjectEClass.getEStructuralFeatures().get(13);
 	}
 
 	/**
@@ -624,7 +632,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getTargetObject_SingleAttribute() {
+	public EAttribute getTargetObject_Id() {
 		return (EAttribute)targetObjectEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -633,8 +641,17 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getTargetObject_ArrayAttribute() {
+	public EAttribute getTargetObject_SingleAttribute() {
 		return (EAttribute)targetObjectEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getTargetObject_ArrayAttribute() {
+		return (EAttribute)targetObjectEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -717,6 +734,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 		createEAttribute(mappedLibraryEClass, MAPPED_LIBRARY__BOOKS);
 
 		primaryObjectEClass = createEClass(PRIMARY_OBJECT);
+		createEAttribute(primaryObjectEClass, PRIMARY_OBJECT__ID);
 		createEAttribute(primaryObjectEClass, PRIMARY_OBJECT__NAME);
 		createEReference(primaryObjectEClass, PRIMARY_OBJECT__SINGLE_NON_CONTAINMENT_REFERENCE);
 		createEReference(primaryObjectEClass, PRIMARY_OBJECT__MULTIPLE_NON_CONTAINMENT_REFERENCE);
@@ -732,6 +750,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 		createEAttribute(primaryObjectEClass, PRIMARY_OBJECT__FEATURE_MAP_ATTRIBUTE_COLLECTION);
 
 		targetObjectEClass = createEClass(TARGET_OBJECT);
+		createEAttribute(targetObjectEClass, TARGET_OBJECT__ID);
 		createEAttribute(targetObjectEClass, TARGET_OBJECT__SINGLE_ATTRIBUTE);
 		createEAttribute(targetObjectEClass, TARGET_OBJECT__ARRAY_ATTRIBUTE);
 
@@ -812,6 +831,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 		initEAttribute(getMappedLibrary_Books(), ecorePackage.getEFeatureMapEntry(), "books", null, 0, 1, MappedLibrary.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(primaryObjectEClass, PrimaryObject.class, "PrimaryObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getPrimaryObject_Id(), ecorePackage.getEInt(), "id", null, 0, 1, PrimaryObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getPrimaryObject_Name(), ecorePackage.getEString(), "name", null, 0, 1, PrimaryObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getPrimaryObject_SingleNonContainmentReference(), this.getTargetObject(), null, "singleNonContainmentReference", null, 0, 1, PrimaryObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getPrimaryObject_MultipleNonContainmentReference(), this.getTargetObject(), null, "multipleNonContainmentReference", null, 0, -1, PrimaryObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -827,6 +847,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 		initEAttribute(getPrimaryObject_FeatureMapAttributeCollection(), ecorePackage.getEFeatureMapEntry(), "featureMapAttributeCollection", null, 0, -1, PrimaryObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(targetObjectEClass, TargetObject.class, "TargetObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getTargetObject_Id(), ecorePackage.getEInt(), "id", null, 0, 1, TargetObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTargetObject_SingleAttribute(), ecorePackage.getEString(), "singleAttribute", null, 0, 1, TargetObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTargetObject_ArrayAttribute(), ecorePackage.getEString(), "arrayAttribute", null, 0, -1, TargetObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -839,6 +860,8 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 		// Create annotations
 		// http:///org/eclipse/emf/ecore/util/ExtendedMetaData
 		createExtendedMetaDataAnnotations();
+		// Id
+		createIdAnnotations();
 	}
 
 	/**
@@ -866,7 +889,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 		   source, 
 		   new String[] {
 			 "kind", "group"
-		   });		
+		   });			
 		addAnnotation
 		  (getPrimaryObject_FeatureMapReferenceType2(), 
 		   source, 
@@ -902,6 +925,28 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 		   source, 
 		   new String[] {
 			 "kind", "group"
+		   });	
+	}
+
+	/**
+	 * Initializes the annotations for <b>Id</b>.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void createIdAnnotations() {
+		String source = "Id";					
+		addAnnotation
+		  (getPrimaryObject_Id(), 
+		   source, 
+		   new String[] {
+			 "base", "http://junit.org/primary/"
+		   });								
+		addAnnotation
+		  (getTargetObject_Id(), 
+		   source, 
+		   new String[] {
+			 "base", "http://junit.org/target/"
 		   });
 	}
 

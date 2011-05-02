@@ -25,6 +25,7 @@ import java.util.Map;
 public interface IDataSourceFactory {
 	
 	String OPTION_URL = "OPTION_URL";
+	String OPTION_METAMODEL = "OPTION_METAMODEL";
 
 	/**
 	 * Returns True if the {@link IDataSourceFactory} can create a {@link IDataSource} with the given options.

@@ -10,21 +10,17 @@
  *******************************************************************************/
 package com.junit.model.impl;
 
-import com.junit.model.ModelPackage;
-import com.junit.model.TargetObject;
-
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
-
 import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
+
+import com.junit.model.ModelPackage;
+import com.junit.model.TargetObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -33,6 +29,7 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
  * <p>
  * The following features are implemented:
  * <ul>
+ *   <li>{@link com.junit.model.impl.TargetObjectImpl#getId <em>Id</em>}</li>
  *   <li>{@link com.junit.model.impl.TargetObjectImpl#getSingleAttribute <em>Single Attribute</em>}</li>
  *   <li>{@link com.junit.model.impl.TargetObjectImpl#getArrayAttribute <em>Array Attribute</em>}</li>
  * </ul>
@@ -41,6 +38,26 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
  * @generated
  */
 public class TargetObjectImpl extends EObjectImpl implements TargetObject {
+	/**
+	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getId()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int ID_EDEFAULT = 0;
+
+	/**
+	 * The cached value of the '{@link #getId() <em>Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getId()
+	 * @generated
+	 * @ordered
+	 */
+	protected int id = ID_EDEFAULT;
+
 	/**
 	 * The default value of the '{@link #getSingleAttribute() <em>Single Attribute</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -95,6 +112,27 @@ public class TargetObjectImpl extends EObjectImpl implements TargetObject {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setId(int newId) {
+		int oldId = id;
+		id = newId;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.TARGET_OBJECT__ID, oldId, id));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public String getSingleAttribute() {
 		return singleAttribute;
 	}
@@ -131,6 +169,8 @@ public class TargetObjectImpl extends EObjectImpl implements TargetObject {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
+			case ModelPackage.TARGET_OBJECT__ID:
+				return getId();
 			case ModelPackage.TARGET_OBJECT__SINGLE_ATTRIBUTE:
 				return getSingleAttribute();
 			case ModelPackage.TARGET_OBJECT__ARRAY_ATTRIBUTE:
@@ -148,6 +188,9 @@ public class TargetObjectImpl extends EObjectImpl implements TargetObject {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
+			case ModelPackage.TARGET_OBJECT__ID:
+				setId((Integer)newValue);
+				return;
 			case ModelPackage.TARGET_OBJECT__SINGLE_ATTRIBUTE:
 				setSingleAttribute((String)newValue);
 				return;
@@ -167,6 +210,9 @@ public class TargetObjectImpl extends EObjectImpl implements TargetObject {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
+			case ModelPackage.TARGET_OBJECT__ID:
+				setId(ID_EDEFAULT);
+				return;
 			case ModelPackage.TARGET_OBJECT__SINGLE_ATTRIBUTE:
 				setSingleAttribute(SINGLE_ATTRIBUTE_EDEFAULT);
 				return;
@@ -185,6 +231,8 @@ public class TargetObjectImpl extends EObjectImpl implements TargetObject {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
+			case ModelPackage.TARGET_OBJECT__ID:
+				return id != ID_EDEFAULT;
 			case ModelPackage.TARGET_OBJECT__SINGLE_ATTRIBUTE:
 				return SINGLE_ATTRIBUTE_EDEFAULT == null ? singleAttribute != null : !SINGLE_ATTRIBUTE_EDEFAULT.equals(singleAttribute);
 			case ModelPackage.TARGET_OBJECT__ARRAY_ATTRIBUTE:
@@ -203,7 +251,9 @@ public class TargetObjectImpl extends EObjectImpl implements TargetObject {
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (singleAttribute: ");
+		result.append(" (id: ");
+		result.append(id);
+		result.append(", singleAttribute: ");
 		result.append(singleAttribute);
 		result.append(", arrayAttribute: ");
 		result.append(arrayAttribute);

@@ -10,14 +10,20 @@
  *******************************************************************************/
 package com.junit.model.util;
 
-import com.junit.model.*;
-
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
-
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
-
 import org.eclipse.emf.ecore.EObject;
+
+import com.junit.model.Book;
+import com.junit.model.ETypes;
+import com.junit.model.Library;
+import com.junit.model.Location;
+import com.junit.model.MappedLibrary;
+import com.junit.model.ModelPackage;
+import com.junit.model.Person;
+import com.junit.model.PrimaryObject;
+import com.junit.model.TargetObject;
 
 /**
  * <!-- begin-user-doc -->

@@ -11,6 +11,7 @@
 package com.emftriple.resource;
 
 import java.util.HashMap;
+import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -46,6 +47,10 @@ public class ETripleResourceCacheImpl implements ETripleCache {
 	public void cache(String key, EObject obj) {
 		keyToObjects.put(key, obj);
 		objectToKey.put(obj.hashCode(), key);
+	}
+
+	public Set<String> getKeys() {
+		return keyToObjects.keySet();
 	}
 	
 }

@@ -27,7 +27,13 @@ public class SparqlString implements ETripleQuery {
 	
 	@Override
 	public URI toURI(URI resourceURI) {
+		final String uri;
+		if (resourceURI.hasQuery()) {
+			uri=resourceURI+"&query=";
+		} else {
+			uri=resourceURI+"?query=";
+		}
 		String query = get().replaceAll(" ", "%20").replaceAll("#", "%23");
-		return URI.createURI(resourceURI+"&query="+query);
+		return URI.createURI(uri+query);
 	}
 }

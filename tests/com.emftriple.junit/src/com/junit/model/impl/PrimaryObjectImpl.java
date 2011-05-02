@@ -10,28 +10,24 @@
  *******************************************************************************/
 package com.junit.model.impl;
 
-import com.junit.model.ModelPackage;
-import com.junit.model.PrimaryObject;
-import com.junit.model.TargetObject;
-
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
-
 import org.eclipse.emf.ecore.util.BasicFeatureMap;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.FeatureMap;
 import org.eclipse.emf.ecore.util.InternalEList;
+
+import com.junit.model.ModelPackage;
+import com.junit.model.PrimaryObject;
+import com.junit.model.TargetObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -40,6 +36,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <p>
  * The following features are implemented:
  * <ul>
+ *   <li>{@link com.junit.model.impl.PrimaryObjectImpl#getId <em>Id</em>}</li>
  *   <li>{@link com.junit.model.impl.PrimaryObjectImpl#getName <em>Name</em>}</li>
  *   <li>{@link com.junit.model.impl.PrimaryObjectImpl#getSingleNonContainmentReference <em>Single Non Containment Reference</em>}</li>
  *   <li>{@link com.junit.model.impl.PrimaryObjectImpl#getMultipleNonContainmentReference <em>Multiple Non Containment Reference</em>}</li>
@@ -59,6 +56,26 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * @generated
  */
 public class PrimaryObjectImpl extends EObjectImpl implements PrimaryObject {
+	/**
+	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getId()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int ID_EDEFAULT = 0;
+
+	/**
+	 * The cached value of the '{@link #getId() <em>Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getId()
+	 * @generated
+	 * @ordered
+	 */
+	protected int id = ID_EDEFAULT;
+
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -176,6 +193,27 @@ public class PrimaryObjectImpl extends EObjectImpl implements PrimaryObject {
 	@Override
 	protected EClass eStaticClass() {
 		return ModelPackage.Literals.PRIMARY_OBJECT;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setId(int newId) {
+		int oldId = id;
+		id = newId;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.PRIMARY_OBJECT__ID, oldId, id));
 	}
 
 	/**
@@ -455,6 +493,8 @@ public class PrimaryObjectImpl extends EObjectImpl implements PrimaryObject {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
+			case ModelPackage.PRIMARY_OBJECT__ID:
+				return getId();
 			case ModelPackage.PRIMARY_OBJECT__NAME:
 				return getName();
 			case ModelPackage.PRIMARY_OBJECT__SINGLE_NON_CONTAINMENT_REFERENCE:
@@ -497,6 +537,9 @@ public class PrimaryObjectImpl extends EObjectImpl implements PrimaryObject {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
+			case ModelPackage.PRIMARY_OBJECT__ID:
+				setId((Integer)newValue);
+				return;
 			case ModelPackage.PRIMARY_OBJECT__NAME:
 				setName((String)newValue);
 				return;
@@ -555,6 +598,9 @@ public class PrimaryObjectImpl extends EObjectImpl implements PrimaryObject {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
+			case ModelPackage.PRIMARY_OBJECT__ID:
+				setId(ID_EDEFAULT);
+				return;
 			case ModelPackage.PRIMARY_OBJECT__NAME:
 				setName(NAME_EDEFAULT);
 				return;
@@ -606,6 +652,8 @@ public class PrimaryObjectImpl extends EObjectImpl implements PrimaryObject {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
+			case ModelPackage.PRIMARY_OBJECT__ID:
+				return id != ID_EDEFAULT;
 			case ModelPackage.PRIMARY_OBJECT__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case ModelPackage.PRIMARY_OBJECT__SINGLE_NON_CONTAINMENT_REFERENCE:
@@ -646,7 +694,9 @@ public class PrimaryObjectImpl extends EObjectImpl implements PrimaryObject {
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (name: ");
+		result.append(" (id: ");
+		result.append(id);
+		result.append(", name: ");
 		result.append(name);
 		result.append(", featureMapReferenceCollection: ");
 		result.append(featureMapReferenceCollection);

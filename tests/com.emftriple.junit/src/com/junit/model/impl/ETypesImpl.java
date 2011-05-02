@@ -10,26 +10,21 @@
  *******************************************************************************/
 package com.junit.model.impl;
 
-import com.junit.model.ETypes;
-import com.junit.model.ModelPackage;
-
 import java.math.BigDecimal;
 import java.math.BigInteger;
-
 import java.util.Collection;
 import java.util.Date;
 
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
-
 import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
+
+import com.junit.model.ETypes;
+import com.junit.model.ModelPackage;
 
 /**
  * <!-- begin-user-doc -->
