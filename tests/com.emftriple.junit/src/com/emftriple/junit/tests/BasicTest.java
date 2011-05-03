@@ -16,6 +16,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -40,16 +42,22 @@ import com.junit.model.Person;
 
 public class BasicTest {
 
+	Map<String, Object> options = new HashMap<String, Object>();
+	
 	@Before
 	public void tearUp() {
 		Resource.Factory.Registry.INSTANCE.getProtocolToFactoryMap().put("emftriple", new TDBResourceFactory());
 		EPackage.Registry.INSTANCE.put(ModelPackage.eNS_URI, ModelPackage.eINSTANCE);
+		
+		options.put(ETripleResource.OPTION_DATASOURCE_LOCATION, "data");
 	}
 	
 	@Test
 	public void testDelete() throws IOException {
 		ResourceSet resourceSet = new ResourceSetImpl();
-		Resource resource = resourceSet.createResource(URI.createURI("emftriple://data"));
+		resourceSet.getLoadOptions().putAll(options);
+		
+		Resource resource = resourceSet.createResource(URI.createURI("emftriple://tdb"));
 		
 		resource.delete(null);
 		
@@ -61,9 +69,10 @@ public class BasicTest {
 	@Test
 	public void testDeleteGraph() throws IOException {
 		ResourceSet resourceSet = new ResourceSetImpl();
-		Resource resource = resourceSet.createResource(URI.createURI("emftriple://data?graph=http://graph"));
+		options.put(ETripleResource.OPTION_DATASOURCE_LOCATION, "data");
+		Resource resource = resourceSet.createResource(URI.createURI("emftriple://tdb?graph=http://graph"));
 		
-		resource.delete(null);
+		resource.delete(options);
 		
 		Dataset ds = TDBFactory.createDataset("data");
 		assertTrue(ds.getDefaultModel().isEmpty());
@@ -74,8 +83,8 @@ public class BasicTest {
 	@Test
 	public void testCreateAndStore() throws IOException {
 		ResourceSet resourceSet = new ResourceSetImpl();
-		Resource resource = resourceSet.createResource(URI.createURI("emftriple://data"));
-		resource.load(null);
+		Resource resource = resourceSet.createResource(URI.createURI("emftriple://tdb"));
+		resource.load(options);
 		
 		assertTrue(resource.getContents().isEmpty());
 		
@@ -94,7 +103,7 @@ public class BasicTest {
 		resource.getContents().add(person);
 		resource.getContents().add(b1);
 		resource.getContents().add(b2);
-		resource.save(null);
+		resource.save(options);
 		
 		Dataset ds = TDBFactory.createDataset("data");
 		assertFalse(ds.getDefaultModel().isEmpty());
@@ -108,8 +117,8 @@ public class BasicTest {
 //	@Test
 	public void testCreateAndStoreInGraph() throws IOException {
 		ResourceSet resourceSet = new ResourceSetImpl();
-		Resource resource = resourceSet.createResource(URI.createURI("emftriple://data?graph=http://graph"));
-		resource.load(null);
+		Resource resource = resourceSet.createResource(URI.createURI("emftriple://tdb?graph=http://graph"));
+		resource.load(options);
 		
 		assertTrue(resource.getContents().isEmpty());
 		
@@ -128,7 +137,7 @@ public class BasicTest {
 		resource.getContents().add(person);
 		resource.getContents().add(b1);
 		resource.getContents().add(b2);
-		resource.save(null);
+		resource.save(options);
 		
 		Dataset ds = TDBFactory.createDataset("data");
 		Model m = ds.getNamedModel("http://graph");
@@ -144,13 +153,13 @@ public class BasicTest {
 		Resource resource = resourceSet.createResource(URI.createURI("emftriple://data"));
 		
 		assertNotNull(resource);
-		resource.load(null);
+		resource.load(options);
 		
 		assertFalse(resource.getContents().isEmpty());
 		System.out.println(resource.getContents().size());
 		for (EObject o: resource.getContents())
 			System.out.println(o);
-//		assertTrue(resource.getContents().size() == 3);
+		assertTrue(resource.getContents().size() == 3);
 		
 		Object obj = EcoreUtil.getObjectByType(resource.getContents(), ModelPackage.eINSTANCE.getPerson());
 		
@@ -179,7 +188,7 @@ public class BasicTest {
 		Resource resource = resourceSet.createResource(URI.createURI("emftriple://data?graph=http://graph"));
 		
 		assertNotNull(resource);
-		resource.load(null);
+		resource.load(options);
 		
 		assertFalse(resource.getContents().isEmpty());
 		assertTrue(resource.getContents().size() == 3);
@@ -208,7 +217,7 @@ public class BasicTest {
 						"prefix m: <http://www.eclipselabs.org/emf/junit#> " +
 						"select ?s where { ?s a m:Person }").toURI(
 				URI.createURI("emftriple://data")));
-		query.load(null);
+		query.load(options);
 		
 		assertFalse(query.getContents().isEmpty());
 		assertTrue(query.getContents().size() == 2);
@@ -228,7 +237,7 @@ public class BasicTest {
 						"prefix m: <http://www.eclipselabs.org/emf/junit#> " +
 						"select ?s where { ?s a m:Person }").toURI(
 				URI.createURI("emftriple://data?graph=http://graph")));
-		query.load(null);
+		query.load(options);
 		
 		assertFalse(query.getContents().isEmpty());
 		assertTrue(query.getContents().size() == 2);

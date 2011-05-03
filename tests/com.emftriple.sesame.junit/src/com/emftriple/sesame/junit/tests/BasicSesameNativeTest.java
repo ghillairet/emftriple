@@ -21,23 +21,23 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.emftriple.resource.ETripleResource;
-import com.emftriple.sesame.mem.MemoryResourceFactory;
+import com.emftriple.sesame.nat.SesameNativeResourceFactory;
 import com.junit.model.Book;
 import com.junit.model.ModelFactory;
 import com.junit.model.ModelPackage;
 import com.junit.model.Person;
 
-public class BasicSesameMemTest {
+public class BasicSesameNativeTest {
 	ResourceSet resourceSet;
 	
 	@Before
 	public void tearUp() {
-		Resource.Factory.Registry.INSTANCE.getProtocolToFactoryMap().put("emftriple", new MemoryResourceFactory());
+		Resource.Factory.Registry.INSTANCE.getProtocolToFactoryMap().put("emftriple", new SesameNativeResourceFactory());
 		EPackage.Registry.INSTANCE.put(ModelPackage.eNS_URI, ModelPackage.eINSTANCE);
 		
 		resourceSet = new ResourceSetImpl();
 		Map<String, Object> options = new HashMap<String, Object>();
-		options.put(ETripleResource.OPTION_DATASOURCE_LOCATION, new File("C://tmp/sesame/test"));
+		options.put(ETripleResource.OPTION_DATASOURCE_LOCATION, new File("C://tmp/sesame/native/test"));
 		resourceSet.getLoadOptions().putAll(options);
 	}
 	
