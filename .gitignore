@@ -22,3 +22,7 @@ bin/
 /bundles/com.emftriple.sesame/bin
 /tests/com.emftriple.sesame.junit/.settings
 /examples/org.social.network
+/tests/com.emftriple.junit/basetest
+/tests/com.emftriple.junit/idtest
+/tests/com.emftriple.junit/rest-test
+/tests/com.emftriple.junit/data
