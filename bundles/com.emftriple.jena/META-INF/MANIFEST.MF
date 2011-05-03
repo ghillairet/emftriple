@@ -14,7 +14,6 @@ Bundle-ClassPath: .
 Bundle-Vendor: eclipselabs
 Require-Bundle: org.eclipse.emf.ecore,
  com.emf4sw.rdf.jena,
- com.google.inject,
  com.emf4sw.rdf,
  com.emftriple,
  org.openjena

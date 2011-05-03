@@ -17,7 +17,6 @@ import java.io.FileOutputStream;
 import com.emf4sw.rdf.Triple;
 import com.emf4sw.rdf.jena.TripleExtractor;
 import com.emftriple.datasources.ISparqlUpdateDataSource;
-import com.emftriple.jena.JenaDataSourceFactory;
 import com.emftriple.jena.ModelDataSource;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
@@ -42,8 +41,7 @@ public class JenaFile extends ModelDataSource implements ISparqlUpdateDataSource
 
 	private final String fileFormat;
 
-	protected JenaFile(String name, Model model, String fileLocation, String format) {
-		super(name);
+	protected JenaFile(Model model, String fileLocation, String format) {
 		this.fileLocation = fileLocation;
 		this.fileFormat = format;
 		this.model = model;

@@ -10,8 +10,6 @@
  *******************************************************************************/
 package com.emftriple.util;
 
-import static com.emftriple.util.Functions.transform;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,8 +24,6 @@ import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
-
-import com.google.common.base.Function;
 
 /**
  * {@link ETripleEcoreUtil}
@@ -134,7 +130,7 @@ public class ETripleEcoreUtil {
 	}
 
 	public static String validNamespace(String namespace) {
-		return transform(namespace, new URIValidator());
+		return new URIValidator().apply(namespace);
 	}
 
 	public static String wellFormedURI(String namespace) {
@@ -144,10 +140,9 @@ public class ETripleEcoreUtil {
 					namespace;
 	}
 
-	public static class URIValidator implements Function<String, String> {
+	public static class URIValidator {
 		private static final String HTTP = "http://";
 
-		@Override
 		public String apply(String from) {
 			return ((from.indexOf(":") > -1) ? 
 					(from.charAt(from.indexOf(":") + 1 ) == '/') ? from : 

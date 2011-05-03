@@ -19,14 +19,16 @@ import com.emf4sw.rdf.resource.impl.NTriplesResourceImpl;
 import com.emftriple.datasources.ISparqlUpdateDataSource;
 import com.emftriple.datasources.ITransactionEnableDataSource;
 import com.emftriple.jena.ModelNamedGraphDataSource;
-import com.google.inject.internal.Lists;
+import com.emftriple.jena.util.JenaUtil;
 import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
+import com.hp.hpl.jena.query.QueryParseException;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.shared.Lock;
 import com.hp.hpl.jena.tdb.TDBFactory;
+import com.hp.hpl.jena.tdb.base.file.Location;
 import com.hp.hpl.jena.update.GraphStore;
 import com.hp.hpl.jena.update.GraphStoreFactory;
 import com.hp.hpl.jena.update.UpdateAction;
@@ -41,8 +43,15 @@ public class JenaTDB extends ModelNamedGraphDataSource implements ITransactionEn
 
 	private final Dataset dataSet;
 	
-	protected JenaTDB(String name, String fileLocation) {
-		super( name );
+	protected JenaTDB() {
+		dataSet = TDBFactory.createDataset();
+	}
+	
+	protected JenaTDB(Location location) {
+		dataSet = TDBFactory.createDataset(location);
+	}
+	
+	protected JenaTDB(String fileLocation) {
 		dataSet = TDBFactory.createDataset(fileLocation);
 	}
 
@@ -58,7 +67,14 @@ public class JenaTDB extends ModelNamedGraphDataSource implements ITransactionEn
 
 	@Override
 	public QueryExecution getQueryExecution(String query, Model model) {
-		return QueryExecutionFactory.create(query, model);
+		QueryExecution qe = null;
+		try {
+			qe = QueryExecutionFactory.create(query, model);
+		} catch (QueryParseException e) {
+			System.out.println(query);
+			e.printStackTrace();
+		}
+		return qe;
 	}
 	
 	@Override
@@ -92,7 +108,7 @@ public class JenaTDB extends ModelNamedGraphDataSource implements ITransactionEn
 
 	@Override
 	public Iterable<String> getNamedGraphs() {
-		return Lists.newArrayList(dataSet.listNames());
+		return JenaUtil.getNamedGraphs(dataSet);
 	}
 
 	@Override

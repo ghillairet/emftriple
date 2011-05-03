@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.emftriple.jena.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
@@ -24,7 +25,6 @@ import com.emftriple.datasources.INamedGraphDataSource;
 import com.emftriple.datasources.IResultSet;
 import com.emftriple.datasources.IResultSet.Solution;
 import com.emftriple.jena.ModelDataSource;
-import com.google.inject.internal.Lists;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
@@ -41,8 +41,7 @@ public class JenaService extends ModelDataSource implements INamedGraphDataSourc
 
 	private final String service;
 	
-	JenaService(String name, String service) {
-		super( name );
+	JenaService(String service) {
 		this.service = service;
 	}
 
@@ -83,7 +82,7 @@ public class JenaService extends ModelDataSource implements INamedGraphDataSourc
 
 	@Override
 	public Iterable<String> getNamedGraphs() {
-		final List<String> list = Lists.newArrayList();
+		final List<String> list = new ArrayList<String>();
 		final IResultSet result = selectQuery("select ?g where { graph ?g { ?s ?p ?o } }");
 		for (;result.hasNext();) {
 			Solution sol = result.next();

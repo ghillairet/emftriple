@@ -11,7 +11,6 @@
 package com.emftriple.resource;
 
 import static com.emftriple.util.ETripleEcoreUtil.getETripleAnnotation;
-import static com.emftriple.util.Functions.transform;
 
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -23,7 +22,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
 import com.emftriple.util.ETripleEcoreUtil;
-import com.google.common.base.Function;
 
 final class EObjectID {
 
@@ -66,14 +64,14 @@ final class EObjectID {
 		} else if (hasBase) {
 			final String base;
 			if (conExpr) {
-				base = transform(eAnnotation.getDetails().get(BASE), new IdParser(object, object.eClass()));
+				base = new IdParser(object, object.eClass()).parse(eAnnotation.getDetails().get(BASE));
 			} 
 			else {
 				base = eAnnotation.getDetails().get(BASE);
 			}
 			Object val = valueOf(object, id);
 			value = val == null ? null : 
-				transform(base + val.toString(), new ETripleEcoreUtil.URIValidator());
+				new ETripleEcoreUtil.URIValidator().apply(base + val.toString());
 		}
 
 		return value;
@@ -98,7 +96,7 @@ final class EObjectID {
 				eAnnotation.getDetails().get(BASE).indexOf("[") > -1 : false;
 	}
 
-	private static class IdParser implements Function<String, String> {
+	private static class IdParser {
 		final EClass eClass;
 		private EObject eObject;
 		final String[] properties;
@@ -121,8 +119,7 @@ final class EObjectID {
 			return props;
 		}
 
-		@Override
-		public String apply(String from) {
+		public String parse(String from) {
 			Pattern pattern = Pattern.compile("\\[");
 
 			if (pattern.matcher(from).find()) 

@@ -10,94 +10,37 @@
  *******************************************************************************/
 package com.emftriple;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 
-import com.emftriple.util.Functions;
-import com.google.common.base.Function;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.Module;
+import com.emftriple.resource.ETripleResource;
+
 
 /**
- * ETriple.
  * 
  * @since 0.7.0
  */
 public class ETriple {
 
-	/** The INSTANCE. */
-	private static ETriple INSTANCE;
-	
-	/** The modules. */
-	private static List<Module> modules = new ArrayList<Module>();
-
 	/**
-	 * Instantiates a new e triple.
+	 * 
+	 * @param <T>
+	 * @param uri
+	 * @param aClass
+	 * @param resource
+	 * @return
 	 */
-	private ETriple() {}
-
-	/**
-	 * Gets the single instance of ETriple.
-	 *
-	 * @return single instance of ETriple
-	 */
-	public static ETriple getInstance() {
-		if (INSTANCE == null) {
-			INSTANCE = new ETriple();
-		}
-		return INSTANCE;
-	}
-	
-	/**
-	 * Inits the.
-	 *
-	 * @param modules the modules
-	 */
-	public static synchronized void init(Module... modules) {
-		ETriple.modules.addAll(Arrays.asList(modules));
-	}
-
-	/**
-	 * Inject.
-	 *
-	 * @param module the module
-	 * @return the injector
-	 */
-	public static Injector inject(Module module) {
-		return Guice.createInjector(module);
-	}
-	
-	/**
-	 * Gets the.
-	 *
-	 * @param aClass the a class
-	 * @return the module
-	 */
-	public static Module get(Class<? extends Module> aClass) {
-		return Functions.transform(aClass, new ETriple.ModuleFinder());
-	}
-	
-	/**
-	 * The Class ModuleFinder.
-	 */
-	private static class ModuleFinder implements Function<Class<? extends Module>, Module> {
-
-		/**
-		 * Instantiates a new module finder.
-		 */
-		public ModuleFinder() {}
-
-		@Override
-		public Module apply(Class<? extends Module> aClass) {
-			for (Module module: modules) {
-				if (aClass.isInstance(module)) {
-					return module;
-				}
+	@SuppressWarnings("unchecked")
+	public static <T> T find(String uri, Class<T> aClass, Resource resource) {
+		if (resource instanceof ETripleResource) {
+			EObject object = resource.getEObject("uri="+uri);
+			if (aClass.isInstance(object)) {
+				return (T)object;
+			} else {
+				throw new ClassCastException();
 			}
-			return null;
 		}
+		return null;
 	}
 	
 }

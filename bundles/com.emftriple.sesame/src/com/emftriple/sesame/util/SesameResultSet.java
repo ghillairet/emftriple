@@ -82,7 +82,10 @@ public class SesameResultSet implements IResultSet {
 			Node node = null;
 			Value value = solution.getValue(varName);
 
-			if ( value instanceof Literal )
+			if (value == null) {
+				return null;
+			}
+			else if ( value instanceof Literal )
 			{
 				node = aFactory.createLiteral();
 				((com.emf4sw.rdf.Literal)node).setLexicalForm(((Literal) value).getLabel().split("^^")[0]);
@@ -98,7 +101,7 @@ public class SesameResultSet implements IResultSet {
 			}
 			else
 			{
-				throw new IllegalArgumentException("Not a concrete value") ;	
+				throw new IllegalArgumentException("Not a concrete value "+value) ;	
 			}
 			return node;
 		}

@@ -13,35 +13,27 @@ package com.emftriple.resource;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl;
 
 import com.emftriple.datasources.IDataSource;
 
-/**
- * 
- * 
- *
- */
-public interface ETripleResource extends Resource {
+public abstract class ETripleResourceFactoryImpl extends ResourceFactoryImpl {
+
+	@Override
+	public Resource createResource(URI uri) {
+		return new ETripleResourceImpl(uri) {
+			@Override
+			public IDataSource getDataSource(Map<?, ?> options) {
+				return createDataSource(options);
+			}
+			@Override
+			public IDataSource getDataSource() {
+				return createDataSource(getResourceSet().getLoadOptions());
+			}
+		};
+	}
 	
-	String OPTION_DATASOURCE_LOCATION = "LOCATION";
-	
-	/**
-	 * Returns the {@link IDataSource} interface to the RDF repository.
-	 */
-	IDataSource getDataSource(Map<?, ?> options);
-	
-	IDataSource getDataSource();
-	
-	/**
-	 * Returns the object ID.
-	 * If the object has not been cached yet and object is contained by the resource, then an ID is created 
-	 * and return.
-	 * 
-	 * @param object
-	 * @return object's unique ID
-	 */
-	URI getID(EObject object);
-	
+	protected abstract IDataSource createDataSource(Map<?, ?> options);
+		
 }

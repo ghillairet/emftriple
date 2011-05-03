@@ -21,12 +21,6 @@ import com.emf4sw.rdf.RDFGraph;
 public abstract interface IDataSource {
 	
 	/**
-	 * Returns the name of the DataSource.
-	 * 
-	 */
-	String getName();
-	
-	/**
 	 * Returns a {@link IResultSet} against a Select SPARQL Query. 
 	 * 
 	 * @param query to execute

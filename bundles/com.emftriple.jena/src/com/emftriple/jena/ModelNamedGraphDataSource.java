@@ -18,14 +18,13 @@ import com.emftriple.datasources.IResultSet;
 import com.emftriple.jena.util.JenaResultSet;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
+import com.hp.hpl.jena.query.QueryParseException;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.shared.Lock;
 
 public abstract class ModelNamedGraphDataSource extends ModelDataSource implements IMutableNamedGraphDataSource {
 
-	public ModelNamedGraphDataSource(String name) {
-		super(name);
-	}
+	public ModelNamedGraphDataSource() {}
 
 	@Override
 	public abstract NamedGraph getNamedGraph(String graphURI);
@@ -46,8 +45,12 @@ public abstract class ModelNamedGraphDataSource extends ModelDataSource implemen
 			final QueryExecution qexec = QueryExecutionFactory.create(query, model);
 			if (qexec != null)
 				rs = new JenaResultSet(qexec.execSelect());
-		} catch (Exception e) {
+		} catch (QueryParseException e) {
+			System.out.println("query= "+query);
+			System.out.println("graph= "+graphURI);
 			e.printStackTrace();
+		} catch (Exception e) {
+			
 		} finally {
 			model.leaveCriticalSection();
 		}

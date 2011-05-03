@@ -21,9 +21,7 @@ import com.emftriple.datasources.INamedGraphDataSource;
  */
 public abstract class AbstractNamedGraphDataSource extends AbstractDataSource implements INamedGraphDataSource {
 
-	protected AbstractNamedGraphDataSource(String name) {
-		super(name);
-	}
+	protected AbstractNamedGraphDataSource() {}
 
 	protected String graphQuery(URI graphURI) {
 		return "CONSTRUCT { ?s ?p ?o } WHERE { GRAPH <" + graphURI.toString()+ "> { ?s ?p ?o} }";

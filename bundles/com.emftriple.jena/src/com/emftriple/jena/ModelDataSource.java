@@ -22,9 +22,7 @@ import com.hp.hpl.jena.shared.Lock;
 
 public abstract class ModelDataSource extends AbstractDataSource implements IDataSource, JenaDataSource {
 
-	public ModelDataSource(String name) {
-		super(name);
-	}
+	public ModelDataSource() {}
 
 	@Override
 	public IResultSet selectQuery(String query) {

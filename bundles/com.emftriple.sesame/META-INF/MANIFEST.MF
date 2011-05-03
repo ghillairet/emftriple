@@ -10,10 +10,8 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: com.emftriple.sesame,
  com.emftriple.sesame.http,
  com.emftriple.sesame.mem,
- com.emftriple.sesame.util
+ com.emftriple.sesame.nat
 Require-Bundle: org.openrdf,
- com.google.inject,
- com.google.collect,
  com.emftriple,
  com.emf4sw.rdf,
  com.emf4sw.rdf.sesame,

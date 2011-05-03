@@ -6,9 +6,6 @@ Bundle-Version: 0.2.0.qualifier
 Bundle-Vendor: eclipselabs
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: com.emftriple.restlet
-Import-Package: com.emf4sw.rdf,
- com.emftriple.resource,
- com.emftriple.transform,
- com.emftriple.transform.impl,
- org.eclipse.emf.ecore,
- org.eclipse.emf.ecore.resource
+Require-Bundle: org.eclipse.emf.ecore,
+ com.emf4sw.rdf,
+ com.emftriple

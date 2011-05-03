@@ -21,8 +21,8 @@ import com.emftriple.sesame.SailDataSource;
  */
 public class SesameHTTP extends SailDataSource {
 
-	protected SesameHTTP(String name, Repository repository) {
-		super(name, repository);
+	protected SesameHTTP(Repository repository) {
+		super(repository);
 	}
 
 }

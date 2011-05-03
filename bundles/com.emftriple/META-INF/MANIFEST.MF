@@ -16,7 +16,5 @@ Export-Package: com.emftriple,
  com.emftriple.util
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: eclipselabs
-Require-Bundle: com.google.inject,
- com.emf4sw.rdf,
- com.google.collect,
+Require-Bundle: com.emf4sw.rdf,
  org.eclipse.emf.ecore

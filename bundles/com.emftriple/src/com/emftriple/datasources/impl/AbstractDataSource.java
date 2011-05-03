@@ -21,21 +21,12 @@ import com.emftriple.datasources.IDataSource;
  */
 public abstract class AbstractDataSource implements IDataSource {
 	
-	protected final String name;
-
 	private boolean isConnected = false;
 	
-	protected AbstractDataSource(String name) {
-		this.name = name;
-	}
+	protected AbstractDataSource() {}
 	
 	protected void setConnected(boolean isConnected) {
 		this.isConnected = isConnected;
-	}
-		
-	@Override
-	public String getName() {
-		return name;
 	}
 	
 	@Override

@@ -18,7 +18,7 @@ import com.emf4sw.rdf.resource.impl.NTriplesResourceImpl;
 import com.emftriple.datasources.ISparqlUpdateDataSource;
 import com.emftriple.datasources.ITransactionEnableDataSource;
 import com.emftriple.jena.ModelNamedGraphDataSource;
-import com.google.inject.internal.Lists;
+import com.emftriple.jena.util.JenaUtil;
 import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
@@ -38,16 +38,15 @@ import com.hp.hpl.jena.update.UpdateAction;
  */
 public class JenaSDB extends ModelNamedGraphDataSource implements ISparqlUpdateDataSource, ITransactionEnableDataSource {
 
-	public static final String JENA_SDB_OPTION_USER = "emftriple.db.user";
+	public static final String OPTION_SDB_USER = "emftriple.db.user";
 	
-	public static final String JENA_SDB_OPTION_PASS = "emftriple.db.password";
+	public static final String OPTION_SDB_PASSWORD = "emftriple.db.password";
 	
-	public static final String JENA_SDB_OPTION_TYPE = "emftriple.db.sdb.type";
+	public static final String OPTION_SDB_TYPE = "emftriple.db.sdb.type";
 	
 	private final Store store;
 
-	protected JenaSDB(String name, Store store) {
-		super(name);
+	protected JenaSDB(Store store) {
 		this.store = store;
 	}
 
@@ -172,7 +171,7 @@ public class JenaSDB extends ModelNamedGraphDataSource implements ISparqlUpdateD
 
 	@Override
 	public Iterable<String> getNamedGraphs() {
-		return Lists.newArrayList(DatasetStore.create(store).listNames());
+		return JenaUtil.getNamedGraphs(DatasetStore.create(store));
 	}
 
 	@Override

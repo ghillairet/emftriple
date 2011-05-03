@@ -10,25 +10,17 @@
  *******************************************************************************/
 package com.emftriple.jena.sdb;
 
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl;
+import java.util.Map;
 
-import com.emftriple.resource.ETripleResourceImpl;
+import com.emftriple.datasources.IDataSource;
+import com.emftriple.resource.ETripleResourceFactoryImpl;
 
-public class SDBResourceFactory extends ResourceFactoryImpl {
+public class SDBResourceFactory extends ETripleResourceFactoryImpl {
+
 	@Override
-	public Resource createResource(URI uri) {
-		
-		return new ETripleResourceImpl(uri, new JenaSDB("sdb", null));
-	}
-
-	@SuppressWarnings("unused")
-	private String getLocation(URI uri) {
-		if (!uri.scheme().equals("emftriple"))
-			throw new IllegalArgumentException("URI is not well formed.");
-		
-		return uri.host();
+	protected IDataSource createDataSource(Map<?, ?> options) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

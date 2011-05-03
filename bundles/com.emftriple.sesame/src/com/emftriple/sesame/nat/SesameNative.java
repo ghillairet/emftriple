@@ -8,21 +8,21 @@
  * Contributors:
  *    Guillaume Hillairet - initial API and implementation
  *******************************************************************************/
-package com.emftriple.datasources;
+package com.emftriple.sesame.nat;
 
-import java.util.Properties;
+import org.openrdf.repository.Repository;
 
-import com.google.inject.Module;
+import com.emftriple.sesame.SailDataSource;
 
 /**
  * 
  * @author <a href="mailto:g.hillairet at gmail.com">Guillaume Hillairet</a>
- * @since 0.7.0
+ * @since 0.6.1
  */
-public interface IDataSourceFactoryModule extends Module {
-	
-	Properties getProperties();
-	
-	Class<? extends IDataSource> getDataSourceClass();
+public class SesameNative extends SailDataSource {
+
+	protected SesameNative(Repository repository) {
+		super(repository);
+	}
 	
 }
