@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.emftriple.jena.util;
 
-import java.util.Collection;
+import java.util.Iterator;
 
 import com.emf4sw.rdf.Literal;
 import com.emf4sw.rdf.Node;
@@ -51,11 +51,6 @@ public class JenaResultSet implements IResultSet {
 	@Override
 	public void remove() {
 		resultSet.remove();
-	}
-
-	@Override
-	public Collection<String> getVarNames() {
-		return resultSet.getResultVars();
 	}
 	
 	public static class JenaSolution implements Solution {
@@ -115,10 +110,20 @@ public class JenaResultSet implements IResultSet {
 
 		@Override
 		public Literal getLiteral(String varName) {
-			Literal lit = RDFFactory.eINSTANCE.createLiteral();
+			final Literal lit = RDFFactory.eINSTANCE.createLiteral();
 			lit.setLexicalForm(solution.getLiteral(varName).getLexicalForm());
 			
 			return lit; 
+		}
+
+		@Override
+		public Iterable<String> getSolutionNames() {
+			return new Iterable<String>() {
+				@Override
+				public Iterator<String> iterator() {
+					return solution.varNames();
+				}
+			};
 		}
 		
 	}

@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: emftriple sail adapter
+Bundle-SymbolicName: com.emftriple.sail
+Bundle-Version: 0.7.2.qualifier
+Bundle-Vendor: eclipselabs
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: com.emftriple.sail,
+ com.emftriple.sail.util

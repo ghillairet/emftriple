@@ -169,7 +169,7 @@ public abstract class ETripleResourceImpl extends ResourceImpl implements ETripl
 		final Set<String> uris = new HashSet<String>();
 		for (;resultSet.hasNext();) {
 			Solution s = resultSet.next();
-			for (String var: resultSet.getVarNames()) {
+			for (String var: s.getSolutionNames()) {
 				if (s.isResource(var)) {
 					com.emf4sw.rdf.Resource res = s.getResource(var);
 					if (!uris.contains(res.getURI())) {

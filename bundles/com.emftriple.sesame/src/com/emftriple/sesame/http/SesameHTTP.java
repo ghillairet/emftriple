@@ -12,14 +12,14 @@ package com.emftriple.sesame.http;
 
 import org.openrdf.repository.Repository;
 
-import com.emftriple.sesame.SailDataSource;
+import com.emftriple.sesame.RepositoryDataSource;
 
 /**
  * 
  * @author <a href="mailto:g.hillairet at gmail.com">Guillaume Hillairet</a>
  * @since 0.6.1
  */
-public class SesameHTTP extends SailDataSource {
+public class SesameHTTP extends RepositoryDataSource {
 
 	protected SesameHTTP(Repository repository) {
 		super(repository);

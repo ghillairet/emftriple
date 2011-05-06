@@ -8,7 +8,7 @@
  * Contributors:
  *    Guillaume Hillairet - initial API and implementation
  *******************************************************************************/
-package com.emftriple.sesame.util;
+package com.emftriple.sail.util;
 
 import org.openrdf.model.BNode;
 import org.openrdf.model.Literal;

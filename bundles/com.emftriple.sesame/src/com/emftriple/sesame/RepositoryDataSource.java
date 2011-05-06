@@ -1,13 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2011 Guillaume Hillairet.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Guillaume Hillairet - initial API and implementation
- *******************************************************************************/
 package com.emftriple.sesame;
 
 import java.util.ArrayList;
@@ -34,15 +24,10 @@ import com.emftriple.datasources.IMutableNamedGraphDataSource;
 import com.emftriple.datasources.IResultSet;
 import com.emftriple.datasources.ITransactionEnableDataSource;
 import com.emftriple.datasources.impl.AbstractNamedGraphDataSource;
-import com.emftriple.sesame.util.SesameGraphResult2RDFGraph;
-import com.emftriple.sesame.util.SesameResultSet;
+import com.emftriple.sail.util.SesameGraphResult2RDFGraph;
+import com.emftriple.sail.util.SesameResultSet;
 
-/**
- * 
- * @author <a href="mailto:g.hillairet at gmail.com">Guillaume Hillairet</a>
- * @since 0.6.0
- */
-public abstract class SailDataSource 
+public class RepositoryDataSource 
 	extends AbstractNamedGraphDataSource 
 	implements IMutableNamedGraphDataSource, ITransactionEnableDataSource {
 
@@ -50,15 +35,13 @@ public abstract class SailDataSource
 
 	protected final Repository repository;
 
-	protected SailDataSource(Repository repository) {
+	protected RepositoryDataSource(Repository repository) {
 		this.repository = repository;
-//		connect();
 	}
-		
+
 	@Override
 	public void add(Iterable<Triple> triples) {
-//		checkIsConnected();
-
+		checkIsConnected();
 		final Graph aGraph = RDFGraph2SesameGraph.extract(triples);
 		try {
 			connection.add(aGraph);
@@ -71,11 +54,10 @@ public abstract class SailDataSource
 		}
 		commit();
 	}
-	
+
 	@Override
 	public void add(Iterable<Triple> triples, String namedGraphURI) {
-//		checkIsConnected();
-		
+		checkIsConnected();
 		final Graph aGraph = RDFGraph2SesameGraph.extract(triples, namedGraphURI);
 		try {
 			connection.add(aGraph, new ValueFactoryImpl().createURI(namedGraphURI));
@@ -88,11 +70,11 @@ public abstract class SailDataSource
 		}
 		commit();
 	}
-		
+
 	@Override
 	public void remove(Iterable<Triple> triples) {
 		checkIsConnected();
-	
+
 		Graph aGraph = RDFGraph2SesameGraph.extract(triples);
 		try {
 			connection.remove(aGraph);
@@ -109,7 +91,7 @@ public abstract class SailDataSource
 	@Override
 	public void remove(Iterable<Triple> triples, String namedGraphURI) {
 		checkIsConnected();
-	
+
 		Graph aGraph = RDFGraph2SesameGraph.extract(triples, namedGraphURI);
 		try {
 			connection.remove(aGraph, new ValueFactoryImpl().createURI(namedGraphURI));
@@ -131,7 +113,7 @@ public abstract class SailDataSource
 	@Override
 	public void commit() {
 		checkIsConnected();
-	
+
 		try {
 			connection.commit();
 		} catch (RepositoryException e) {
@@ -159,7 +141,7 @@ public abstract class SailDataSource
 	@Override
 	public void delete() {
 		checkIsConnected();
-		
+
 		try {
 			repository.getConnection().clear();
 		} catch (RepositoryException e) {
@@ -171,7 +153,7 @@ public abstract class SailDataSource
 	@Override
 	public void deleteGraph(String graph) {
 		checkIsConnected();
-		
+
 		try {
 			connection.clear(new ValueFactoryImpl().createURI(graph));
 		} catch (RepositoryException e) {
@@ -183,7 +165,7 @@ public abstract class SailDataSource
 	@Override
 	public void disconnect() {
 		setConnected(false);
-		
+
 		try {
 			connection.close();
 			repository.shutDown();
@@ -200,7 +182,7 @@ public abstract class SailDataSource
 	@Override
 	public boolean askQuery(String query) {
 		checkIsConnected();
-	
+
 		try {
 			return connection.prepareBooleanQuery(QueryLanguage.SPARQL, query).evaluate();
 		} catch (RepositoryException e) {
@@ -216,7 +198,7 @@ public abstract class SailDataSource
 	@Override
 	public RDFGraph describeQuery(String query) {
 		checkIsConnected();
-	
+
 		GraphQueryResult aResult = null;	
 		try {
 			aResult = connection.prepareGraphQuery(QueryLanguage.SPARQL, query)
@@ -228,14 +210,14 @@ public abstract class SailDataSource
 		} catch (MalformedQueryException e) {
 			e.printStackTrace();
 		}
-	
+
 		return aResult != null ? new SesameGraphResult2RDFGraph(aResult).extract() : null;
 	}
 
 	@Override
 	public void describeQuery(String aQuery, RDFGraph aGraph) {
 		checkIsConnected();
-	
+
 		GraphQueryResult aResult = null;	
 		try {
 			aResult = connection.prepareGraphQuery(QueryLanguage.SPARQL, aQuery)
@@ -247,7 +229,7 @@ public abstract class SailDataSource
 		} catch (MalformedQueryException e) {
 			e.printStackTrace();
 		}
-	
+
 		if (aResult != null) 
 			new SesameGraphResult2RDFGraph(aResult).extract(aGraph);
 	}
@@ -300,7 +282,7 @@ public abstract class SailDataSource
 		if (aResult != null) 
 			new SesameGraphResult2RDFGraph(aResult).extract(aGraph);
 	}
-	
+
 	@Override
 	public IResultSet selectQuery(String query, String graph) {
 		checkIsConnected();
@@ -344,7 +326,7 @@ public abstract class SailDataSource
 	public boolean supportsTransaction() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean containsGraph(String graph) {
 		try {
@@ -356,15 +338,15 @@ public abstract class SailDataSource
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 		}
-			
+
 		return false;
 	}
-	
+
 	@Override
 	public NamedGraph getNamedGraph(String graphURI) {
 		return null;
 	}
-	
+
 	@Override
 	public Iterable<String> getNamedGraphs() {
 		final List<String> list = new ArrayList<String>();
@@ -399,4 +381,5 @@ public abstract class SailDataSource
 			e.printStackTrace();
 		}
 	}
+
 }
