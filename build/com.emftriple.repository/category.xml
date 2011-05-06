@@ -9,6 +9,9 @@
    <feature url="features/com.emftriple.sesame.feature_0.7.2.qualifier.jar" id="com.emftriple.sesame.feature" version="0.7.2.qualifier">
       <category name="emftriple"/>
    </feature>
+   <feature url="features/com.emftriple.sail.feature_0.7.2.qualifier.jar" id="com.emftriple.sail.feature" version="0.7.2.qualifier">
+      <category name="emftriple"/>
+   </feature>
    <category-def name="emftriple" label="emftriple">
       <description>
          EMF binding for RDF.
