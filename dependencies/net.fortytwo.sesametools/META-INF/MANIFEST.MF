@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: sesametools osgi
+Bundle-SymbolicName: net.fortytwo.sesametools
+Bundle-Version: 1.1.0
+Bundle-Vendor: fortyytwo
+Export-Package: net.fortytwo.sesametools;version="1.1.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: org.openrdf.query.algebra.evaluation,
+ org.openrdf.query,
+ info.aduna.iteration,
+ org.openrdf.model.impl,
+ org.openrdf.sail,
+ org.openrdf.query.algebra,
+ org.openrdf.model,
+ org.openrdf.rio,
+ org.openrdf.model.vocabulary
