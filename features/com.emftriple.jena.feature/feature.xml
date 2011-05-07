@@ -18,14 +18,11 @@
    </license>
 
    <requires>
-      <import plugin="com.emf4sw.rdf"/>
-      <import plugin="com.emf4sw.rdf.jena"/>
-      <import plugin="com.emf4sw.rdf.sesame"/>
-      <import plugin="com.emftriple"/>
-      <import plugin="com.google.inject"/>
-      <import plugin="org.openjena"/>
-      <import plugin="org.eclipse.emf.common"/>
       <import plugin="org.eclipse.emf.ecore"/>
+      <import plugin="com.emf4sw.rdf.jena"/>
+      <import plugin="com.emf4sw.rdf"/>
+      <import plugin="com.emftriple"/>
+      <import plugin="org.openjena"/>
    </requires>
 
    <plugin

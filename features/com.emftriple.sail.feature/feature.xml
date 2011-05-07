@@ -17,6 +17,13 @@
       [Enter License Description here.]
    </license>
 
+   <requires>
+      <import plugin="org.openrdf"/>
+      <import plugin="com.emf4sw.rdf"/>
+      <import plugin="com.emftriple"/>
+      <import plugin="com.emf4sw.rdf.sesame"/>
+   </requires>
+
    <plugin
          id="com.emftriple.sail"
          download-size="0"

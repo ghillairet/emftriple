@@ -19,9 +19,6 @@
 
    <requires>
       <import plugin="com.emf4sw.rdf"/>
-      <import plugin="com.google.collect"/>
-      <import plugin="com.google.inject"/>
-      <import plugin="org.eclipse.emf.common"/>
       <import plugin="org.eclipse.emf.ecore"/>
    </requires>
 

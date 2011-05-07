@@ -100,19 +100,20 @@ public abstract class ETripleResourceImpl extends ResourceImpl implements ETripl
 			triples.addAll(put.put(it.next()));
 		}
 		
-		dataSource.connect();
+//		dataSource.connect();
 		if (inGraph) {
 			((IMutableNamedGraphDataSource)dataSource).add(triples, queries.get("graph"));
 		} else {
 			((IMutableDataSource)dataSource).add(triples);
 		}
+		
 		dataSource.disconnect();
 	}
 
 	@Override
 	public void load(Map<?, ?> options) throws IOException {
 		final IDataSource dataSource = this.dataSource = options == null ? getDataSource() : getDataSource(options);
-		dataSource.connect();
+//		dataSource.connect();
 		
 		final Map<String, String> queries = decodeQueryString(getURI().query());
 		if (queries.containsKey("uri")) {
@@ -121,7 +122,7 @@ public abstract class ETripleResourceImpl extends ResourceImpl implements ETripl
 			loadByQuery(dataSource, queries);
 		}
 		
-		dataSource.disconnect();
+//		dataSource.disconnect();
 	}
 
 	private void loadByQuery(IDataSource dataSource, Map<String, String> queries) {

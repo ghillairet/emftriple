@@ -5,3 +5,7 @@ Bundle-SymbolicName: com.emftriple.sesame.junit;singleton:=true
 Bundle-Version: 0.7.2.qualifier
 Bundle-Vendor: eclipselabs
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.eclipse.emf.ecore.xmi,
+ com.emftriple,
+ com.emftriple.sesame,
+ org.junit4

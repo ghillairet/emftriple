@@ -15,4 +15,5 @@ Require-Bundle: org.openrdf,
  com.emftriple,
  com.emf4sw.rdf,
  com.emf4sw.rdf.sesame,
- org.eclipse.emf.ecore
+ org.eclipse.emf.ecore,
+ com.emftriple.sail
