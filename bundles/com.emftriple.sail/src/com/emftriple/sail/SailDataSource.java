@@ -56,13 +56,26 @@ implements IMutableNamedGraphDataSource, ITransactionEnableDataSource {
 
 	public SailDataSource(Sail sail) {
 		this.sail = sail;
+		
+		try {
+			this.connection = sail.getConnection();
+		} catch (SailException e) {
+			e.printStackTrace();
+		}
+//		connect();
 	}
 
 	@Override
 	public void add(Iterable<Triple> triples) {
-		checkIsConnected();
+//		checkIsConnected();
 		final Graph aGraph = RDFGraph2SesameGraph.extract(triples);
-		for (Statement stmt: aGraph)
+		try {
+			System.out.println(sail.isWritable());
+		} catch (SailException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		for (Statement stmt: aGraph) {
 			try {
 				connection.addStatement(stmt.getSubject(), stmt.getPredicate(), stmt.getObject());
 			} catch (SailException e) {
@@ -73,26 +86,39 @@ implements IMutableNamedGraphDataSource, ITransactionEnableDataSource {
 				}
 				e.printStackTrace();
 			}
-			commit();
+		}
+		commit();
 	}
 
 	@Override
 	public void add(Iterable<Triple> triples, String namedGraphURI) {
-		checkIsConnected();
-		final Graph aGraph = RDFGraph2SesameGraph.extract(triples, namedGraphURI);
-		for (Statement stmt: aGraph)
+//		checkIsConnected();
+		final Graph aGraph = RDFGraph2SesameGraph.extract(triples, namedGraphURI, sail.getValueFactory());
+		System.out.println(aGraph.size());
+		int i = 0;
+		for (Statement stmt: aGraph) {
+			System.out.println(i);
 			try {
-				connection.addStatement(stmt.getSubject(), stmt.getPredicate(), stmt.getObject(), 
-						new ValueFactoryImpl().createURI(namedGraphURI));
+				System.out.println(sail.getConnection().isOpen());
+			} catch (SailException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			i++;
+			try {
+//				sail.getConnection().addStatement(
+//						sail.getValueFactory().createURI("http://tinkerpop.com#1"), 
+//						sail.getValueFactory().createURI("http://tinkerpop.com#knows"), 
+//						sail.getValueFactory().createURI("http://tinkerpop.com#3"), 
+//						sail.getValueFactory().createURI("http://tinkerpop.com"));
+
+				sail.getConnection().addStatement(stmt.getSubject(), stmt.getPredicate(), stmt.getObject(), 
+						sail.getValueFactory().createURI(namedGraphURI));
 			} catch (SailException e) {
-				try {
-					connection.rollback();
-				} catch (SailException e1) {
-					e1.printStackTrace();
-				}
 				e.printStackTrace();
 			}
-			commit();
+		}
+		commit();
 	}
 
 	@Override
@@ -229,42 +255,42 @@ implements IMutableNamedGraphDataSource, ITransactionEnableDataSource {
 
 	@Override
 	public RDFGraph describeQuery(String query) {
-//		checkIsConnected();
-//
-//		GraphQueryResult aResult = null;	
-//		try {
-//			aResult = connection.prepareGraphQuery(QueryLanguage.SPARQL, query)
-//			.evaluate();
-//		} catch (QueryEvaluationException e) {
-//			e.printStackTrace();
-//		} catch (RepositoryException e) {
-//			e.printStackTrace();
-//		} catch (MalformedQueryException e) {
-//			e.printStackTrace();
-//		}
-//
-//		return aResult != null ? new SesameGraphResult2RDFGraph(aResult).extract() : null;
+		//		checkIsConnected();
+		//
+		//		GraphQueryResult aResult = null;	
+		//		try {
+		//			aResult = connection.prepareGraphQuery(QueryLanguage.SPARQL, query)
+		//			.evaluate();
+		//		} catch (QueryEvaluationException e) {
+		//			e.printStackTrace();
+		//		} catch (RepositoryException e) {
+		//			e.printStackTrace();
+		//		} catch (MalformedQueryException e) {
+		//			e.printStackTrace();
+		//		}
+		//
+		//		return aResult != null ? new SesameGraphResult2RDFGraph(aResult).extract() : null;
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void describeQuery(String aQuery, RDFGraph aGraph) {
-//		checkIsConnected();
-//
-//		GraphQueryResult aResult = null;	
-//		try {
-//			aResult = connection.prepareGraphQuery(QueryLanguage.SPARQL, aQuery)
-//			.evaluate();
-//		} catch (QueryEvaluationException e) {
-//			e.printStackTrace();
-//		} catch (RepositoryException e) {
-//			e.printStackTrace();
-//		} catch (MalformedQueryException e) {
-//			e.printStackTrace();
-//		}
-//
-//		if (aResult != null) 
-//			new SesameGraphResult2RDFGraph(aResult).extract(aGraph);
+		//		checkIsConnected();
+		//
+		//		GraphQueryResult aResult = null;	
+		//		try {
+		//			aResult = connection.prepareGraphQuery(QueryLanguage.SPARQL, aQuery)
+		//			.evaluate();
+		//		} catch (QueryEvaluationException e) {
+		//			e.printStackTrace();
+		//		} catch (RepositoryException e) {
+		//			e.printStackTrace();
+		//		} catch (MalformedQueryException e) {
+		//			e.printStackTrace();
+		//		}
+		//
+		//		if (aResult != null) 
+		//			new SesameGraphResult2RDFGraph(aResult).extract(aGraph);
 		throw new UnsupportedOperationException();
 	}
 
@@ -280,42 +306,42 @@ implements IMutableNamedGraphDataSource, ITransactionEnableDataSource {
 
 	@Override
 	public RDFGraph constructQuery(String query) {
-//		checkIsConnected();
-//
-//		GraphQueryResult aResult = null;
-//		try {
-//			aResult = connection.prepareGraphQuery(QueryLanguage.SPARQL, query)
-//			.evaluate();
-//		} catch (QueryEvaluationException e) {
-//			e.printStackTrace();
-//		} catch (RepositoryException e) {
-//			e.printStackTrace();
-//		} catch (MalformedQueryException e) {
-//			e.printStackTrace();
-//		}
-//
-//		return aResult != null ? new SesameGraphResult2RDFGraph(aResult).extract() : null;
+		//		checkIsConnected();
+		//
+		//		GraphQueryResult aResult = null;
+		//		try {
+		//			aResult = connection.prepareGraphQuery(QueryLanguage.SPARQL, query)
+		//			.evaluate();
+		//		} catch (QueryEvaluationException e) {
+		//			e.printStackTrace();
+		//		} catch (RepositoryException e) {
+		//			e.printStackTrace();
+		//		} catch (MalformedQueryException e) {
+		//			e.printStackTrace();
+		//		}
+		//
+		//		return aResult != null ? new SesameGraphResult2RDFGraph(aResult).extract() : null;
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void constructQuery(String aQuery, RDFGraph aGraph) {
-//		checkIsConnected();
-//
-//		GraphQueryResult aResult = null;
-//		try {
-//			aResult = connection.prepareGraphQuery(QueryLanguage.SPARQL, aQuery)
-//			.evaluate();
-//		} catch (QueryEvaluationException e) {
-//			e.printStackTrace();
-//		} catch (RepositoryException e) {
-//			e.printStackTrace();
-//		} catch (MalformedQueryException e) {
-//			e.printStackTrace();
-//		}
-//
-//		if (aResult != null) 
-//			new SesameGraphResult2RDFGraph(aResult).extract(aGraph);
+		//		checkIsConnected();
+		//
+		//		GraphQueryResult aResult = null;
+		//		try {
+		//			aResult = connection.prepareGraphQuery(QueryLanguage.SPARQL, aQuery)
+		//			.evaluate();
+		//		} catch (QueryEvaluationException e) {
+		//			e.printStackTrace();
+		//		} catch (RepositoryException e) {
+		//			e.printStackTrace();
+		//		} catch (MalformedQueryException e) {
+		//			e.printStackTrace();
+		//		}
+		//
+		//		if (aResult != null) 
+		//			new SesameGraphResult2RDFGraph(aResult).extract(aGraph);
 		throw new UnsupportedOperationException();
 	}
 
@@ -324,7 +350,7 @@ implements IMutableNamedGraphDataSource, ITransactionEnableDataSource {
 		checkIsConnected();
 		SPARQLParser parser = new SPARQLParser();
 		CloseableIteration<? extends BindingSet, QueryEvaluationException> sparqlResults = null;
-		
+
 		ParsedQuery parsedQuery = null;
 		try {
 			parsedQuery = parser.parseQuery(query, null);
@@ -340,7 +366,7 @@ implements IMutableNamedGraphDataSource, ITransactionEnableDataSource {
 		} catch (SailException e) {
 			e.printStackTrace();
 		}
-		
+
 		return new SailResultSet(sparqlResults);
 	}
 
@@ -349,7 +375,7 @@ implements IMutableNamedGraphDataSource, ITransactionEnableDataSource {
 		checkIsConnected();
 		SPARQLParser parser = new SPARQLParser();
 		CloseableIteration<? extends BindingSet, QueryEvaluationException> sparqlResults = null;
-		
+
 		ParsedQuery parsedQuery = null;
 		try {
 			parsedQuery = parser.parseQuery(query, null);
@@ -365,7 +391,7 @@ implements IMutableNamedGraphDataSource, ITransactionEnableDataSource {
 		} catch (SailException e) {
 			e.printStackTrace();
 		}
-		
+
 		return new SailResultSet(sparqlResults);
 	}
 

@@ -7,3 +7,8 @@ Bundle-Vendor: eclipselabs
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: com.emftriple.sail,
  com.emftriple.sail.util
+Require-Bundle: org.openrdf,
+ com.emf4sw.rdf,
+ com.emftriple,
+ com.emf4sw.rdf.sesame,
+ org.eclipse.emf.ecore

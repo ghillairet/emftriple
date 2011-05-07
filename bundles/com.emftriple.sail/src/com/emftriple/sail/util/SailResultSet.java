@@ -3,12 +3,12 @@ package com.emftriple.sail.util;
 import info.aduna.iteration.CloseableIteration;
 
 import org.openrdf.model.BNode;
+import org.openrdf.model.Literal;
 import org.openrdf.model.URI;
 import org.openrdf.model.Value;
 import org.openrdf.query.BindingSet;
 import org.openrdf.query.QueryEvaluationException;
 
-import com.emf4sw.rdf.Literal;
 import com.emf4sw.rdf.Node;
 import com.emf4sw.rdf.RDFFactory;
 import com.emf4sw.rdf.Resource;
@@ -84,6 +84,7 @@ public class SailResultSet implements IResultSet {
 			}
 			else
 			{
+//				System.out.println(value.getClass());
 				throw new IllegalArgumentException("Not a concrete value "+value) ;	
 			}
 			return node;
