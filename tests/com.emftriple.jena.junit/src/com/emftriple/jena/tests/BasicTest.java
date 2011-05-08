@@ -32,6 +32,7 @@ import org.junit.Test;
 import com.emftriple.jena.tdb.TDBResourceFactory;
 import com.emftriple.query.SparqlString;
 import com.emftriple.resource.ETripleResource;
+import com.emftriple.util.ETripleOptions;
 import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.tdb.TDBFactory;
@@ -49,7 +50,7 @@ public class BasicTest {
 		Resource.Factory.Registry.INSTANCE.getProtocolToFactoryMap().put("emftriple", new TDBResourceFactory());
 		EPackage.Registry.INSTANCE.put(ModelPackage.eNS_URI, ModelPackage.eINSTANCE);
 		
-		options.put(ETripleResource.OPTION_DATASOURCE_LOCATION, "data");
+		options.put(ETripleOptions.OPTION_DATASOURCE_LOCATION, "data");
 	}
 	
 	@Test
@@ -69,7 +70,7 @@ public class BasicTest {
 	@Test
 	public void testDeleteGraph() throws IOException {
 		ResourceSet resourceSet = new ResourceSetImpl();
-		options.put(ETripleResource.OPTION_DATASOURCE_LOCATION, "data");
+		options.put(ETripleOptions.OPTION_DATASOURCE_LOCATION, "data");
 		Resource resource = resourceSet.createResource(URI.createURI("emftriple://tdb?graph=http://graph"));
 		
 		resource.delete(options);
@@ -167,7 +168,7 @@ public class BasicTest {
 		assertFalse( ((Person)obj).getBooks().isEmpty() );
 		assertEquals( ((Person)obj).getBooks().size(), 2 );
 		
-//		System.out.println(((Person) obj).getBooks());
+		System.out.println(((Person) obj).getName());
 		
 		for (Book b: ((Person) obj).getBooks()) {
 			System.out.println(b.getTitle());

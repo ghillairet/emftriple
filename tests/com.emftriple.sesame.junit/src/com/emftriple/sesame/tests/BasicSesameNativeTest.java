@@ -20,8 +20,8 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.emftriple.resource.ETripleResource;
 import com.emftriple.sesame.nat.SesameNativeResourceFactory;
+import com.emftriple.util.ETripleOptions;
 import com.junit.model.Book;
 import com.junit.model.ModelFactory;
 import com.junit.model.ModelPackage;
@@ -37,7 +37,7 @@ public class BasicSesameNativeTest {
 		
 		resourceSet = new ResourceSetImpl();
 		Map<String, Object> options = new HashMap<String, Object>();
-		options.put(ETripleResource.OPTION_DATASOURCE_LOCATION, new File("C://tmp/sesame/native/test"));
+		options.put(ETripleOptions.OPTION_DATASOURCE_LOCATION, new File("/tmp/sesame/native/test"));
 		resourceSet.getLoadOptions().putAll(options);
 	}
 	

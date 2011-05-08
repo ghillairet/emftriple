@@ -14,8 +14,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openrdf.sail.Sail;
 
-import com.emftriple.sail.SailDataSource;
 import com.emftriple.sail.SailResourceFactory;
+import com.emftriple.util.ETripleOptions;
 import com.junit.model.Book;
 import com.junit.model.ModelFactory;
 import com.junit.model.ModelPackage;
@@ -33,7 +33,7 @@ public class BasicSailTest {
 
 		Resource.Factory.Registry.INSTANCE.getProtocolToFactoryMap().put("emftriple", new SailResourceFactory());
 		resourceSet = new ResourceSetImpl();
-		resourceSet.getLoadOptions().put(SailDataSource.OPTION_SAIL_OBJECT, sail);
+		resourceSet.getLoadOptions().put(ETripleOptions.OPTION_DATASOURCE_OBJECT, sail);
 	}
 	
 	@Test

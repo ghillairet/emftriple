@@ -15,7 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.emftriple.jena.tdb.TDBResourceFactory;
-import com.emftriple.resource.ETripleResource;
+import com.emftriple.util.ETripleOptions;
 import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.tdb.TDBFactory;
 import com.junit.model.ModelFactory;
@@ -32,7 +32,7 @@ public class BaseTest {
 		EPackage.Registry.INSTANCE.put(ModelPackage.eNS_URI, ModelPackage.eINSTANCE);
 		
 		resourceSet = new ResourceSetImpl();
-		resourceSet.getLoadOptions().put(ETripleResource.OPTION_DATASOURCE_LOCATION, "rest-test");
+		resourceSet.getLoadOptions().put(ETripleOptions.OPTION_DATASOURCE_LOCATION, "rest-test");
 	}
 	
 	@Test
