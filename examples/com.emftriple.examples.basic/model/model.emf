@@ -1,0 +1,14 @@
+@namespace(uri="http://eclipselabs.org/emftriple/model", prefix="model")
+package model;
+
+class Parent {
+  attr String name;
+  ref Child[*] children;
+  id attr EJavaObject ~id;
+}
+
+class Child {
+  attr String name;
+  id attr EJavaObject ~id;
+}
+
