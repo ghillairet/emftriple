@@ -10,33 +10,16 @@
  *******************************************************************************/
 package com.emftriple.sesame.mem;
 
-import java.io.File;
-import java.util.Map;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
 
-import org.openrdf.repository.Repository;
-import org.openrdf.repository.sail.SailRepository;
-import org.openrdf.sail.memory.MemoryStore;
-
-import com.emftriple.datasources.IDataSource;
-import com.emftriple.resource.ETripleResource;
 import com.emftriple.resource.ETripleResourceFactoryImpl;
 
 public class MemoryResourceFactory extends ETripleResourceFactoryImpl {
 
 	@Override
-	protected IDataSource createDataSource(Map<?, ?> options) {
-		Repository repository = null;
-		
-		if (options != null && options.containsKey(ETripleResource.OPTION_DATASOURCE_LOCATION)) {
-			Object file = options.get(ETripleResource.OPTION_DATASOURCE_LOCATION);
-			if (file instanceof File) {
-				MemoryStore store = new MemoryStore((File) file);
-				store.setSyncDelay(1000L);
-				repository = new SailRepository(store);	
-			}
-		}
-		
-		return repository == null ? new SesameMemory(new SailRepository(new MemoryStore())) : new SesameMemory(repository);
+	public Resource createResource(URI uri) {
+		return new MemoryResourceImpl(uri);
 	}
 
 }

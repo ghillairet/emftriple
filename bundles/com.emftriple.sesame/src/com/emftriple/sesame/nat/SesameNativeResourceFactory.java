@@ -10,32 +10,15 @@
  *******************************************************************************/
 package com.emftriple.sesame.nat;
 
-import java.io.File;
-import java.util.Map;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
 
-import org.openrdf.repository.Repository;
-import org.openrdf.repository.sail.SailRepository;
-import org.openrdf.sail.nativerdf.NativeStore;
-
-import com.emftriple.datasources.IDataSource;
-import com.emftriple.resource.ETripleResource;
 import com.emftriple.resource.ETripleResourceFactoryImpl;
 
 public class SesameNativeResourceFactory extends ETripleResourceFactoryImpl {
 
 	@Override
-	protected IDataSource createDataSource(Map<?, ?> options) {
-		Repository repository = null;
-		
-		if (options != null && options.containsKey(ETripleResource.OPTION_DATASOURCE_LOCATION)) {
-			Object file = options.get(ETripleResource.OPTION_DATASOURCE_LOCATION);
-			if (file instanceof File) {
-				NativeStore store = new NativeStore((File) file);
-				repository = new SailRepository(store);
-			}
-		}
-		
-		return repository == null ? new SesameNative(new SailRepository(new NativeStore())) : new SesameNative(repository);
+	public Resource createResource(URI uri) {
+		return new SesameNativeResourceImpl(uri);
 	}
-
 }

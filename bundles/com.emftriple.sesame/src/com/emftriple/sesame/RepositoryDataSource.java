@@ -1,10 +1,10 @@
 package com.emftriple.sesame;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.openrdf.model.Graph;
-import org.openrdf.model.Resource;
+import org.openrdf.model.Literal;
+import org.openrdf.model.Statement;
+import org.openrdf.model.URI;
+import org.openrdf.model.Value;
 import org.openrdf.model.impl.ValueFactoryImpl;
 import org.openrdf.query.GraphQueryResult;
 import org.openrdf.query.MalformedQueryException;
@@ -14,22 +14,13 @@ import org.openrdf.query.TupleQuery;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
-import org.openrdf.repository.RepositoryResult;
 
-import com.emf4sw.rdf.NamedGraph;
-import com.emf4sw.rdf.RDFGraph;
-import com.emf4sw.rdf.Triple;
-import com.emf4sw.rdf.sesame.RDFGraph2SesameGraph;
-import com.emftriple.datasources.IMutableNamedGraphDataSource;
+import com.emftriple.datasources.AbstractDataSource;
 import com.emftriple.datasources.IResultSet;
-import com.emftriple.datasources.ITransactionEnableDataSource;
-import com.emftriple.datasources.impl.AbstractNamedGraphDataSource;
-import com.emftriple.sail.util.SesameGraphResult2RDFGraph;
 import com.emftriple.sail.util.SesameResultSet;
 
 public class RepositoryDataSource 
-	extends AbstractNamedGraphDataSource 
-	implements IMutableNamedGraphDataSource, ITransactionEnableDataSource {
+	extends AbstractDataSource<Graph, Statement, Value, URI, Literal> {
 
 	protected RepositoryConnection connection;
 
@@ -40,11 +31,11 @@ public class RepositoryDataSource
 	}
 
 	@Override
-	public void add(Iterable<Triple> triples) {
+	public void add(Iterable<Statement> triples, String namedGraphURI) {
 		checkIsConnected();
-		final Graph aGraph = RDFGraph2SesameGraph.extract(triples);
+		
 		try {
-			connection.add(aGraph);
+			connection.add(triples, new ValueFactoryImpl().createURI(namedGraphURI));
 		} catch (RepositoryException e) {
 			try {
 				connection.rollback();
@@ -52,15 +43,14 @@ public class RepositoryDataSource
 				re.printStackTrace();
 			}
 		}
-		commit();
 	}
 
 	@Override
-	public void add(Iterable<Triple> triples, String namedGraphURI) {
+	public void remove(Iterable<Statement> triples, String namedGraphURI) {
 		checkIsConnected();
-		final Graph aGraph = RDFGraph2SesameGraph.extract(triples, namedGraphURI);
+
 		try {
-			connection.add(aGraph, new ValueFactoryImpl().createURI(namedGraphURI));
+			connection.remove(triples, new ValueFactoryImpl().createURI(namedGraphURI));
 		} catch (RepositoryException e) {
 			try {
 				connection.rollback();
@@ -68,57 +58,6 @@ public class RepositoryDataSource
 				re.printStackTrace();
 			}
 		}
-		commit();
-	}
-
-	@Override
-	public void remove(Iterable<Triple> triples) {
-		checkIsConnected();
-
-		Graph aGraph = RDFGraph2SesameGraph.extract(triples);
-		try {
-			connection.remove(aGraph);
-		} catch (RepositoryException e) {
-			try {
-				connection.rollback();
-			} catch (RepositoryException re) {
-				re.printStackTrace();
-			}
-		}
-		commit();
-	}
-
-	@Override
-	public void remove(Iterable<Triple> triples, String namedGraphURI) {
-		checkIsConnected();
-
-		Graph aGraph = RDFGraph2SesameGraph.extract(triples, namedGraphURI);
-		try {
-			connection.remove(aGraph, new ValueFactoryImpl().createURI(namedGraphURI));
-		} catch (RepositoryException e) {
-			try {
-				connection.rollback();
-			} catch (RepositoryException re) {
-				re.printStackTrace();
-			}
-		}
-		commit();
-	}
-
-	@Override
-	public void begin() {
-		checkIsConnected();
-	}
-
-	@Override
-	public void commit() {
-		checkIsConnected();
-
-		try {
-			connection.commit();
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-		}	
 	}
 
 	@Override
@@ -139,27 +78,21 @@ public class RepositoryDataSource
 	}
 
 	@Override
-	public void delete() {
+	public void delete(String graphURI) {
 		checkIsConnected();
-
+		if (graphURI == null) {
+			try {
+				connection.clear();
+			} catch (RepositoryException e) {
+				e.printStackTrace();
+			}
+		} else {
 		try {
-			repository.getConnection().clear();
+			connection.clear(new ValueFactoryImpl().createURI(graphURI));
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 		}
-		commit();
-	}
-
-	@Override
-	public void deleteGraph(String graph) {
-		checkIsConnected();
-
-		try {
-			connection.clear(new ValueFactoryImpl().createURI(graph));
-		} catch (RepositoryException e) {
-			e.printStackTrace();
 		}
-		commit();
 	}
 
 	@Override
@@ -175,12 +108,7 @@ public class RepositoryDataSource
 	}
 
 	@Override
-	public boolean askQuery(String query, String graph) {
-		return askQuery(query);
-	}
-
-	@Override
-	public boolean askQuery(String query) {
+	public boolean askQuery(String query, String graphURI) {
 		checkIsConnected();
 
 		try {
@@ -196,7 +124,7 @@ public class RepositoryDataSource
 	}
 
 	@Override
-	public RDFGraph describeQuery(String query) {
+	public Graph describeQuery(String query, String graph) {
 		checkIsConnected();
 
 		GraphQueryResult aResult = null;	
@@ -210,42 +138,12 @@ public class RepositoryDataSource
 		} catch (MalformedQueryException e) {
 			e.printStackTrace();
 		}
-
-		return aResult != null ? new SesameGraphResult2RDFGraph(aResult).extract() : null;
+		
+		return null;
 	}
 
 	@Override
-	public void describeQuery(String aQuery, RDFGraph aGraph) {
-		checkIsConnected();
-
-		GraphQueryResult aResult = null;	
-		try {
-			aResult = connection.prepareGraphQuery(QueryLanguage.SPARQL, aQuery)
-			.evaluate();
-		} catch (QueryEvaluationException e) {
-			e.printStackTrace();
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-		} catch (MalformedQueryException e) {
-			e.printStackTrace();
-		}
-
-		if (aResult != null) 
-			new SesameGraphResult2RDFGraph(aResult).extract(aGraph);
-	}
-
-	@Override
-	public RDFGraph describeQuery(String query, String graph) {
-		return describeQuery(query);
-	}
-
-	@Override
-	public RDFGraph constructQuery(String query, String graph) {
-		return constructQuery(query);
-	}
-
-	@Override
-	public RDFGraph constructQuery(String query) {
+	public Graph constructQuery(String query, String graphURI) {
 		checkIsConnected();
 
 		GraphQueryResult aResult = null;
@@ -260,34 +158,14 @@ public class RepositoryDataSource
 			e.printStackTrace();
 		}
 
-		return aResult != null ? new SesameGraphResult2RDFGraph(aResult).extract() : null;
+		return null;
 	}
 
 	@Override
-	public void constructQuery(String aQuery, RDFGraph aGraph) {
+	public IResultSet<Value, URI, Literal> selectQuery(String query, String graph) {
 		checkIsConnected();
 
-		GraphQueryResult aResult = null;
-		try {
-			aResult = connection.prepareGraphQuery(QueryLanguage.SPARQL, aQuery)
-			.evaluate();
-		} catch (QueryEvaluationException e) {
-			e.printStackTrace();
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-		} catch (MalformedQueryException e) {
-			e.printStackTrace();
-		}
-
-		if (aResult != null) 
-			new SesameGraphResult2RDFGraph(aResult).extract(aGraph);
-	}
-
-	@Override
-	public IResultSet selectQuery(String query, String graph) {
-		checkIsConnected();
-
-		IResultSet aResult = null;
+		IResultSet<Value, URI, Literal> aResult = null;
 		try {
 			TupleQuery aQuery = connection.prepareTupleQuery(QueryLanguage.SPARQL, query);
 			aResult = new SesameResultSet(aQuery.evaluate());
@@ -302,74 +180,8 @@ public class RepositoryDataSource
 	}
 
 	@Override
-	public IResultSet selectQuery(String query) {
-		checkIsConnected();
-
-		IResultSet aResult = null;
-		try {
-			TupleQuery aQuery = connection.prepareTupleQuery(QueryLanguage.SPARQL, query);
-			aResult = new SesameResultSet( aQuery.evaluate() );
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-		} catch (MalformedQueryException e) {
-			e.printStackTrace();
-		} catch (QueryEvaluationException e) {
-			e.printStackTrace();
-		}
-		finally {
-
-		}
-		return aResult;
-	}
-
-	@Override
 	public boolean supportsTransaction() {
 		return true;
-	}
-
-	@Override
-	public boolean containsGraph(String graph) {
-		try {
-			for (RepositoryResult<Resource> res = repository.getConnection().getContextIDs(); res.hasNext();) {
-				Resource r = res.next();
-				if (r.stringValue().equals(graph.toString()))
-					return true;
-			}
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-		}
-
-		return false;
-	}
-
-	@Override
-	public NamedGraph getNamedGraph(String graphURI) {
-		return null;
-	}
-
-	@Override
-	public Iterable<String> getNamedGraphs() {
-		final List<String> list = new ArrayList<String>();
-		try {
-			for (RepositoryResult<Resource> res = repository.getConnection().getContextIDs(); res.hasNext();) {
-				Resource r = res.next();
-				list.add(r.stringValue());
-			}
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-		}
-		return list;
-	}
-
-	@Override
-	public void rollback() {
-		checkIsConnected();
-
-		try {
-			connection.rollback();
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-		}
 	}
 
 	private final void checkIsConnected() {
@@ -380,6 +192,42 @@ public class RepositoryDataSource
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public boolean supportsNamedGraph() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isMutable() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean supportsUpdateQuery() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void constructQuery(String aQuery, String graphURI, Graph aGraph) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void describeQuery(String aQuery, String graphURI, Graph aGraph) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Graph getGraph(String graphURI) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -10,17 +10,16 @@
  *******************************************************************************/
 package com.emftriple.jena.sdb;
 
-import java.util.Map;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
 
-import com.emftriple.datasources.IDataSource;
 import com.emftriple.resource.ETripleResourceFactoryImpl;
 
 public class SDBResourceFactory extends ETripleResourceFactoryImpl {
 
 	@Override
-	protected IDataSource createDataSource(Map<?, ?> options) {
-		// TODO Auto-generated method stub
-		return null;
+	public Resource createResource(URI uri) {
+		return new SDBResourceImpl(uri);
 	}
 
 }

@@ -18,8 +18,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
-import com.emftriple.transform.impl.MetamodelImpl;
-import com.emftriple.transform.impl.MetamodelRegistryImpl;
 
 /**
  * {@link Metamodel}

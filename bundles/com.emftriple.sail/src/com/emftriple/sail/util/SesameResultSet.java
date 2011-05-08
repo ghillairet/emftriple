@@ -10,7 +10,6 @@
  *******************************************************************************/
 package com.emftriple.sail.util;
 
-import org.openrdf.model.BNode;
 import org.openrdf.model.Literal;
 import org.openrdf.model.URI;
 import org.openrdf.model.Value;
@@ -18,12 +17,9 @@ import org.openrdf.query.BindingSet;
 import org.openrdf.query.QueryEvaluationException;
 import org.openrdf.query.TupleQueryResult;
 
-import com.emf4sw.rdf.Node;
-import com.emf4sw.rdf.RDFFactory;
-import com.emf4sw.rdf.Resource;
 import com.emftriple.datasources.IResultSet;
 
-public class SesameResultSet implements IResultSet {
+public class SesameResultSet implements IResultSet<Value, URI, Literal> {
 
 	private final TupleQueryResult result;
 
@@ -43,7 +39,7 @@ public class SesameResultSet implements IResultSet {
 	}
 
 	@Override
-	public Solution next() {
+	public Solution<Value, URI, Literal> next() {
 		try {
 			return new SesameSolution(result.next());
 		} catch (QueryEvaluationException e) {
@@ -61,7 +57,7 @@ public class SesameResultSet implements IResultSet {
 		}
 	}
 
-	public static class SesameSolution implements Solution {
+	public static class SesameSolution implements Solution<Value, URI, Literal> {
 
 		private final BindingSet solution;
 
@@ -70,33 +66,8 @@ public class SesameResultSet implements IResultSet {
 		}
 
 		@Override
-		public Node get(String varName) {
-			RDFFactory aFactory = RDFFactory.eINSTANCE;
-			Node node = null;
-			Value value = solution.getValue(varName);
-
-			if (value == null) {
-				return null;
-			}
-			else if ( value instanceof Literal )
-			{
-				node = aFactory.createLiteral();
-				((com.emf4sw.rdf.Literal)node).setLexicalForm(((Literal) value).getLabel().split("^^")[0]);
-			}  
-			else if ( value instanceof URI )
-			{
-				node = aFactory.createResource();
-				((Resource)node).setURI( ((URI) value).getNamespace() + ((URI) value).getLocalName() );
-			}
-			else if ( value instanceof BNode )
-			{
-				node = aFactory.createBlankNode();
-			}
-			else
-			{
-				throw new IllegalArgumentException("Not a concrete value "+value) ;	
-			}
-			return node;
+		public Value get(String varName) {
+			return solution.getValue(varName);
 		}
 
 		@Override
@@ -105,12 +76,10 @@ public class SesameResultSet implements IResultSet {
 		}
 
 		@Override
-		public Resource getResource(String varName) {
+		public URI getResource(String varName) {
 			final Value value = solution.getValue(varName);
-			final Resource node = RDFFactory.eINSTANCE.createResource();
-			((Resource)node).setURI( ((URI) value).getNamespace() + ((URI) value).getLocalName() );
 			
-			return node;
+			return (URI) value;
 		}
 
 		@Override
@@ -119,12 +88,10 @@ public class SesameResultSet implements IResultSet {
 		}
 
 		@Override
-		public com.emf4sw.rdf.Literal getLiteral(String varName) {
+		public Literal getLiteral(String varName) {
 			final Value value = solution.getValue(varName);
-			final com.emf4sw.rdf.Literal node = RDFFactory.eINSTANCE.createLiteral();
-			((com.emf4sw.rdf.Literal)node).setLexicalForm(((Literal) value).getLabel().split("^^")[0]);
 			
-			return node;
+			return (Literal) value;
 		}
 		
 		@Override

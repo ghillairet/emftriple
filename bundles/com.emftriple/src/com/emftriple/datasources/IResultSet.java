@@ -12,9 +12,6 @@ package com.emftriple.datasources;
 
 import java.util.Iterator;
 
-import com.emf4sw.rdf.Literal;
-import com.emf4sw.rdf.Node;
-import com.emf4sw.rdf.Resource;
 import com.emftriple.datasources.IResultSet.Solution;
 
 /**
@@ -25,19 +22,19 @@ import com.emftriple.datasources.IResultSet.Solution;
  * @author <a href="mailto:g.hillairet at gmail.com">Guillaume Hillairet</a>
  * @since 0.6.0
  */
-public interface IResultSet extends Iterator<Solution> {
+public interface IResultSet<N, U, L> extends Iterator<Solution<N, U, L>> {
 
-	public static interface Solution {
+	public static interface Solution<N, U, L> {
 		
-		Node get(String varName);
+		N get(String varName);
 		
 		boolean isResource(String varName);
 		
-		Resource getResource(String varName);
+		U getResource(String varName);
 		
 		boolean isLiteral(String varName);
 		
-		Literal getLiteral(String varName);
+		L getLiteral(String varName);
 		
 		Iterable<String> getSolutionNames();
 		

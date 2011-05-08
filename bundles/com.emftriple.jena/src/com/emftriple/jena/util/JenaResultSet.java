@@ -12,13 +12,11 @@ package com.emftriple.jena.util;
 
 import java.util.Iterator;
 
-import com.emf4sw.rdf.Literal;
-import com.emf4sw.rdf.Node;
-import com.emf4sw.rdf.RDFFactory;
-import com.emf4sw.rdf.Resource;
-import com.emf4sw.rdf.URIElement;
-import com.emftriple.datasources.IResultSet;
+import com.emftriple.datasources.AbstractResultSet;
 import com.hp.hpl.jena.query.QuerySolution;
+import com.hp.hpl.jena.rdf.model.Literal;
+import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.Resource;
 
 /**
  * 
@@ -26,7 +24,7 @@ import com.hp.hpl.jena.query.QuerySolution;
  * @author <a href="mailto:g.hillairet at gmail.com">Guillaume Hillairet</a>
  * @since 0.6.1
  */
-public class JenaResultSet implements IResultSet {
+public class JenaResultSet extends AbstractResultSet<RDFNode, Resource, Literal> {
 	
 	private com.hp.hpl.jena.query.ResultSet resultSet;
 	
@@ -44,7 +42,7 @@ public class JenaResultSet implements IResultSet {
 	}
 
 	@Override
-	public Solution next() {
+	public Solution<RDFNode, Resource, Literal> next() {
 		return new JenaSolution(resultSet.next());
 	}
 
@@ -53,33 +51,17 @@ public class JenaResultSet implements IResultSet {
 		resultSet.remove();
 	}
 	
-	public static class JenaSolution implements Solution {
+	public static class JenaSolution implements Solution<RDFNode, Resource, Literal> {
 
 		private QuerySolution solution;
-
-		private RDFFactory aFactory = RDFFactory.eINSTANCE;
 		
 		public JenaSolution(QuerySolution solution) {
 			this.solution = solution;
 		}
 
 		@Override
-		public Node get(String varName) {
-			if (!solution.contains(varName)) {
-				return null;
-			}
-
-			Node node = null;
-			if (solution.get(varName).isResource()) {
-				node = aFactory.createResource();
-				((URIElement)node).setURI(solution.get(varName).asResource().getURI());
-			} else if (solution.get(varName).isLiteral()) {
-				node = aFactory.createLiteral();
-				((Literal)node).setLexicalForm(solution.get(varName).asLiteral().getLexicalForm());
-			} else {
-				node = aFactory.createBlankNode();
-			}
-			return node;
+		public RDFNode get(String varName) {
+			return solution.get(varName);
 		}
 
 		@Override
@@ -93,14 +75,7 @@ public class JenaResultSet implements IResultSet {
 
 		@Override
 		public Resource getResource(String varName) {
-			if (!isResource(varName)) {
-				throw new IllegalArgumentException();
-			}
-			
-			final Resource node = aFactory.createResource();
-			node.setURI(solution.get(varName).asResource().getURI());
-
-			return node;
+			return solution.getResource(varName);
 		}
 
 		@Override
@@ -110,10 +85,7 @@ public class JenaResultSet implements IResultSet {
 
 		@Override
 		public Literal getLiteral(String varName) {
-			final Literal lit = RDFFactory.eINSTANCE.createLiteral();
-			lit.setLexicalForm(solution.getLiteral(varName).getLexicalForm());
-			
-			return lit; 
+			return solution.getLiteral(varName);
 		}
 
 		@Override

@@ -16,10 +16,7 @@ import java.util.List;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
-import com.emf4sw.rdf.Node;
-import com.emf4sw.rdf.URIElement;
 import com.emftriple.datasources.IDataSource;
-import com.emftriple.datasources.INamedGraphDataSource;
 import com.emftriple.datasources.IResultSet;
 import com.emftriple.datasources.IResultSet.Solution;
 import com.emftriple.transform.Metamodel;
@@ -34,22 +31,20 @@ public class SparqlQueries {
 
 	private static final Metamodel metamodel = Metamodel.INSTANCE;
 	
-	public static List<String> selectAllTypes(IDataSource dataSource, String key, String graph) {
+	public static <G, T, N, U, L> List<String> selectAllTypes(IDataSource<G, T, N, U, L> dataSource, String key, String graph) {
 		final List<String> types = new ArrayList<String>();
 		final String query = typeOf(key);
-		final IResultSet resultSet = graph != null ?
-				((INamedGraphDataSource)dataSource).selectQuery(query, graph) : 
-				dataSource.selectQuery(query);
+
+		final IResultSet<N, U, L> resultSet = dataSource.selectQuery(query, graph);
 
 		if (resultSet == null) {
 			return null;
 		}
 		
 		while (resultSet.hasNext()) {
-			Solution solution = resultSet.next();
-			Node node = solution.get("type");
-			if (node instanceof URIElement) {
-				types.add( ((URIElement) node).getURI() );
+			Solution<N, U, L> solution = resultSet.next();
+			if (solution.isResource("type")) {
+				types.add(solution.getResource("type").toString());
 			}
 		}
 		

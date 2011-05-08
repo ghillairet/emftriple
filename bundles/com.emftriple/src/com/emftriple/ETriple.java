@@ -21,7 +21,7 @@ import com.emftriple.resource.ETripleResource;
  * @since 0.7.0
  */
 public class ETriple {
-
+	
 	/**
 	 * 
 	 * @param <T>

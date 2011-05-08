@@ -10,24 +10,28 @@
  *******************************************************************************/
 package com.emftriple.jena;
 
-import com.emf4sw.rdf.RDFGraph;
-import com.emf4sw.rdf.jena.NamedGraphInjector;
+import com.emftriple.datasources.AbstractDataSource;
 import com.emftriple.datasources.IDataSource;
 import com.emftriple.datasources.IResultSet;
-import com.emftriple.datasources.impl.AbstractDataSource;
 import com.emftriple.jena.util.JenaResultSet;
 import com.hp.hpl.jena.query.QueryExecution;
+import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.shared.Lock;
 
-public abstract class ModelDataSource extends AbstractDataSource implements IDataSource, JenaDataSource {
-
+public abstract class ModelDataSource 
+	extends AbstractDataSource<Model, Statement, RDFNode, Resource, Literal>
+	implements IDataSource<Model, Statement, RDFNode, Resource, Literal>, JenaDataSource {
+	
 	public ModelDataSource() {}
 
 	@Override
-	public IResultSet selectQuery(String query) {
-		IResultSet rs = null;
-		final Model model = getModel();
+	public IResultSet<RDFNode, Resource, Literal> selectQuery(String query, String graphURI) {
+		IResultSet<RDFNode, Resource, Literal> rs = null;
+		final Model model = getModel(graphURI);
 
 		model.enterCriticalSection(Lock.READ);
 		try {
@@ -43,36 +47,33 @@ public abstract class ModelDataSource extends AbstractDataSource implements IDat
 	}
 
 	@Override
-	public RDFGraph constructQuery(String query) {
-		RDFGraph graph = null;
-		final Model model = getModel();
-
+	public Model constructQuery(String query, String graphURI) {
+		final Model model = getModel(graphURI);
+		Model result = null;
+		
 		model.enterCriticalSection(Lock.READ);
 		try {
 			final QueryExecution queryExec = getQueryExecution(query, model);
-			final Model result = queryExec.execConstruct();
-			graph = result == null ? null : NamedGraphInjector.inject(result);
+			result = queryExec.execConstruct();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			model.leaveCriticalSection();
 		}
 
-		return graph;
+		return result;
 	}
 
 	@Override
-	public void constructQuery(String query, RDFGraph graph) {
-		final Model model = getModel();
-
+	public void constructQuery(String query, String graphURI, Model graph) {
+		final Model model = getModel(graphURI);
+		Model result = null;
+		
 		model.enterCriticalSection(Lock.READ);
 		try {
 			final QueryExecution queryExec = getQueryExecution(query, model);
-			final Model result = queryExec.execConstruct();
-
-			if (result != null) {
-				NamedGraphInjector.inject(result, graph);
-			}
+			result = queryExec.execConstruct();
+			graph.add(result);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -81,15 +82,14 @@ public abstract class ModelDataSource extends AbstractDataSource implements IDat
 	}
 
 	@Override
-	public RDFGraph describeQuery(String query) {
-		RDFGraph graph = null;
-		final Model model = getModel();
+	public Model describeQuery(String query, String graphURI) {
+		Model graph = null;
+		final Model model = getModel(graphURI);
 
 		model.enterCriticalSection(Lock.READ);
 		try {
 			QueryExecution qexec = getQueryExecution(query, model);
-			final Model result = qexec.execDescribe();
-			graph = result == null ? null : NamedGraphInjector.inject(result);
+			graph = qexec.execDescribe();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -100,15 +100,15 @@ public abstract class ModelDataSource extends AbstractDataSource implements IDat
 	}
 
 	@Override
-	public void describeQuery(String query, RDFGraph aGraph) {
-		final Model model = getModel();
+	public void describeQuery(String query, String graphURI, Model graph) {
+		final Model model = getModel(graphURI);
 
 		model.enterCriticalSection(Lock.READ);
 		try {
 			QueryExecution qexec = getQueryExecution(query, model);
 			final Model result = qexec.execDescribe();
 			if (result != null) {
-				NamedGraphInjector.inject(result, aGraph);
+				graph.add(result);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -118,9 +118,9 @@ public abstract class ModelDataSource extends AbstractDataSource implements IDat
 	}
 
 	@Override
-	public boolean askQuery(String query) {
+	public boolean askQuery(String query, String graphURI) {
 		boolean result = false;
-		final Model model = getModel();
+		final Model model = getModel(graphURI);
 
 		model.enterCriticalSection(Lock.READ);
 		try {
@@ -133,6 +133,11 @@ public abstract class ModelDataSource extends AbstractDataSource implements IDat
 		return result;
 	}
 
+	@Override
+	public Model getGraph(String graphURI) {
+		return getModel(graphURI);
+	}
+	
 	@Override
 	public abstract boolean supportsTransaction();
 

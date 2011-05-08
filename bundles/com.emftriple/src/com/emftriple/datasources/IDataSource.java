@@ -10,15 +10,31 @@
  *******************************************************************************/
 package com.emftriple.datasources;
 
-import com.emf4sw.rdf.RDFGraph;
-
 /**
  * The {@link IDataSource} interface provides an abstraction over diverse kinds of RDF data sources. 
  * 
  * @author <a href="mailto:g.hillairet at gmail.com">Guillaume Hillairet</a>
  * @since 0.5.5
  */
-public abstract interface IDataSource {
+public abstract interface IDataSource<G, T, N, U, L> {
+	
+	/**
+	 * 
+	 * @return
+	 */
+	boolean supportsNamedGraph();
+	
+	/**
+	 * 
+	 * @return
+	 */
+	boolean isMutable();
+	
+	/**
+	 * 
+	 * @return
+	 */
+	boolean supportsUpdateQuery();
 	
 	/**
 	 * Returns a {@link IResultSet} against a Select SPARQL Query. 
@@ -26,7 +42,7 @@ public abstract interface IDataSource {
 	 * @param query to execute
 	 * @return query execution value
 	 */
-	IResultSet selectQuery(String query);
+	IResultSet<N,U,L> selectQuery(String query, String graphURI);
 	
 	/**
 	 * Returns a {@link RDFGraph} against a Construct SPARQL Query.
@@ -34,7 +50,7 @@ public abstract interface IDataSource {
 	 * @param query to execute
 	 * @return query execution value
 	 */
-	RDFGraph constructQuery(String query);
+	G constructQuery(String query, String graphURI);
 
 	/**
 	 * Add result of a construct query in the graph given as parameter.
@@ -42,14 +58,14 @@ public abstract interface IDataSource {
 	 * @param aQuery
 	 * @param aGraph
 	 */
-	void constructQuery(String aQuery, RDFGraph aGraph);
+	void constructQuery(String aQuery, String graphURI, G aGraph);
 	
 	/**
 	 * 
 	 * @param query to execute
 	 * @return query execution value
 	 */
-	RDFGraph describeQuery(String query);
+	G describeQuery(String query, String graphURI);
 	
 	/**
 	 * Add result of a describe query in the graph given as parameter.
@@ -57,7 +73,7 @@ public abstract interface IDataSource {
 	 * @param aQuery
 	 * @param aGraph
 	 */
-	void describeQuery(String aQuery, RDFGraph aGraph);
+	void describeQuery(String aQuery, String graphURI, G aGraph);
 	
 	/**
 	 * Returns the value obtained from the execution of an ask query against the 
@@ -66,7 +82,7 @@ public abstract interface IDataSource {
 	 * @param query to execute
 	 * @return query execution value
 	 */
-	boolean askQuery(String query);
+	boolean askQuery(String query, String graphURI);
 
 	/**
 	 * Test if the current {@link IDataSource} supports transactions
@@ -94,10 +110,28 @@ public abstract interface IDataSource {
 	
 	/**
 	 * 
-	 * @param <T>
-	 * @param aClass
+	 * @param graphURI
 	 * @return
 	 */
-	<T extends IDataSource> T as(Class<T> aClass);
+	G getGraph(String graphURI);
+
+	/**
+	 * Adds the {@link Triple} from the {@link IDataSource}
+	 * 
+	 * @param triples to remove
+	 */
+	void add(Iterable<T> triples, String graphURI);
+
+	/**
+	 * Delete the content of the {@link IDataSource}.
+	 */
+	void delete(String graphURI);
+
+	/**
+	 * Removes the {@link Triple} from the {@link IDataSource}
+	 * 
+	 * @param triples to remove
+	 */
+	void remove(Iterable<T> triples, String graphURI);
 
 }

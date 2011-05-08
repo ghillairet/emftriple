@@ -12,7 +12,6 @@ package com.emftriple.sesame.mem;
 
 import org.openrdf.repository.Repository;
 
-import com.emftriple.datasources.IMutableNamedGraphDataSource;
 import com.emftriple.sesame.RepositoryDataSource;
 
 /**
@@ -20,7 +19,7 @@ import com.emftriple.sesame.RepositoryDataSource;
  * @author <a href="mailto:g.hillairet at gmail.com">Guillaume Hillairet</a>
  * @since 0.6.1
  */
-public class SesameMemory extends RepositoryDataSource implements IMutableNamedGraphDataSource {
+public class SesameMemory extends RepositoryDataSource {
 
 	protected SesameMemory(Repository repository) {
 		super(repository);

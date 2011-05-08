@@ -88,7 +88,7 @@ final class EObjectID {
 	}
 
 	private static String valueOf(EObject object, EAttribute attr) { 
-		return object.eGet(attr).toString().replaceAll(" ", "_"); 
+		return object.eGet(attr).toString().replaceAll(" ", "_");
 	}
 
 	private static boolean containsExpr(EAnnotation eAnnotation) {

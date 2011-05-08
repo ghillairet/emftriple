@@ -23,16 +23,14 @@ import com.emftriple.datasources.IDataSource;
  * 
  *
  */
-public interface ETripleResource extends Resource {
-	
-	String OPTION_DATASOURCE_LOCATION = "LOCATION";
+public interface ETripleResource<G, T, N, U, L> extends Resource {
 	
 	/**
 	 * Returns the {@link IDataSource} interface to the RDF repository.
 	 */
-	IDataSource getDataSource(Map<?, ?> options);
+	IDataSource<G, T, N, U, L> getDataSource(Map<?, ?> options);
 	
-	IDataSource getDataSource();
+	IDataSource<G, T, N, U, L> getDataSource();
 	
 	/**
 	 * Returns the object ID.
@@ -43,5 +41,9 @@ public interface ETripleResource extends Resource {
 	 * @return object's unique ID
 	 */
 	URI getID(EObject object);
+	
+	void save(IDataSource<G, T, N, U, L> dataSource, EObject object, String graphURI);
+	
+	EObject load(IDataSource<G, T, N, U, L> dataSource, String uri, String graphURI);
 	
 }

@@ -10,30 +10,16 @@
  *******************************************************************************/
 package com.emftriple.sail;
 
-import java.util.Map;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
 
-import org.openrdf.sail.Sail;
-
-import com.emftriple.datasources.IDataSource;
 import com.emftriple.resource.ETripleResourceFactoryImpl;
 
 public class SailResourceFactory extends ETripleResourceFactoryImpl {
-
+	
 	@Override
-	protected IDataSource createDataSource(Map<?, ?> options) {
-		IDataSource ds = null;
-		if (options == null) {
-			throw new IllegalArgumentException();
-		}
-		if (options.containsKey(SailDataSource.OPTION_SAIL_OBJECT)) {
-			Object sail = options.get(SailDataSource.OPTION_SAIL_OBJECT);
-			if (sail instanceof Sail) {
-				ds = new SailDataSource((Sail) sail);
-			} else {
-				throw new ClassCastException();
-			}
-		}
-		return ds;
+	public Resource createResource(URI uri) {
+		return new SailResourceImpl(uri);
 	}
 	
 }

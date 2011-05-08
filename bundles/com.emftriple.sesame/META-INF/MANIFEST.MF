@@ -11,9 +11,7 @@ Export-Package: com.emftriple.sesame,
  com.emftriple.sesame.http,
  com.emftriple.sesame.mem,
  com.emftriple.sesame.nat
-Require-Bundle: org.openrdf,
+Require-Bundle: org.eclipse.emf.ecore,
  com.emftriple,
- com.emf4sw.rdf,
- com.emf4sw.rdf.sesame,
- org.eclipse.emf.ecore,
+ org.openrdf,
  com.emftriple.sail

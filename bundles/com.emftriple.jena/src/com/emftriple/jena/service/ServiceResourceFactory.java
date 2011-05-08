@@ -10,19 +10,15 @@
  *******************************************************************************/
 package com.emftriple.jena.service;
 
-import java.util.Map;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
 
-import com.emftriple.datasources.IDataSource;
-import com.emftriple.resource.ETripleResource;
 import com.emftriple.resource.ETripleResourceFactoryImpl;
 
 public class ServiceResourceFactory extends ETripleResourceFactoryImpl {
 
 	@Override
-	protected IDataSource createDataSource(Map<?, ?> options) {
-		if (!options.containsKey(ETripleResource.OPTION_DATASOURCE_LOCATION)) {
-			throw new IllegalArgumentException("Service location must be specified.");
-		}
-		return new JenaService((String) options.get(ETripleResource.OPTION_DATASOURCE_LOCATION));
+	public Resource createResource(URI uri) {
+		return new ServiceResourceImpl(uri);
 	}
 }

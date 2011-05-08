@@ -10,10 +10,9 @@
  *******************************************************************************/
 package com.emftriple.jena.tdb;
 
-import java.util.Map;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
 
-import com.emftriple.datasources.IDataSource;
-import com.emftriple.resource.ETripleResource;
 import com.emftriple.resource.ETripleResourceFactoryImpl;
 
 /**
@@ -24,11 +23,8 @@ import com.emftriple.resource.ETripleResourceFactoryImpl;
 public class TDBResourceFactory extends ETripleResourceFactoryImpl {
 
 	@Override
-	protected IDataSource createDataSource(Map<?, ?> options) {
-		if (!options.containsKey(ETripleResource.OPTION_DATASOURCE_LOCATION)) {
-			return new JenaTDB();
-		} else {
-			return new JenaTDB((String) options.get(ETripleResource.OPTION_DATASOURCE_LOCATION));
-		}
+	public Resource createResource(URI uri) {		
+		return new TDBResourceImpl(uri);
 	}
+	
 }
