@@ -14,6 +14,7 @@ import org.openrdf.model.Literal;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
 import org.openrdf.model.Value;
+import org.openrdf.model.impl.GraphImpl;
 import org.openrdf.sail.Sail;
 
 import com.emftriple.datasources.IDataSource;
@@ -86,13 +87,18 @@ EObject object;
 		return object;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void save(@SuppressWarnings("rawtypes") IDataSource dataSource, EObject object, String graphURI) {
+	protected Collection<Statement> getTriples(EObject object) {
 		final org.eclipse.emf.common.util.URI key = this.getID(object);
 		final Collection<Statement> triples = new SailRdfBuilder().createTriples(object, key.toString(), 
-				(Graph) dataSource.getGraph(graphURI));
+				new GraphImpl());
 		
+		return triples;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public void save(Collection<Statement> triples, @SuppressWarnings("rawtypes") IDataSource dataSource, String graphURI) {
 		dataSource.add(triples, graphURI);
 	}
 	

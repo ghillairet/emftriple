@@ -76,11 +76,11 @@ public class TDBDataSource
 	public void add(Iterable<Statement> triples, String namedGraphURI) {
 		final Model model = getModel(namedGraphURI);
 		
-		model.enterCriticalSection(Lock.WRITE);
+//		model.enterCriticalSection(Lock.WRITE);
 		try {
 			model.add((List<Statement>)triples);
 		} finally { 
-			model.leaveCriticalSection();
+//			model.leaveCriticalSection();
 			model.commit();
 		}	
 	}

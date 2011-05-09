@@ -11,6 +11,8 @@
 package com.emftriple.resource;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -77,10 +79,12 @@ implements ETripleResource<G, T, N, U, L> {
 			throw new IllegalStateException("RDF Store does not support named graphs");
 		}
 
+		Collection<T> triples = new ArrayList<T>();;
 		for (TreeIterator<EObject> it = getAllContents(); it.hasNext();){
-			save(dataSource, it.next(), queries.get("graph"));
+			triples.addAll(getTriples(it.next()));
 		}
-
+		save(triples, dataSource, queries.get("graph"));
+		
 //		long endTime = System.currentTimeMillis();
 //		System.out.println("Time to create " + getContents().size() + " objects: " + ((endTime - startTime) / 1000.0) + " sec");
 	}
@@ -191,9 +195,9 @@ implements ETripleResource<G, T, N, U, L> {
 
 	public abstract IDataSource<G, T, N, U, L> getDataSource();
 
-	@Override
-	public abstract EObject load(@SuppressWarnings("rawtypes") IDataSource dataSource, String uri, String graphURI);
+	protected abstract EObject load(@SuppressWarnings("rawtypes") IDataSource dataSource, String uri, String graphURI);
 
-	@Override
-	public abstract void save(@SuppressWarnings("rawtypes") IDataSource dataSource, EObject object, String graphURI);
+	protected abstract void save(Collection<T> triples, @SuppressWarnings("rawtypes") IDataSource dataSource, String graphURI);
+	
+	protected abstract Collection<T> getTriples(EObject object);
 }

@@ -42,8 +42,8 @@ public interface ETripleResource<G, T, N, U, L> extends Resource {
 	 */
 	URI getID(EObject object);
 	
-	void save(IDataSource<G, T, N, U, L> dataSource, EObject object, String graphURI);
+//	void save(IDataSource<G, T, N, U, L> dataSource, EObject object, String graphURI);
 	
-	EObject load(IDataSource<G, T, N, U, L> dataSource, String uri, String graphURI);
+//	EObject load(IDataSource<G, T, N, U, L> dataSource, String uri, String graphURI);
 	
 }

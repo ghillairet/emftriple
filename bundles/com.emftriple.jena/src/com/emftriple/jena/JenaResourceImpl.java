@@ -20,6 +20,7 @@ import com.emftriple.transform.Metamodel;
 import com.emftriple.util.SparqlQueries;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
@@ -62,12 +63,17 @@ public abstract class JenaResourceImpl
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public void save(IDataSource dataSource, EObject object, String graphURI) {
+	public void save(final Collection<Statement> triples, final IDataSource dataSource, final String graphURI) {
+		dataSource.add(triples, graphURI);
+	}
+	
+	@Override
+	protected Collection<Statement> getTriples(EObject object) {
 		final URI key = this.getID(object);
 		final Collection<Statement> triples = new JenaRdfBuilder().createTriples(object, key.toString(), 
-				(Model) dataSource.getGraph(graphURI));
+				ModelFactory.createDefaultModel());
 		
-		dataSource.add(triples, graphURI);
+		return triples;
 	}
 	
 	@Override
