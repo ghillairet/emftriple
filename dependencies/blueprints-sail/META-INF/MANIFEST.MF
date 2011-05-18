@@ -1,0 +1,25 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Blueprints Sail
+Bundle-SymbolicName: blueprints-sail
+Bundle-Version: 0.7.0
+Bundle-Vendor: tinkerpop
+Export-Package: com.tinkerpop.blueprints.pgm,
+ com.tinkerpop.blueprints.pgm.impls,
+ com.tinkerpop.blueprints.pgm.impls.readonly,
+ com.tinkerpop.blueprints.pgm.impls.readonly.util,
+ com.tinkerpop.blueprints.pgm.impls.sail,
+ com.tinkerpop.blueprints.pgm.impls.sail.impls,
+ com.tinkerpop.blueprints.pgm.impls.sail.util,
+ com.tinkerpop.blueprints.pgm.impls.tg,
+ com.tinkerpop.blueprints.pgm.impls.tg.util,
+ com.tinkerpop.blueprints.pgm.oupls,
+ com.tinkerpop.blueprints.pgm.oupls.sail,
+ com.tinkerpop.blueprints.pgm.util,
+ com.tinkerpop.blueprints.pgm.util.graphml,
+ com.tinkerpop.blueprints.pgm.util.json
+Require-Bundle: net.fortytwo.sesametools,
+ org.eclipse.contribution.weaving.jdt,
+ org.openrdf,
+ javax.xml
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6

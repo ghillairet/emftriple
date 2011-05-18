@@ -28,14 +28,5 @@ Loading objects:
 
     Person obj = (Person) EcoreUtil.getObjectByType(resource.getContents(), ModelPackage.eINSTANCE.getPerson());
 
-Query:
-    
-    Sparql sparql = 
-        new Sparql()
-        .select("?s")
-        .where(triple("?s","a",":Person"));
 
-    Resource resource = resourceSet.createResource(
-        sparql.toURI(URI.createURI("emftriple://data?graph=http://graph")));
-    resource.load(null);
 

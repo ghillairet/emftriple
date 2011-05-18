@@ -11,9 +11,13 @@ Export-Package: com.junit.model,
  com.junit.model.impl,
  com.junit.model.util
 Bundle-ActivationPolicy: lazy
-Require-Bundle: com.emftriple.sail,
- org.eclipse.emf.ecore,
- com.tinkerpop.blueprints,
+Require-Bundle: org.eclipse.emf.ecore,
+ org.eclipse.emf.ecore.xmi;bundle-version="2.5.0",
  org.openrdf,
  org.junit4,
- org.eclipse.emf.ecore.xmi
+ org.neo4j;bundle-version="1.4.0",
+ net.fortytwo.sesametools;bundle-version="1.1.0",
+ blueprints-sail;bundle-version="0.7.0",
+ blueprints-neo4j;bundle-version="0.7.0",
+ com.emftriple.sail,
+ com.emftriple;bundle-version="0.7.2"

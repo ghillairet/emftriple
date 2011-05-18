@@ -18,7 +18,6 @@
    </license>
 
    <requires>
-      <import plugin="com.emf4sw.rdf"/>
       <import plugin="org.eclipse.emf.ecore"/>
    </requires>
 

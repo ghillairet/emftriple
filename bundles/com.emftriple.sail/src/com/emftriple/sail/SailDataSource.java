@@ -43,38 +43,55 @@ public class SailDataSource
 	extends AbstractDataSource<Graph, Statement, Value, URI, Literal>
 	implements IDataSource<Graph, Statement, Value, URI, Literal> {
 
-	public static final Object OPTION_SAIL_OBJECT = "OPTION_SAIL_OBJECT";
-
 	protected SailConnection connection;
 
 	private Sail sail;
 
 	public SailDataSource(Sail sail) {
 		this.sail = sail;
+		try {
+			sail.initialize();
+		} catch (SailException e1) {
+			e1.printStackTrace();
+		}
 		
 		try {
 			this.connection = sail.getConnection();
 		} catch (SailException e) {
 			e.printStackTrace();
 		}
-//		connect();
+		
+	}
+	
+	@Override
+	protected void finalize() throws Throwable {
+		sail.shutDown();
 	}
 	
 	@Override
 	public void add(Iterable<Statement> triples, String namedGraphURI) {
-		for (Statement stmt: triples) {
-			try {
-				sail.getConnection().addStatement(stmt.getSubject(), stmt.getPredicate(), stmt.getObject(), 
-						sail.getValueFactory().createURI(namedGraphURI));
-			} catch (SailException e) {
-				e.printStackTrace();
+//		long startTime = System.currentTimeMillis();
+		SailConnection conn = null;
+		try {
+			conn = sail.getConnection();
+			URI graph = sail.getValueFactory().createURI(namedGraphURI);
+			for (Statement stmt: triples) {
+				try {
+					conn.addStatement(stmt.getSubject(), stmt.getPredicate(), stmt.getObject(), graph);
+				} catch (SailException e) {
+					e.printStackTrace();
+				}
 			}
+		} catch (SailException e1) {
+			e1.printStackTrace();
 		}
+//		long endTime = System.currentTimeMillis();
+//		System.out.println("Time to stores triples: " + ((endTime - startTime) / 1000.0) + " sec");
 	}
 
 	@Override
 	public void remove(Iterable<Statement> triples, String namedGraphURI) {
-		checkIsConnected();
+		connect();
 		
 		for (Statement stmt: triples)
 			try {
@@ -87,6 +104,8 @@ public class SailDataSource
 					e1.printStackTrace();
 				}
 			}
+			
+		disconnect();
 	}
 
 	@Override
@@ -134,7 +153,6 @@ public class SailDataSource
 
 	@Override
 	public IResultSet<Value, URI, Literal> selectQuery(String query, String graph) {
-		checkIsConnected();
 		SPARQLParser parser = new SPARQLParser();
 		CloseableIteration<? extends BindingSet, QueryEvaluationException> sparqlResults = null;
 
@@ -153,8 +171,9 @@ public class SailDataSource
 		} catch (SailException e) {
 			e.printStackTrace();
 		}
-
+		
 		return new SailResultSet(sparqlResults);
+		
 	}
 
 	@Override
@@ -163,6 +182,8 @@ public class SailDataSource
 	}
 
 	protected boolean containsGraph(String graph) {
+		connect();
+		
 		try {
 			for (CloseableIteration<? extends Resource, SailException> res = connection.getContextIDs(); res.hasNext();) {
 				Resource r = res.next();
@@ -173,17 +194,9 @@ public class SailDataSource
 			e.printStackTrace();
 		}
 
+		disconnect();
+		
 		return false;
-	}
-
-	private final void checkIsConnected() {
-		try {
-			if (connection == null || !connection.isOpen() || !isConnected()) {
-				connect();
-			}
-		} catch (SailException e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Override
@@ -222,6 +235,8 @@ public class SailDataSource
 
 	@Override
 	public void delete(String graphURI) {
+		connect();
+		
 		try {
 			connection.clear();
 		} catch (SailException e) {
@@ -232,6 +247,8 @@ public class SailDataSource
 				e1.printStackTrace();
 			}
 		}
+		
+		disconnect();
 	}
 
 	@Override

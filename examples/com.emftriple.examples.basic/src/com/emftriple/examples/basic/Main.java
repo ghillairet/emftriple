@@ -13,27 +13,26 @@ import com.emftriple.examples.basic.model.Child;
 import com.emftriple.examples.basic.model.ModelFactory;
 import com.emftriple.examples.basic.model.ModelPackage;
 import com.emftriple.examples.basic.model.Parent;
-import com.emftriple.jena.tdb.TDBResourceFactory;
+import com.emftriple.sesame.nat.SesameNativeResourceFactory;
 import com.emftriple.util.ETripleOptions;
 
 public class Main {
 	public static void main(String[] args) throws IOException {
-//		Resource.Factory.Registry.INSTANCE.getProtocolToFactoryMap().put("emftriple", new SailResourceFactory());
-//		Sail sail = new GraphSail(new Neo4jGraph("/Users/guillaume/tmp/neo/model"));
 		EPackage.Registry.INSTANCE.put(ModelPackage.eNS_URI, ModelPackage.eINSTANCE);
-		Resource.Factory.Registry.INSTANCE.getProtocolToFactoryMap().put("emftriple", new TDBResourceFactory());
+		Resource.Factory.Registry.INSTANCE.getProtocolToFactoryMap().put("emftriple", new SesameNativeResourceFactory());
 		
 		long startTime = System.currentTimeMillis();
 
+		ResourceSet resourceSet = new ResourceSetImpl();
+		resourceSet.getLoadOptions().put(ETripleOptions.OPTION_DATASOURCE_LOCATION, "/tmp/native");
+		Resource resource = resourceSet.createResource(URI.createURI("emftriple://neo_test?graph=http://test"));
+		
 		for (int i = 0; i < PARENT_COUNT; i++)
 		{
 			if (i % 100 == 0)
 				System.out.println();
 
 			System.out.print(".");
-			ResourceSet resourceSet = new ResourceSetImpl();
-			resourceSet.getLoadOptions().put(ETripleOptions.OPTION_DATASOURCE_LOCATION, "data");
-			Resource resource = resourceSet.createResource(URI.createURI("emftriple://neo_test?graph=http://test"));
 			
 			Parent parent = ModelFactory.eINSTANCE.createParent();
 			parent.setId("parent_"+i);
@@ -41,9 +40,6 @@ public class Main {
 
 			for (int j = 0; j < CHILD_COUNT; j++)
 			{
-//				if (j % 100 == 0)
-//					System.out.println();
-//				System.out.print("°");
 				Child child = ModelFactory.eINSTANCE.createChild();
 				child.setId("child_"+i+"_"+j);
 				child.setName("Child " + i + " " + j);
@@ -52,18 +48,16 @@ public class Main {
 			}
 		
 			resource.getContents().add(parent);
-			resource.save(null);
 		}
+		
+		resource.save(null);
 
 		System.out.println();
 		long endTime = System.currentTimeMillis();
 		System.out.println("Time to create " + (PARENT_COUNT * CHILD_COUNT) + " objects: " + ((endTime - startTime) / 1000.0) + " sec");
 
-		ResourceSet resourceSet = new ResourceSetImpl();
-		resourceSet.getLoadOptions().put(ETripleOptions.OPTION_DATASOURCE_LOCATION, "data");
-		
 		startTime = System.currentTimeMillis();
-		Resource resource = resourceSet.getResource(URI.createURI("emftriple://neo_test?graph=http://test"), true);
+		resource = resourceSet.getResource(URI.createURI("emftriple://neo_test?graph=http://test&uri=http://eclipselabs.org/emftriple/model#parent_1"), true);
 		endTime = System.currentTimeMillis();
 		System.out.println("Time to get first parent: " + (endTime - startTime) + " ms");
 
@@ -79,5 +73,5 @@ public class Main {
 	}
 
 	private static final int CHILD_COUNT = 1000;
-	private static final int PARENT_COUNT = 100;
+	private static final int PARENT_COUNT = 1000;
 }

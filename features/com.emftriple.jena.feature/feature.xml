@@ -19,8 +19,6 @@
 
    <requires>
       <import plugin="org.eclipse.emf.ecore"/>
-      <import plugin="com.emf4sw.rdf.jena"/>
-      <import plugin="com.emf4sw.rdf"/>
       <import plugin="com.emftriple"/>
       <import plugin="org.openjena"/>
    </requires>

@@ -20,6 +20,7 @@ import com.junit.model.Book;
 import com.junit.model.ModelFactory;
 import com.junit.model.ModelPackage;
 import com.junit.model.Person;
+import com.tinkerpop.blueprints.pgm.TransactionalGraph.Mode;
 import com.tinkerpop.blueprints.pgm.impls.neo4j.Neo4jGraph;
 import com.tinkerpop.blueprints.pgm.oupls.sail.GraphSail;
 
@@ -29,8 +30,10 @@ public class BasicSailTest {
 	
 	@Before
 	public void tearUp() {
-		Sail sail = new GraphSail(new Neo4jGraph("/Users/guillaume/tmp/neo/my_graph"));
-
+		Neo4jGraph neo = new Neo4jGraph("/Users/guillaume/tmp/neo/my_graph");
+		neo.setTransactionMode(Mode.AUTOMATIC);
+		Sail sail = new GraphSail(neo);
+	
 		Resource.Factory.Registry.INSTANCE.getProtocolToFactoryMap().put("emftriple", new SailResourceFactory());
 		resourceSet = new ResourceSetImpl();
 		resourceSet.getLoadOptions().put(ETripleOptions.OPTION_DATASOURCE_OBJECT, sail);

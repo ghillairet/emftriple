@@ -5,6 +5,7 @@ import org.openrdf.model.Literal;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
 import org.openrdf.model.Value;
+import org.openrdf.model.impl.GraphImpl;
 import org.openrdf.model.impl.ValueFactoryImpl;
 import org.openrdf.query.GraphQueryResult;
 import org.openrdf.query.MalformedQueryException;
@@ -61,23 +62,6 @@ public class RepositoryDataSource
 	}
 
 	@Override
-	public void connect() {
-		if (!isConnected()) {
-			setConnected(true);
-			try {
-				if (!repository.isWritable()) {
-					repository.shutDown();
-				}
-				repository.initialize();
-				connection = repository.getConnection();
-				connection.setAutoCommit(true);
-			} catch (RepositoryException e1) {
-				e1.printStackTrace();
-			}
-		}
-	}
-
-	@Override
 	public void delete(String graphURI) {
 		checkIsConnected();
 		if (graphURI == null) {
@@ -92,6 +76,28 @@ public class RepositoryDataSource
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 		}
+		}
+	}
+
+	@Override
+	public Graph getGraph(String graphURI) {
+		return constructQuery("construct { ?s ?p ?o } where { ?s ?p ?o }", graphURI);
+	}
+
+	@Override
+	public void connect() {
+		if (!isConnected()) {
+			setConnected(true);
+			try {
+				if (!repository.isWritable()) {
+					repository.shutDown();
+				}
+				repository.initialize();
+				connection = repository.getConnection();
+				connection.setAutoCommit(true);
+			} catch (RepositoryException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 
@@ -124,6 +130,81 @@ public class RepositoryDataSource
 	}
 
 	@Override
+	public Graph constructQuery(String query, String graphURI) {
+		checkIsConnected();
+	
+		GraphQueryResult aResult = null;
+		try {
+			aResult = connection.prepareGraphQuery(QueryLanguage.SPARQL, query)
+			.evaluate();
+		} catch (QueryEvaluationException e) {
+			e.printStackTrace();
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+		} catch (MalformedQueryException e) {
+			e.printStackTrace();
+		}
+	
+		Graph g = new GraphImpl();
+		try {
+			for(;aResult.hasNext();)
+				g.add(aResult.next());
+		} catch (QueryEvaluationException e) {
+			e.printStackTrace();
+		}
+		
+		return g;
+	}
+
+	@Override
+	public void constructQuery(String query, String graphURI, Graph aGraph) {
+		checkIsConnected();
+		
+		GraphQueryResult aResult = null;
+		try {
+			aResult = connection.prepareGraphQuery(QueryLanguage.SPARQL, query)
+			.evaluate();
+		} catch (QueryEvaluationException e) {
+			e.printStackTrace();
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+		} catch (MalformedQueryException e) {
+			e.printStackTrace();
+		}
+	
+		try {
+			for(;aResult.hasNext();)
+				aGraph.add(aResult.next());
+		} catch (QueryEvaluationException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void describeQuery(String query, String graphURI, Graph aGraph) {
+		checkIsConnected();
+
+		GraphQueryResult aResult = null;	
+		try {
+			aResult = connection.prepareGraphQuery(QueryLanguage.SPARQL, query)
+			.evaluate();
+		} catch (QueryEvaluationException e) {
+			e.printStackTrace();
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+		} catch (MalformedQueryException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			for(;aResult.hasNext();)
+				aGraph.add(aResult.next());
+		} catch (QueryEvaluationException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
 	public Graph describeQuery(String query, String graph) {
 		checkIsConnected();
 
@@ -139,26 +220,15 @@ public class RepositoryDataSource
 			e.printStackTrace();
 		}
 		
-		return null;
-	}
-
-	@Override
-	public Graph constructQuery(String query, String graphURI) {
-		checkIsConnected();
-
-		GraphQueryResult aResult = null;
+		Graph g = new GraphImpl();
 		try {
-			aResult = connection.prepareGraphQuery(QueryLanguage.SPARQL, query)
-			.evaluate();
+			for(;aResult.hasNext();)
+				g.add(aResult.next());
 		} catch (QueryEvaluationException e) {
 			e.printStackTrace();
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-		} catch (MalformedQueryException e) {
-			e.printStackTrace();
 		}
-
-		return null;
+		
+		return g;
 	}
 
 	@Override
@@ -176,6 +246,7 @@ public class RepositoryDataSource
 		} catch (QueryEvaluationException e) {
 			e.printStackTrace();
 		}
+		
 		return aResult;
 	}
 
@@ -196,38 +267,17 @@ public class RepositoryDataSource
 
 	@Override
 	public boolean supportsNamedGraph() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isMutable() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean supportsUpdateQuery() {
-		// TODO Auto-generated method stub
 		return false;
-	}
-
-	@Override
-	public void constructQuery(String aQuery, String graphURI, Graph aGraph) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void describeQuery(String aQuery, String graphURI, Graph aGraph) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Graph getGraph(String graphURI) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

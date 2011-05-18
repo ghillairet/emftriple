@@ -18,10 +18,9 @@
    </license>
 
    <requires>
-      <import plugin="org.openrdf"/>
-      <import plugin="com.emf4sw.rdf"/>
       <import plugin="com.emftriple"/>
-      <import plugin="com.emf4sw.rdf.sesame"/>
+      <import plugin="org.openrdf"/>
+      <import plugin="org.eclipse.emf.ecore"/>
    </requires>
 
    <plugin

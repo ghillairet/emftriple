@@ -85,6 +85,8 @@ public class SailRdfBuilder
 
 	@Override
 	public Collection<Statement> createTriples(EObject object, String key, Graph graph) {
+//		long startTime = System.currentTimeMillis();
+		
 		final List<Statement> triples = new ArrayList<Statement>();
 		final URI subject = createURI(key, graph);
 		
@@ -98,6 +100,9 @@ public class SailRdfBuilder
 			triples.addAll(createTriples(object, ref, subject, graph));
 		}
 		
+//		long endTime = System.currentTimeMillis();
+//		System.out.println("Time to create " + triples.size() + " triples: " + ((endTime - startTime) / 1000.0) + " sec");
+	
 		return triples;
 	}
 

@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Blueprints-orientdb
+Bundle-SymbolicName: blueprints-orientdb
+Bundle-Version: 0.7.0
+Bundle-Vendor: tinkerpop
+Export-Package: com.tinkerpop.blueprints.pgm.impls.orientdb,
+ com.tinkerpop.blueprints.pgm.impls.orientdb.util
+Require-Bundle: blueprints-sail
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6

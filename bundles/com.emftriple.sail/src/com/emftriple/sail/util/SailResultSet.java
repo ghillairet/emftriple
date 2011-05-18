@@ -20,8 +20,11 @@ public class SailResultSet implements IResultSet<Value, URI, Literal> {
 
 	@Override
 	public boolean hasNext() {
+		if (result == null) {
+			return false;
+		}
 		try {
-			return result != null && result.hasNext();
+			return result.hasNext();
 		} catch (QueryEvaluationException e) {
 			e.printStackTrace();
 		}

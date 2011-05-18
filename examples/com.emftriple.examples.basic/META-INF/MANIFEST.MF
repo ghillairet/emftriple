@@ -7,8 +7,9 @@ Bundle-Vendor: eclipselabs
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.emf.ecore;bundle-version="2.6.1",
  com.emftriple;bundle-version="0.7.2",
- com.emftriple.jena;bundle-version="0.7.2",
- org.openjena;bundle-version="2.6.4"
+ com.emftriple.sail;bundle-version="0.7.2",
+ com.emftriple.sesame;bundle-version="0.7.2",
+ org.openrdf;bundle-version="2.4.0"
 Export-Package: com.emftriple.examples.basic.model,
  com.emftriple.examples.basic.model.impl,
  com.emftriple.examples.basic.model.util

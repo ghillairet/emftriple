@@ -4,7 +4,7 @@
 		<artifactId>build</artifactId>
 		<groupId>com.emftriple</groupId>
 		<version>0.7.2-SNAPSHOT</version>
-		<relativePath>../../build/com.emftriple.build/build/pom.xml</relativePath>
+		<relativePath>../../pom.xml</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.emftriple</groupId>

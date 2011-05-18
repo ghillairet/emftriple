@@ -79,11 +79,13 @@ implements ETripleResource<G, T, N, U, L> {
 			throw new IllegalStateException("RDF Store does not support named graphs");
 		}
 
+		dataSource.connect();
 		Collection<T> triples = new ArrayList<T>();;
 		for (TreeIterator<EObject> it = getAllContents(); it.hasNext();){
 			triples.addAll(getTriples(it.next()));
 		}
 		save(triples, dataSource, queries.get("graph"));
+		dataSource.disconnect();
 		
 //		long endTime = System.currentTimeMillis();
 //		System.out.println("Time to create " + getContents().size() + " objects: " + ((endTime - startTime) / 1000.0) + " sec");
@@ -122,7 +124,8 @@ implements ETripleResource<G, T, N, U, L> {
 
 	private void loadByQuery(IDataSource<G, T, N, U, L> dataSource, Map<String, String> queries) {
 		final String query;
-
+		dataSource.connect();
+		
 		if (queries.containsKey("query")) {
 			query = queries.get("query").replaceAll("%20", " ").replaceAll("%23", "#"); 
 		}
@@ -146,6 +149,8 @@ implements ETripleResource<G, T, N, U, L> {
 		if (!uris.isEmpty()) {
 			loadingEObjectsFromURIs(uris, queries.get("graph"), dataSource);
 		}
+		
+		dataSource.disconnect();
 	}
 
 	protected abstract Set<String> loadingContentFromResultSet(IResultSet<N, U, L> resultSet);

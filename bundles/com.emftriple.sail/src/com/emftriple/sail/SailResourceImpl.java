@@ -16,6 +16,7 @@ import org.openrdf.model.URI;
 import org.openrdf.model.Value;
 import org.openrdf.model.impl.GraphImpl;
 import org.openrdf.sail.Sail;
+import org.openrdf.sail.SailException;
 
 import com.emftriple.datasources.IDataSource;
 import com.emftriple.datasources.IResultSet;
@@ -26,7 +27,7 @@ import com.emftriple.util.ETripleOptions;
 import com.emftriple.util.SparqlQueries;
 
 public class SailResourceImpl 
-	extends ETripleResourceImpl<Graph, Statement, Value, URI, Literal>{
+extends ETripleResourceImpl<Graph, Statement, Value, URI, Literal>{
 
 	public SailResourceImpl(org.eclipse.emf.common.util.URI uri) {
 		super(uri);
@@ -35,7 +36,7 @@ public class SailResourceImpl
 	@Override
 	protected Set<String> loadingContentFromResultSet(IResultSet<Value, URI, Literal> resultSet) {
 		final Set<String> uris = new HashSet<String>();
-		
+
 		for (;resultSet.hasNext();) {
 			Solution<Value, URI, Literal> s = resultSet.next();
 			for (String var: s.getSolutionNames()) {
@@ -55,7 +56,18 @@ public class SailResourceImpl
 	public IDataSource<Graph, Statement, Value, URI, Literal> getDataSource(Map<?, ?> options) {
 		SailDataSource dataSource = null;
 		if (options.containsKey(ETripleOptions.OPTION_DATASOURCE_OBJECT)) {
-			dataSource = new SailDataSource((Sail) options.get(ETripleOptions.OPTION_DATASOURCE_OBJECT));
+			Object obj = options.get(ETripleOptions.OPTION_DATASOURCE_OBJECT);
+			if (obj instanceof Sail) {
+				Sail sail = (Sail) obj;
+				try {
+					if (!((Sail) obj).isWritable()) {
+						sail.shutDown();
+					}
+				} catch (SailException e) {
+					e.printStackTrace();
+				}
+				dataSource = new SailDataSource(sail);
+			}
 		}
 		return dataSource;
 	}
@@ -67,8 +79,8 @@ public class SailResourceImpl
 
 	@Override
 	public EObject load(@SuppressWarnings("rawtypes") IDataSource dataSource, String uri, String graphURI) {
-EObject object;
-		
+		EObject object;
+
 		if (getPrimaryCache().hasKey(uri)) {
 			object = getPrimaryCache().getObjectByKey(uri);
 			if (((InternalEObject)object).eIsProxy()) {
@@ -77,13 +89,13 @@ EObject object;
 		} else {
 			@SuppressWarnings("unchecked")
 			EClass eClass = Metamodel.INSTANCE.getEClassByRdfType(
-				SparqlQueries.selectAllTypes(dataSource, uri, graphURI));
-			
+					SparqlQueries.selectAllTypes(dataSource, uri, graphURI));
+
 			object = EcoreUtil.create(eClass);
 			getPrimaryCache().cache(uri, object);
 			object = new SailEObjectBuilder(this, dataSource).loadEObject(object, uri, graphURI);
 		}
-		
+
 		return object;
 	}
 
@@ -92,15 +104,18 @@ EObject object;
 		final org.eclipse.emf.common.util.URI key = this.getID(object);
 		final Collection<Statement> triples = new SailRdfBuilder().createTriples(object, key.toString(), 
 				new GraphImpl());
-		
+
 		return triples;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public void save(Collection<Statement> triples, @SuppressWarnings("rawtypes") IDataSource dataSource, String graphURI) {
 		dataSource.add(triples, graphURI);
 	}
-	
-	
+
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+	}
 }
