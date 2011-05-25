@@ -6,4 +6,4 @@ bin/
 *.jpa
 /*/*/data/*
 /*/*/idtest/*
-/*/*/rest-test/*
+/tests/*/*-test/*
