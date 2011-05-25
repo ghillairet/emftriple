@@ -21,7 +21,7 @@ import com.emftriple.datasources.IResultSet;
 import com.emftriple.sail.util.SesameResultSet;
 
 public class RepositoryDataSource 
-	extends AbstractDataSource<Graph, Statement, Value, URI, Literal> {
+extends AbstractDataSource<Graph, Statement, Value, URI, Literal> {
 
 	protected RepositoryConnection connection;
 
@@ -29,14 +29,33 @@ public class RepositoryDataSource
 
 	protected RepositoryDataSource(Repository repository) {
 		this.repository = repository;
+		try {
+			repository.initialize();
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+		}
+		try {
+			connection = repository.getConnection();
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+		}
+		try {
+			connection.setAutoCommit(true);
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void add(Iterable<Statement> triples, String namedGraphURI) {
-		checkIsConnected();
-		
+		connect();
+
 		try {
-			connection.add(triples, new ValueFactoryImpl().createURI(namedGraphURI));
+			if (namedGraphURI == null) {
+				connection.add(triples);
+			} else {
+				connection.add(triples, new ValueFactoryImpl().createURI(namedGraphURI));
+			}
 		} catch (RepositoryException e) {
 			try {
 				connection.rollback();
@@ -48,10 +67,14 @@ public class RepositoryDataSource
 
 	@Override
 	public void remove(Iterable<Statement> triples, String namedGraphURI) {
-		checkIsConnected();
+		connect();
 
 		try {
-			connection.remove(triples, new ValueFactoryImpl().createURI(namedGraphURI));
+			if (namedGraphURI == null) {
+				connection.remove(triples);
+			} else {
+				connection.remove(triples, new ValueFactoryImpl().createURI(namedGraphURI));
+			}
 		} catch (RepositoryException e) {
 			try {
 				connection.rollback();
@@ -63,7 +86,8 @@ public class RepositoryDataSource
 
 	@Override
 	public void delete(String graphURI) {
-		checkIsConnected();
+		connect();
+		
 		if (graphURI == null) {
 			try {
 				connection.clear();
@@ -71,11 +95,11 @@ public class RepositoryDataSource
 				e.printStackTrace();
 			}
 		} else {
-		try {
-			connection.clear(new ValueFactoryImpl().createURI(graphURI));
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-		}
+			try {
+				connection.clear(new ValueFactoryImpl().createURI(graphURI));
+			} catch (RepositoryException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -92,9 +116,8 @@ public class RepositoryDataSource
 				if (!repository.isWritable()) {
 					repository.shutDown();
 				}
-				repository.initialize();
+//				repository.initialize();
 				connection = repository.getConnection();
-				connection.setAutoCommit(true);
 			} catch (RepositoryException e1) {
 				e1.printStackTrace();
 			}
@@ -107,7 +130,7 @@ public class RepositoryDataSource
 
 		try {
 			connection.close();
-			repository.shutDown();
+//			repository.shutDown();
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 		}
@@ -115,7 +138,7 @@ public class RepositoryDataSource
 
 	@Override
 	public boolean askQuery(String query, String graphURI) {
-		checkIsConnected();
+		connect();
 
 		try {
 			return connection.prepareBooleanQuery(QueryLanguage.SPARQL, query).evaluate();
@@ -131,12 +154,12 @@ public class RepositoryDataSource
 
 	@Override
 	public Graph constructQuery(String query, String graphURI) {
-		checkIsConnected();
-	
+		connect();
+
 		GraphQueryResult aResult = null;
 		try {
 			aResult = connection.prepareGraphQuery(QueryLanguage.SPARQL, query)
-			.evaluate();
+					.evaluate();
 		} catch (QueryEvaluationException e) {
 			e.printStackTrace();
 		} catch (RepositoryException e) {
@@ -144,7 +167,7 @@ public class RepositoryDataSource
 		} catch (MalformedQueryException e) {
 			e.printStackTrace();
 		}
-	
+
 		Graph g = new GraphImpl();
 		try {
 			for(;aResult.hasNext();)
@@ -152,18 +175,18 @@ public class RepositoryDataSource
 		} catch (QueryEvaluationException e) {
 			e.printStackTrace();
 		}
-		
+
 		return g;
 	}
 
 	@Override
 	public void constructQuery(String query, String graphURI, Graph aGraph) {
-		checkIsConnected();
-		
+		connect();
+
 		GraphQueryResult aResult = null;
 		try {
 			aResult = connection.prepareGraphQuery(QueryLanguage.SPARQL, query)
-			.evaluate();
+					.evaluate();
 		} catch (QueryEvaluationException e) {
 			e.printStackTrace();
 		} catch (RepositoryException e) {
@@ -171,7 +194,7 @@ public class RepositoryDataSource
 		} catch (MalformedQueryException e) {
 			e.printStackTrace();
 		}
-	
+
 		try {
 			for(;aResult.hasNext();)
 				aGraph.add(aResult.next());
@@ -182,12 +205,12 @@ public class RepositoryDataSource
 
 	@Override
 	public void describeQuery(String query, String graphURI, Graph aGraph) {
-		checkIsConnected();
+		connect();
 
 		GraphQueryResult aResult = null;	
 		try {
 			aResult = connection.prepareGraphQuery(QueryLanguage.SPARQL, query)
-			.evaluate();
+					.evaluate();
 		} catch (QueryEvaluationException e) {
 			e.printStackTrace();
 		} catch (RepositoryException e) {
@@ -195,7 +218,7 @@ public class RepositoryDataSource
 		} catch (MalformedQueryException e) {
 			e.printStackTrace();
 		}
-		
+
 		try {
 			for(;aResult.hasNext();)
 				aGraph.add(aResult.next());
@@ -206,12 +229,12 @@ public class RepositoryDataSource
 
 	@Override
 	public Graph describeQuery(String query, String graph) {
-		checkIsConnected();
+		connect();
 
 		GraphQueryResult aResult = null;	
 		try {
 			aResult = connection.prepareGraphQuery(QueryLanguage.SPARQL, query)
-			.evaluate();
+					.evaluate();
 		} catch (QueryEvaluationException e) {
 			e.printStackTrace();
 		} catch (RepositoryException e) {
@@ -219,7 +242,7 @@ public class RepositoryDataSource
 		} catch (MalformedQueryException e) {
 			e.printStackTrace();
 		}
-		
+
 		Graph g = new GraphImpl();
 		try {
 			for(;aResult.hasNext();)
@@ -227,14 +250,14 @@ public class RepositoryDataSource
 		} catch (QueryEvaluationException e) {
 			e.printStackTrace();
 		}
-		
+
 		return g;
 	}
 
 	@Override
 	public IResultSet<Value, URI, Literal> selectQuery(String query, String graph) {
-		checkIsConnected();
-
+		connect();
+		
 		IResultSet<Value, URI, Literal> aResult = null;
 		try {
 			TupleQuery aQuery = connection.prepareTupleQuery(QueryLanguage.SPARQL, query);
@@ -246,7 +269,7 @@ public class RepositoryDataSource
 		} catch (QueryEvaluationException e) {
 			e.printStackTrace();
 		}
-		
+
 		return aResult;
 	}
 
@@ -255,15 +278,15 @@ public class RepositoryDataSource
 		return true;
 	}
 
-	private final void checkIsConnected() {
-		try {
-			if (connection == null || !connection.isOpen() || !isConnected()) {
-				connect();
-			}
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-		}
-	}
+//	private final void checkIsConnected() {
+//		try {
+//			if (connection == null || !connection.isOpen() || !isConnected()) {
+//				connect();
+//			}
+//		} catch (RepositoryException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	@Override
 	public boolean supportsNamedGraph() {

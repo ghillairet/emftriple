@@ -25,8 +25,7 @@ public class SesameNativeResourceImpl
 
 	@Override
 	public IDataSource<Graph, Statement, Value, org.openrdf.model.URI, Literal> getDataSource() {
-		
-		return super.getDataSource();
+		return getDataSource(resourceSet.getLoadOptions());
 	}
 	
 	@Override
