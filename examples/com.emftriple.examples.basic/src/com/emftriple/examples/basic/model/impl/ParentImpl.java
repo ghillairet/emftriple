@@ -30,15 +30,35 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  * <p>
  * The following features are implemented:
  * <ul>
+ *   <li>{@link com.emftriple.examples.basic.model.impl.ParentImpl#getId <em>Id</em>}</li>
  *   <li>{@link com.emftriple.examples.basic.model.impl.ParentImpl#getName <em>Name</em>}</li>
  *   <li>{@link com.emftriple.examples.basic.model.impl.ParentImpl#getChildren <em>Children</em>}</li>
- *   <li>{@link com.emftriple.examples.basic.model.impl.ParentImpl#getId <em>Id</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
 public class ParentImpl extends EObjectImpl implements Parent {
+	/**
+	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getId()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String ID_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getId() <em>Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getId()
+	 * @generated
+	 * @ordered
+	 */
+	protected String id = ID_EDEFAULT;
+
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -68,26 +88,6 @@ public class ParentImpl extends EObjectImpl implements Parent {
 	 * @ordered
 	 */
 	protected EList<Child> children;
-
-	/**
-	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getId()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final Object ID_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getId() <em>Id</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getId()
-	 * @generated
-	 * @ordered
-	 */
-	protected Object id = ID_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -146,7 +146,7 @@ public class ParentImpl extends EObjectImpl implements Parent {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Object getId() {
+	public String getId() {
 		return id;
 	}
 
@@ -155,8 +155,8 @@ public class ParentImpl extends EObjectImpl implements Parent {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setId(Object newId) {
-		Object oldId = id;
+	public void setId(String newId) {
+		String oldId = id;
 		id = newId;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.PARENT__ID, oldId, id));
@@ -170,12 +170,12 @@ public class ParentImpl extends EObjectImpl implements Parent {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
+			case ModelPackage.PARENT__ID:
+				return getId();
 			case ModelPackage.PARENT__NAME:
 				return getName();
 			case ModelPackage.PARENT__CHILDREN:
 				return getChildren();
-			case ModelPackage.PARENT__ID:
-				return getId();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -189,15 +189,15 @@ public class ParentImpl extends EObjectImpl implements Parent {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
+			case ModelPackage.PARENT__ID:
+				setId((String)newValue);
+				return;
 			case ModelPackage.PARENT__NAME:
 				setName((String)newValue);
 				return;
 			case ModelPackage.PARENT__CHILDREN:
 				getChildren().clear();
 				getChildren().addAll((Collection<? extends Child>)newValue);
-				return;
-			case ModelPackage.PARENT__ID:
-				setId(newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -211,14 +211,14 @@ public class ParentImpl extends EObjectImpl implements Parent {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
+			case ModelPackage.PARENT__ID:
+				setId(ID_EDEFAULT);
+				return;
 			case ModelPackage.PARENT__NAME:
 				setName(NAME_EDEFAULT);
 				return;
 			case ModelPackage.PARENT__CHILDREN:
 				getChildren().clear();
-				return;
-			case ModelPackage.PARENT__ID:
-				setId(ID_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -232,12 +232,12 @@ public class ParentImpl extends EObjectImpl implements Parent {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
+			case ModelPackage.PARENT__ID:
+				return ID_EDEFAULT == null ? id != null : !ID_EDEFAULT.equals(id);
 			case ModelPackage.PARENT__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case ModelPackage.PARENT__CHILDREN:
 				return children != null && !children.isEmpty();
-			case ModelPackage.PARENT__ID:
-				return ID_EDEFAULT == null ? id != null : !ID_EDEFAULT.equals(id);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -252,10 +252,10 @@ public class ParentImpl extends EObjectImpl implements Parent {
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (name: ");
-		result.append(name);
-		result.append(", id: ");
+		result.append(" (id: ");
 		result.append(id);
+		result.append(", name: ");
+		result.append(name);
 		result.append(')');
 		return result.toString();
 	}

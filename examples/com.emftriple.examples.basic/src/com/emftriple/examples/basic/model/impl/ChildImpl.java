@@ -59,7 +59,7 @@ public class ChildImpl extends EObjectImpl implements Child {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final Object ID_EDEFAULT = null;
+	protected static final String ID_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getId() <em>Id</em>}' attribute.
@@ -69,7 +69,7 @@ public class ChildImpl extends EObjectImpl implements Child {
 	 * @generated
 	 * @ordered
 	 */
-	protected Object id = ID_EDEFAULT;
+	protected String id = ID_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -116,7 +116,7 @@ public class ChildImpl extends EObjectImpl implements Child {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Object getId() {
+	public String getId() {
 		return id;
 	}
 
@@ -125,8 +125,8 @@ public class ChildImpl extends EObjectImpl implements Child {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setId(Object newId) {
-		Object oldId = id;
+	public void setId(String newId) {
+		String oldId = id;
 		id = newId;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.CHILD__ID, oldId, id));
@@ -160,7 +160,7 @@ public class ChildImpl extends EObjectImpl implements Child {
 				setName((String)newValue);
 				return;
 			case ModelPackage.CHILD__ID:
-				setId(newValue);
+				setId((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);

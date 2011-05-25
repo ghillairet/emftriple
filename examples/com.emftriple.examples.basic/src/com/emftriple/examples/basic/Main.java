@@ -21,23 +21,19 @@ public class Main {
 		EPackage.Registry.INSTANCE.put(ModelPackage.eNS_URI, ModelPackage.eINSTANCE);
 		Resource.Factory.Registry.INSTANCE.getProtocolToFactoryMap().put("emftriple", new SesameNativeResourceFactory());
 		
+		System.out.println("Start ...");
 		long startTime = System.currentTimeMillis();
 
 		ResourceSet resourceSet = new ResourceSetImpl();
-		resourceSet.getLoadOptions().put(ETripleOptions.OPTION_DATASOURCE_LOCATION, "/tmp/native");
-		Resource resource = resourceSet.createResource(URI.createURI("emftriple://neo_test?graph=http://test"));
+		resourceSet.getLoadOptions().put(ETripleOptions.OPTION_DATASOURCE_LOCATION, "data");
+		Resource resource = resourceSet.createResource(URI.createURI("emftriple://sesame"));
 		
 		for (int i = 0; i < PARENT_COUNT; i++)
 		{
-			if (i % 100 == 0)
-				System.out.println();
-
-			System.out.print(".");
-			
 			Parent parent = ModelFactory.eINSTANCE.createParent();
 			parent.setId("parent_"+i);
 			parent.setName("Parent " + i);
-
+			
 			for (int j = 0; j < CHILD_COUNT; j++)
 			{
 				Child child = ModelFactory.eINSTANCE.createChild();
@@ -49,29 +45,36 @@ public class Main {
 		
 			resource.getContents().add(parent);
 		}
-		
+		System.out.println("objects created");
+		// Time to save data depends on the store capability
 		resource.save(null);
-
+		
 		System.out.println();
 		long endTime = System.currentTimeMillis();
-		System.out.println("Time to create " + (PARENT_COUNT * CHILD_COUNT) + " objects: " + ((endTime - startTime) / 1000.0) + " sec");
+		System.out.println("Time to create and store " + (PARENT_COUNT * CHILD_COUNT) + " objects: " + ((endTime - startTime) / 1000.0) + " sec");
 
 		startTime = System.currentTimeMillis();
-		resource = resourceSet.getResource(URI.createURI("emftriple://neo_test?graph=http://test&uri=http://eclipselabs.org/emftriple/model#parent_1"), true);
+		
+		resource = resourceSet.createResource(
+				URI.createURI("emftriple://sesame?uri=http://eclipselabs.org/emftriple/model/parent_0"));
+		resource.load(null);
+		
 		endTime = System.currentTimeMillis();
+		
 		System.out.println("Time to get first parent: " + (endTime - startTime) + " ms");
 
 		Parent parent = (Parent) EcoreUtil.getObjectByType(resource.getContents(), ModelPackage.eINSTANCE.getParent());
 
 		startTime = System.currentTimeMillis();
 
-		for (Child child : parent.getChildren())
+		for (Child child : parent.getChildren()) {
 			child.getName();
+		}
 
 		endTime = System.currentTimeMillis();
 		System.out.println("Time to walk " + CHILD_COUNT + " children of first parent: " + (endTime - startTime) + " ms");
 	}
 
 	private static final int CHILD_COUNT = 1000;
-	private static final int PARENT_COUNT = 1000;
+	private static final int PARENT_COUNT = 100;
 }

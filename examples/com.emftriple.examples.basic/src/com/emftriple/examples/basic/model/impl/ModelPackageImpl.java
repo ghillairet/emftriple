@@ -115,7 +115,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * @generated
 	 */
 	public EAttribute getParent_Name() {
-		return (EAttribute)parentEClass.getEStructuralFeatures().get(0);
+		return (EAttribute)parentEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -124,7 +124,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * @generated
 	 */
 	public EReference getParent_Children() {
-		return (EReference)parentEClass.getEStructuralFeatures().get(1);
+		return (EReference)parentEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -133,7 +133,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * @generated
 	 */
 	public EAttribute getParent_Id() {
-		return (EAttribute)parentEClass.getEStructuralFeatures().get(2);
+		return (EAttribute)parentEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -192,9 +192,9 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 
 		// Create classes and their features
 		parentEClass = createEClass(PARENT);
+		createEAttribute(parentEClass, PARENT__ID);
 		createEAttribute(parentEClass, PARENT__NAME);
 		createEReference(parentEClass, PARENT__CHILDREN);
-		createEAttribute(parentEClass, PARENT__ID);
 
 		childEClass = createEClass(CHILD);
 		createEAttribute(childEClass, CHILD__NAME);
@@ -232,13 +232,13 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(parentEClass, Parent.class, "Parent", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getParent_Id(), ecorePackage.getEString(), "id", null, 0, 1, Parent.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getParent_Name(), ecorePackage.getEString(), "name", null, 0, 1, Parent.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getParent_Children(), this.getChild(), null, "children", null, 0, -1, Parent.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getParent_Id(), ecorePackage.getEJavaObject(), "id", null, 0, 1, Parent.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(childEClass, Child.class, "Child", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getChild_Name(), ecorePackage.getEString(), "name", null, 0, 1, Child.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getChild_Id(), ecorePackage.getEJavaObject(), "id", null, 0, 1, Child.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getChild_Id(), ecorePackage.getEString(), "id", null, 0, 1, Child.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

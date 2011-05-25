@@ -70,13 +70,22 @@ public interface ModelPackage extends EPackage {
 	int PARENT = 0;
 
 	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PARENT__ID = 0;
+
+	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PARENT__NAME = 0;
+	int PARENT__NAME = 1;
 
 	/**
 	 * The feature id for the '<em><b>Children</b></em>' reference list.
@@ -85,16 +94,7 @@ public interface ModelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PARENT__CHILDREN = 1;
-
-	/**
-	 * The feature id for the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PARENT__ID = 2;
+	int PARENT__CHILDREN = 2;
 
 	/**
 	 * The number of structural features of the '<em>Parent</em>' class.
