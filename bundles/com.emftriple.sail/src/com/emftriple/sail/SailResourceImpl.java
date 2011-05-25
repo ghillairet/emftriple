@@ -80,20 +80,26 @@ extends ETripleResourceImpl<Graph, Statement, Value, URI, Literal>{
 	@Override
 	public EObject load(@SuppressWarnings("rawtypes") IDataSource dataSource, String uri, String graphURI) {
 		EObject object;
-
+		
 		if (getPrimaryCache().hasKey(uri)) {
 			object = getPrimaryCache().getObjectByKey(uri);
+			
 			if (((InternalEObject)object).eIsProxy()) {
 				object = new SailEObjectBuilder(this, dataSource).loadEObject(object, uri, graphURI);
 			}
+			
 		} else {
 			@SuppressWarnings("unchecked")
 			EClass eClass = Metamodel.INSTANCE.getEClassByRdfType(
 					SparqlQueries.selectAllTypes(dataSource, uri, graphURI));
-
-			object = EcoreUtil.create(eClass);
-			getPrimaryCache().cache(uri, object);
-			object = new SailEObjectBuilder(this, dataSource).loadEObject(object, uri, graphURI);
+			
+			if (eClass == null) {
+				object = null;
+			} else {
+				object = EcoreUtil.create(eClass);
+				getPrimaryCache().cache(uri, object);
+				object = new SailEObjectBuilder(this, dataSource).loadEObject(object, uri, graphURI);
+			}
 		}
 
 		return object;

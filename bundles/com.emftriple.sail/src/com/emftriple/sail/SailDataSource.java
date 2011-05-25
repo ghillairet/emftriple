@@ -40,8 +40,8 @@ import com.emftriple.sail.util.SailResultSet;
  * @since 0.6.0
  */
 public class SailDataSource 
-	extends AbstractDataSource<Graph, Statement, Value, URI, Literal>
-	implements IDataSource<Graph, Statement, Value, URI, Literal> {
+extends AbstractDataSource<Graph, Statement, Value, URI, Literal>
+implements IDataSource<Graph, Statement, Value, URI, Literal> {
 
 	protected SailConnection connection;
 
@@ -54,49 +54,36 @@ public class SailDataSource
 		} catch (SailException e1) {
 			e1.printStackTrace();
 		}
-		
-		try {
-			this.connection = sail.getConnection();
-		} catch (SailException e) {
-			e.printStackTrace();
-		}
-		
+
+		//		try {
+		//			this.connection = sail.getConnection();
+		//		} catch (SailException e) {
+		//			e.printStackTrace();
+		//		}
+
 	}
-	
+
 	@Override
 	protected void finalize() throws Throwable {
 		sail.shutDown();
 	}
-	
-	@Override
-	public void add(Iterable<Statement> triples, String namedGraphURI) {
-//		long startTime = System.currentTimeMillis();
-		SailConnection conn = null;
-		try {
-			conn = sail.getConnection();
-			URI graph = sail.getValueFactory().createURI(namedGraphURI);
-			for (Statement stmt: triples) {
-				try {
-					conn.addStatement(stmt.getSubject(), stmt.getPredicate(), stmt.getObject(), graph);
-				} catch (SailException e) {
-					e.printStackTrace();
-				}
-			}
-		} catch (SailException e1) {
-			e1.printStackTrace();
-		}
-//		long endTime = System.currentTimeMillis();
-//		System.out.println("Time to stores triples: " + ((endTime - startTime) / 1000.0) + " sec");
-	}
 
 	@Override
-	public void remove(Iterable<Statement> triples, String namedGraphURI) {
-		connect();
-		
-		for (Statement stmt: triples)
+	public void add(Iterable<Statement> triples, String namedGraphURI) {
+		SailConnection connection = null;
+		try {
+			connection = sail.getConnection();
+		} catch (SailException e2) {
+			e2.printStackTrace();
+		}
+		for (Statement stmt: triples) {
 			try {
-				connection.removeStatements(stmt.getSubject(), stmt.getPredicate(), stmt.getObject(),
-						new ValueFactoryImpl().createURI(namedGraphURI));
+				if (namedGraphURI == null) {
+					connection.addStatement(stmt.getSubject(), stmt.getPredicate(), stmt.getObject());
+				} else {
+					final URI graph = new ValueFactoryImpl().createURI(namedGraphURI);
+					connection.addStatement(stmt.getSubject(), stmt.getPredicate(), stmt.getObject(), graph);
+				} 
 			} catch (SailException e) {
 				try {
 					connection.rollback();
@@ -104,7 +91,35 @@ public class SailDataSource
 					e1.printStackTrace();
 				}
 			}
-			
+		}
+		try {
+			connection.commit();
+			connection.close();
+		} catch (SailException e2) {
+			e2.printStackTrace();
+		}
+	}
+
+	@Override
+	public void remove(Iterable<Statement> triples, String namedGraphURI) {
+		connect();
+
+		for (Statement stmt: triples)
+			try {
+				if (namedGraphURI == null) {
+					connection.removeStatements(stmt.getSubject(), stmt.getPredicate(), stmt.getObject());
+				} else {
+					connection.removeStatements(stmt.getSubject(), stmt.getPredicate(), stmt.getObject(),
+							new ValueFactoryImpl().createURI(namedGraphURI));
+				}
+			} catch (SailException e) {
+				try {
+					connection.rollback();
+				} catch (SailException e1) {
+					e1.printStackTrace();
+				}
+			}
+
 		disconnect();
 	}
 
@@ -112,19 +127,6 @@ public class SailDataSource
 	public void connect() {
 		if (!isConnected()) {
 			setConnected(true);
-
-			try {
-				if (!sail.isWritable()) {
-					sail.shutDown();
-				}
-			} catch (SailException e) {
-				e.printStackTrace();
-			}
-			try {
-				sail.initialize();
-			} catch (SailException e) {
-				e.printStackTrace();
-			}
 			try {
 				connection = sail.getConnection();
 			} catch (SailException e) {
@@ -139,7 +141,7 @@ public class SailDataSource
 
 		try {
 			connection.close();
-			sail.shutDown();
+			//			sail.shutDown();
 		} catch (SailException e) {
 			e.printStackTrace();
 		}
@@ -147,16 +149,19 @@ public class SailDataSource
 
 	@Override
 	public boolean askQuery(String query, String graph) {
-//		return askQuery(query);
+		//		return askQuery(query);
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public IResultSet<Value, URI, Literal> selectQuery(String query, String graph) {
-		SPARQLParser parser = new SPARQLParser();
-		CloseableIteration<? extends BindingSet, QueryEvaluationException> sparqlResults = null;
+		connect();
 
+		final SPARQLParser parser = new SPARQLParser();
+
+		CloseableIteration<? extends BindingSet, QueryEvaluationException> sparqlResults = null;
 		ParsedQuery parsedQuery = null;
+
 		try {
 			parsedQuery = parser.parseQuery(query, null);
 		} catch (MalformedQueryException e) {
@@ -171,9 +176,9 @@ public class SailDataSource
 		} catch (SailException e) {
 			e.printStackTrace();
 		}
-		
+
 		return new SailResultSet(sparqlResults);
-		
+
 	}
 
 	@Override
@@ -183,7 +188,7 @@ public class SailDataSource
 
 	protected boolean containsGraph(String graph) {
 		connect();
-		
+
 		try {
 			for (CloseableIteration<? extends Resource, SailException> res = connection.getContextIDs(); res.hasNext();) {
 				Resource r = res.next();
@@ -195,7 +200,7 @@ public class SailDataSource
 		}
 
 		disconnect();
-		
+
 		return false;
 	}
 
@@ -217,18 +222,18 @@ public class SailDataSource
 	@Override
 	public void constructQuery(String aQuery, String graphURI, Graph aGraph) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void describeQuery(String aQuery, String graphURI, Graph aGraph) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public Graph getGraph(String graphURI) {
-		
+
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -236,9 +241,13 @@ public class SailDataSource
 	@Override
 	public void delete(String graphURI) {
 		connect();
-		
+
 		try {
-			connection.clear();
+			if (graphURI == null) {
+				connection.clear();	
+			} else {
+				connection.clear(new ValueFactoryImpl().createURI(graphURI));
+			}
 		} catch (SailException e) {
 			e.printStackTrace();
 			try {
@@ -247,7 +256,7 @@ public class SailDataSource
 				e1.printStackTrace();
 			}
 		}
-		
+
 		disconnect();
 	}
 
