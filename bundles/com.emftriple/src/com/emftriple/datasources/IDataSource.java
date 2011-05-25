@@ -10,6 +10,8 @@
  *******************************************************************************/
 package com.emftriple.datasources;
 
+import org.eclipse.emf.common.util.URI;
+
 /**
  * The {@link IDataSource} interface provides an abstraction over diverse kinds of RDF data sources. 
  * 
@@ -134,4 +136,13 @@ public abstract interface IDataSource<G, T, N, U, L> {
 	 */
 	void remove(Iterable<T> triples, String graphURI);
 
+	public interface Registry {
+		
+		public final static Registry INSTANCE = new DataSourceRegistry();
+		
+		<G, T, N, U, L> IDataSource<G, T, N, U, L> getDataSource(URI uri);
+		
+		<G, T, N, U, L> void register(URI uri, IDataSource<G, T, N, U, L> dataSource);
+		
+	}
 }

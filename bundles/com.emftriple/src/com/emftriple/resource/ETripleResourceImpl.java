@@ -43,77 +43,74 @@ implements ETripleResource<G, T, N, U, L> {
 		this.primaryCache = new ETripleResourceCacheImpl();
 	}
 
-	public ETripleResourceCacheImpl getPrimaryCache() {
-		return primaryCache;
-	}
-
-	public String getGraph() {
-		return decodeQueryString(getURI().query()).get("graph");
-	}
-
 	@Override
 	public void delete(Map<?, ?> options) throws IOException {
-		final IDataSource<G, T, N, U, L> dataSource = options == null ? getDataSource() : getDataSource(options);
+		if (dataSource == null) {
+			dataSource = getByRegistryOrCreateDataSource(options);
+		}
 
 		if (dataSource.isMutable()) {
-			dataSource.connect();
+//			dataSource.connect();
 			final Map<String, String> queries = decodeQueryString(getURI().query());
 			dataSource.delete(queries.get("graph"));
-			dataSource.disconnect();
+//			dataSource.disconnect();
 		}
 	}
 
 	@Override
 	public void save(Map<?, ?> options) throws IOException {
-//		long startTime = System.currentTimeMillis();
-
-		final IDataSource<G, T, N, U, L> dataSource = options == null ? getDataSource() : getDataSource(options);
+		if (dataSource == null) {
+			dataSource = getByRegistryOrCreateDataSource(options);
+		}
 
 		if (!(dataSource.isMutable())) {
 			throw new IllegalStateException("Cannot save in a non mutable RDF Store");
 		}
+		
 		final Map<String, String> queries = decodeQueryString(getURI().query());
 
 		boolean inGraph = queries.containsKey("graph");
 		if (inGraph && !(dataSource.supportsNamedGraph())) {
 			throw new IllegalStateException("RDF Store does not support named graphs");
 		}
-
-		dataSource.connect();
-		Collection<T> triples = new ArrayList<T>();;
+		
+		final Collection<T> triples = new ArrayList<T>();;
 		for (TreeIterator<EObject> it = getAllContents(); it.hasNext();){
 			triples.addAll(getTriples(it.next()));
 		}
 		save(triples, dataSource, queries.get("graph"));
-		dataSource.disconnect();
-		
-//		long endTime = System.currentTimeMillis();
-//		System.out.println("Time to create " + getContents().size() + " objects: " + ((endTime - startTime) / 1000.0) + " sec");
 	}
 
 	@Override
 	public void load(Map<?, ?> options) throws IOException {
-		final IDataSource<G, T, N, U,L> dataSource = this.dataSource = options == null ? getDataSource() : getDataSource(options);
-
+		if (dataSource == null) {
+			dataSource = getByRegistryOrCreateDataSource(options);
+		}
+		
 		final Map<String, String> queries = decodeQueryString(getURI().query());
 
 		if (queries.containsKey("uri")) {
+			dataSource.connect();
+			
 			EObject object = load(dataSource, queries.get("uri"), queries.get("graph"));
-
-			if (object != null)
+			
+			if (object != null) {
 				getContents().add(object);
-
+			}
+			dataSource.disconnect();
 		} else {
+			dataSource.connect();
 			loadByQuery(dataSource, queries);
+			dataSource.disconnect();
 		}
 	}
 
 	@Override
 	public EObject getEObject(String uriFragment) {
 		if (dataSource == null) {
-			dataSource = getDataSource();
+			dataSource = getByRegistryOrCreateDataSource(null);
 		}
-
+		
 		if (uriFragment != null && uriFragment.startsWith("uri=")) 
 		{
 			final URI key = getProxyKey(uriFragment);
@@ -192,8 +189,25 @@ implements ETripleResource<G, T, N, U, L> {
 		}
 		final String key = EObjectID.getId(object);
 		getPrimaryCache().cache(key, object);
-
+		
 		return URI.createURI(key);
+	}
+	
+	private IDataSource<G, T, N, U, L> getByRegistryOrCreateDataSource(Map<?, ?> options) {
+		dataSource = IDataSource.Registry.INSTANCE.getDataSource(this.getURI().trimQuery());
+		if (dataSource == null) {
+			dataSource = options == null ? getDataSource() : getDataSource(options);
+			IDataSource.Registry.INSTANCE.register(getURI().trimQuery(), dataSource);
+		}
+		return dataSource;
+	}
+
+	public String getGraph() {
+		return decodeQueryString(getURI().query()).get("graph");
+	}
+
+	public ETripleResourceCacheImpl getPrimaryCache() {
+		return primaryCache;
 	}
 
 	public abstract IDataSource<G, T, N, U, L> getDataSource(Map<?, ?> options);

@@ -33,7 +33,7 @@ public class SparqlQueries {
 	
 	public static <G, T, N, U, L> List<String> selectAllTypes(IDataSource<G, T, N, U, L> dataSource, String key, String graph) {
 		final List<String> types = new ArrayList<String>();
-		final String query = typeOf(key);
+		final String query = typeOf(key, graph);
 
 		final IResultSet<N, U, L> resultSet = dataSource.selectQuery(query, graph);
 
@@ -51,19 +51,29 @@ public class SparqlQueries {
 		return types;
 	}
 
-	public static String typeOf(String resourceURI) {
-		return "SELECT distinct ?type WHERE { <" + 
-		resourceURI + "> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?type }";
+	public static String typeOf(String resourceURI, String graph) {
+		String query = "SELECT distinct ?type";
+		if (graph != null) {
+			query+="\n FROM <"+graph+">";
+		}
+		return query+" WHERE { <"+resourceURI+"> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?type }";
 	}
 	
 	private static final String prefixes = 
 		"prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> ";
 	
-	public static String selectObjectByClass(EClass eClass, String uri) {
-		String query = prefixes + "\n select distinct " + getVarFrom(eClass.getEAllStructuralFeatures());
-		query+= "\n where { ";
-		for (final String type: metamodel.getRdfTypes(eClass))
+	public static String selectObjectByClass(EClass eClass, String uri, String graph) {
+		String query = prefixes + "\n SELECT DISTINCT " + getVarFrom(eClass.getEAllStructuralFeatures());
+		
+		if (graph != null) {
+			query+="\n FROM <"+graph+">";
+		}
+		
+		query+= "\n WHERE { ";
+		for (final String type: metamodel.getRdfTypes(eClass)) {
 			query+="<"+uri+"> rdf:type <"+type+"> . \n";
+		}
+		
 		for (final EStructuralFeature feature: eClass.getEAllStructuralFeatures()) {
 			if (feature.getLowerBound() < 1) {
 				query+=" optional { \n <"+uri+"> <"+metamodel.getRdfType(feature)+"> ?"+feature.getName()+" \n } \n";
