@@ -5,7 +5,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +36,7 @@ public class BasicSesameMemTest {
 		
 		resourceSet = new ResourceSetImpl();
 		Map<String, Object> options = new HashMap<String, Object>();
-		options.put(ETripleOptions.OPTION_DATASOURCE_LOCATION, new File("/tmp/sesame/test"));
+		options.put(ETripleOptions.OPTION_DATASOURCE_LOCATION, "/tmp/sesame/test");
 		resourceSet.getLoadOptions().putAll(options);
 	}
 	
