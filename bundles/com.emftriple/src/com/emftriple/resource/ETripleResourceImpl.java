@@ -20,6 +20,7 @@ import java.util.TreeMap;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 
 import com.emftriple.datasources.IDataSource;
@@ -75,8 +76,12 @@ implements ETripleResource<G, T, N, U, L> {
 		}
 		
 		final Collection<T> triples = new ArrayList<T>();;
-		for (TreeIterator<EObject> it = getAllContents(); it.hasNext();){
-			triples.addAll(getTriples(it.next()));
+		for (TreeIterator<EObject> it = getAllContents(); it.hasNext();) {
+			EObject obj = it.next();
+			if (!obj.eIsProxy()) {
+				triples.addAll(getTriples(obj));
+				((InternalEObject)obj).eSetProxyURI(URI.createURI(getURI()+"#uri="+getID(obj)));
+			}
 		}
 		save(triples, dataSource, queries.get("graph"));
 	}
@@ -111,10 +116,12 @@ implements ETripleResource<G, T, N, U, L> {
 			dataSource = getByRegistryOrCreateDataSource(null);
 		}
 		
-		if (uriFragment != null && uriFragment.startsWith("uri=")) 
+		if (uriFragment != null) 
 		{
-			final URI key = getProxyKey(uriFragment);
-			return load(dataSource, key.toString(), getGraph());
+			final String key = getProxyKey(uriFragment);
+			if (key != null) {
+				return load(dataSource, key, getGraph());
+			}
 		}
 		return null;
 	}
@@ -161,8 +168,10 @@ implements ETripleResource<G, T, N, U, L> {
 		}
 	}
 
-	private URI getProxyKey(String uriFragment) {
-		return URI.createURI(uriFragment.split("=")[1].replaceAll("%23", "#"));
+	private String getProxyKey(String uriFragment) {
+		if (uriFragment.startsWith("uri=")) {
+			return uriFragment.split("=")[1].replaceAll("%23", "#");
+		} else  return null;
 	}
 
 	private Map<String, String> decodeQueryString(String qryStr) {
@@ -184,11 +193,22 @@ implements ETripleResource<G, T, N, U, L> {
 
 	@Override
 	public URI getID(EObject object) {
+		String key = null;
 		if (getPrimaryCache().hasObject(object)) {
-			return URI.createURI(getPrimaryCache().getObjectId(object));
+			key = getPrimaryCache().getObjectId(object);
 		}
-		final String key = EObjectID.getId(object);
-		getPrimaryCache().cache(key, object);
+		
+		if (key == null && object.eIsProxy()) {
+			URI uri = ((InternalEObject)object).eProxyURI();
+			if (uri.hasFragment()) {
+				key = getProxyKey(uri.fragment());
+			}
+		}
+		
+		if (key == null) {
+			key = EObjectID.getId(object);
+			getPrimaryCache().cache(key, object);
+		}
 		
 		return URI.createURI(key);
 	}
