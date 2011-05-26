@@ -30,6 +30,10 @@ public class Main {
 		
 		for (int i = 0; i < PARENT_COUNT; i++)
 		{
+			if (i % 100 == 0)
+				System.out.println();
+			System.out.print(".");
+			
 			Parent parent = ModelFactory.eINSTANCE.createParent();
 			parent.setId("parent_"+i);
 			parent.setName("Parent " + i);
@@ -44,10 +48,12 @@ public class Main {
 			}
 		
 			resource.getContents().add(parent);
+			resource.save(null);
 		}
-		System.out.println("objects created");
+		
+		System.out.println("\nobjects created");
 		// Time to save data depends on the store capability
-		resource.save(null);
+		
 		
 		System.out.println();
 		long endTime = System.currentTimeMillis();
@@ -67,6 +73,7 @@ public class Main {
 
 		startTime = System.currentTimeMillis();
 
+		System.out.println("first parent "+parent.getName()+" has "+parent.getChildren().size()+" children");
 		for (Child child : parent.getChildren()) {
 			child.getName();
 		}
@@ -76,5 +83,5 @@ public class Main {
 	}
 
 	private static final int CHILD_COUNT = 1000;
-	private static final int PARENT_COUNT = 100;
+	private static final int PARENT_COUNT = 1000;
 }
