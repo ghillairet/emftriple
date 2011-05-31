@@ -54,13 +54,6 @@ implements IDataSource<Graph, Statement, Value, URI, Literal> {
 		} catch (SailException e1) {
 			e1.printStackTrace();
 		}
-
-		//		try {
-		//			this.connection = sail.getConnection();
-		//		} catch (SailException e) {
-		//			e.printStackTrace();
-		//		}
-
 	}
 
 	@Override
@@ -70,13 +63,7 @@ implements IDataSource<Graph, Statement, Value, URI, Literal> {
 
 	@Override
 	public void add(Iterable<Statement> triples, String namedGraphURI) {
-		SailConnection connection = null;
-		try {
-			connection = sail.getConnection();
-		} catch (SailException e2) {
-			e2.printStackTrace();
-		}
-		for (Statement stmt: triples) {
+		for (Statement stmt: triples)
 			try {
 				if (namedGraphURI == null) {
 					connection.addStatement(stmt.getSubject(), stmt.getPredicate(), stmt.getObject());
@@ -91,10 +78,9 @@ implements IDataSource<Graph, Statement, Value, URI, Literal> {
 					e1.printStackTrace();
 				}
 			}
-		}
+		
 		try {
 			connection.commit();
-			connection.close();
 		} catch (SailException e2) {
 			e2.printStackTrace();
 		}
@@ -102,8 +88,6 @@ implements IDataSource<Graph, Statement, Value, URI, Literal> {
 
 	@Override
 	public void remove(Iterable<Statement> triples, String namedGraphURI) {
-		connect();
-
 		for (Statement stmt: triples)
 			try {
 				if (namedGraphURI == null) {
@@ -120,7 +104,11 @@ implements IDataSource<Graph, Statement, Value, URI, Literal> {
 				}
 			}
 
-		disconnect();
+		try {
+			connection.commit();
+		} catch (SailException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -128,6 +116,9 @@ implements IDataSource<Graph, Statement, Value, URI, Literal> {
 		if (!isConnected()) {
 			setConnected(true);
 			try {
+				if (connection != null && connection.isOpen()) {
+					connection.close();
+				}
 				connection = sail.getConnection();
 			} catch (SailException e) {
 				e.printStackTrace();
@@ -140,8 +131,9 @@ implements IDataSource<Graph, Statement, Value, URI, Literal> {
 		setConnected(false);
 
 		try {
-			connection.close();
-			//			sail.shutDown();
+			if (connection.isOpen()) {
+				connection.close();
+			}
 		} catch (SailException e) {
 			e.printStackTrace();
 		}
@@ -161,14 +153,14 @@ implements IDataSource<Graph, Statement, Value, URI, Literal> {
 
 		CloseableIteration<? extends BindingSet, QueryEvaluationException> sparqlResults = null;
 		ParsedQuery parsedQuery = null;
-
+		
 		try {
 			parsedQuery = parser.parseQuery(query, null);
 		} catch (MalformedQueryException e) {
 			e.printStackTrace();
 		}
 		try {
-			sparqlResults = sail.getConnection().evaluate(
+			sparqlResults = connection.evaluate(
 					parsedQuery.getTupleExpr(), 
 					parsedQuery.getDataset(), 
 					new EmptyBindingSet(), 
@@ -176,7 +168,7 @@ implements IDataSource<Graph, Statement, Value, URI, Literal> {
 		} catch (SailException e) {
 			e.printStackTrace();
 		}
-
+		
 		return new SailResultSet(sparqlResults);
 
 	}
@@ -240,13 +232,13 @@ implements IDataSource<Graph, Statement, Value, URI, Literal> {
 
 	@Override
 	public void delete(String graphURI) {
-		connect();
-
 		try {
 			if (graphURI == null) {
-				connection.clear();	
+				connection.clear();
+				connection.commit();
 			} else {
 				connection.clear(new ValueFactoryImpl().createURI(graphURI));
+				connection.commit();
 			}
 		} catch (SailException e) {
 			e.printStackTrace();
@@ -256,8 +248,6 @@ implements IDataSource<Graph, Statement, Value, URI, Literal> {
 				e1.printStackTrace();
 			}
 		}
-
-		disconnect();
 	}
 
 	@Override

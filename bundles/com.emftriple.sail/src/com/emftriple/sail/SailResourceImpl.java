@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2011 Guillaume Hillairet.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Guillaume Hillairet - initial API and implementation
+ *******************************************************************************/
 package com.emftriple.sail;
 
 import java.util.Collection;
@@ -23,8 +33,8 @@ import com.emftriple.datasources.IResultSet;
 import com.emftriple.datasources.IResultSet.Solution;
 import com.emftriple.resource.ETripleResourceImpl;
 import com.emftriple.transform.Metamodel;
+import com.emftriple.transform.SparqlQueries;
 import com.emftriple.util.ETripleOptions;
-import com.emftriple.util.SparqlQueries;
 
 public class SailResourceImpl 
 extends ETripleResourceImpl<Graph, Statement, Value, URI, Literal>{
@@ -117,7 +127,9 @@ extends ETripleResourceImpl<Graph, Statement, Value, URI, Literal>{
 	@SuppressWarnings("unchecked")
 	@Override
 	public void save(Collection<Statement> triples, @SuppressWarnings("rawtypes") IDataSource dataSource, String graphURI) {
+		dataSource.connect();
 		dataSource.add(triples, graphURI);
+		dataSource.disconnect();
 	}
 
 	@Override
