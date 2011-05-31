@@ -77,5 +77,4 @@ Export-Package: com.orientechnologies.common.collection,
  com.orientechnologies.orient.core.tx,
  com.orientechnologies.orient.core.type,
  com.orientechnologies.orient.core.type.tree
-Require-Bundle: org.eclipse.contribution.weaving.jdt
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

@@ -7,3 +7,4 @@ bin/
 /*/*/data/*
 /*/*/idtest/*
 /tests/*/*-test/*
+tests/com.emftriple.jena.junit/data.ttl

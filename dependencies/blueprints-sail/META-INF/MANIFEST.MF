@@ -19,7 +19,6 @@ Export-Package: com.tinkerpop.blueprints.pgm,
  com.tinkerpop.blueprints.pgm.util.graphml,
  com.tinkerpop.blueprints.pgm.util.json
 Require-Bundle: net.fortytwo.sesametools,
- org.eclipse.contribution.weaving.jdt,
  org.openrdf,
  javax.xml
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

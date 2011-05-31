@@ -16,10 +16,6 @@
       [Enter License Description here.]
    </license>
 
-   <requires>
-      <import plugin="org.eclipse.contribution.weaving.jdt"/>
-   </requires>
-
    <plugin
          id="orientdb"
          download-size="0"
