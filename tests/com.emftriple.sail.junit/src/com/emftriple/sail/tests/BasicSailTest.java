@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2011 Guillaume Hillairet.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Guillaume Hillairet - initial API and implementation
+ *******************************************************************************/
 package com.emftriple.sail.tests;
 
 import static org.junit.Assert.assertFalse;
@@ -10,7 +20,8 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openrdf.sail.Sail;
 import org.openrdf.sail.SailException;
@@ -27,14 +38,14 @@ import com.tinkerpop.blueprints.pgm.oupls.sail.GraphSail;
 
 public class BasicSailTest {
 	
-	ResourceSet resourceSet;
-	Neo4jGraph neo;
-	Sail sail;
+	static ResourceSet resourceSet;
+	static Neo4jGraph neo;
+	static Sail sail;
 	
-	@Before
-	public void tearUp() {
+	@BeforeClass
+	public static void tearUp() {
 		neo = new Neo4jGraph("basic-test");
-		neo.setTransactionMode(Mode.AUTOMATIC);
+		neo.setTransactionMode(Mode.MANUAL);
 		sail = new GraphSail(neo);
 	
 		Resource.Factory.Registry.INSTANCE.getProtocolToFactoryMap().put("emftriple", new SailResourceFactory());
@@ -42,12 +53,13 @@ public class BasicSailTest {
 		resourceSet.getLoadOptions().put(ETripleOptions.OPTION_DATASOURCE_OBJECT, sail);
 	}
 	
-//	@After
-	public void tearDown() {
-//		neo.shutdown();
+	@AfterClass
+	public static void tearDown() {
+		neo.shutdown();
 		
 		try {
 			sail.shutDown();
+			neo.shutdown();
 		} catch (SailException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -56,6 +68,7 @@ public class BasicSailTest {
 	
 	@Test
 	public void testClearDataSource() throws IOException {
+		
 		Resource resource = resourceSet.createResource(URI.createURI("emftriple://sail"));		
 		resource.delete(null);
 		
@@ -63,8 +76,6 @@ public class BasicSailTest {
 		deleted.load(null);
 		
 		assertTrue(deleted.getContents().isEmpty());
-		
-		tearDown();
 	}
 	
 	@Test
