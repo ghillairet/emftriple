@@ -11,9 +11,9 @@
 package com.emftriple.jena.sdb;
 
 import com.emftriple.jena.ModelDataSource;
-import com.hp.hpl.jena.query.QueryExecution;
+import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.Statement;
+import com.hp.hpl.jena.sdb.SDBFactory;
 import com.hp.hpl.jena.sdb.Store;
 
 /**
@@ -31,7 +31,6 @@ public class SDBDataSource
 	
 	public static final String OPTION_SDB_TYPE = "emftriple.db.sdb.type";
 	
-	@SuppressWarnings("unused")
 	private final Store store;
 
 	protected SDBDataSource(Store store) {
@@ -40,74 +39,55 @@ public class SDBDataSource
 
 	@Override
 	public boolean supportsNamedGraph() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isMutable() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean supportsUpdateQuery() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void add(Iterable<Statement> triples, String graphURI) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void delete(String graphURI) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void remove(Iterable<Statement> triples, String graphURI) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Model getModel() {
-		// TODO Auto-generated method stub
-		return null;
+		return true;
 	}
 
 	@Override
 	public Model getModel(String graph) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public QueryExecution getQueryExecution(String query, Model model) {
-		// TODO Auto-generated method stub
-		return null;
+		Dataset ds = SDBFactory.connectDataset(store);
+		if (graph == null) {	
+			return ds.getDefaultModel();
+		}
+		return ds.getNamedModel(graph);
 	}
 
 	@Override
 	public boolean supportsTransaction() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public void connect() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void disconnect() {
 		// TODO Auto-generated method stub
-		
+	}
+
+	@Override
+	public void delete(String graphURI) {
+		final Dataset ds = SDBFactory.connectDataset(store);
+		if (graphURI == null) {
+			ds.getDefaultModel().removeAll();
+			ds.getDefaultModel().commit();
+			ds.close();
+		} else {
+			ds.getNamedModel(graphURI).removeAll();
+			ds.getNamedModel(graphURI).commit();
+			ds.close();
+		}
 	}
 
 	

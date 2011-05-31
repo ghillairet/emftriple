@@ -10,11 +10,15 @@
  *******************************************************************************/
 package com.emftriple.jena;
 
+import java.util.List;
+
 import com.emftriple.datasources.AbstractDataSource;
 import com.emftriple.datasources.IDataSource;
 import com.emftriple.datasources.IResultSet;
 import com.emftriple.jena.util.JenaResultSet;
 import com.hp.hpl.jena.query.QueryExecution;
+import com.hp.hpl.jena.query.QueryExecutionFactory;
+import com.hp.hpl.jena.query.QueryParseException;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.RDFNode;
@@ -29,10 +33,48 @@ public abstract class ModelDataSource
 	public ModelDataSource() {}
 
 	@Override
+	public QueryExecution getQueryExecution(String query, Model model) {
+		QueryExecution qe = null;
+		try {
+			qe = QueryExecutionFactory.create(query, model);
+		} catch (QueryParseException e) {
+			System.out.println(query);
+			e.printStackTrace();
+		}
+		return qe;
+	}
+	
+	@Override
+	public void add(Iterable<Statement> triples, String namedGraphURI) {
+		final Model model = getModel(namedGraphURI);
+		
+		model.enterCriticalSection(Lock.WRITE);
+		try {
+			model.add((List<Statement>)triples);
+		} finally { 
+			model.leaveCriticalSection();
+			model.commit();
+		}	
+	}
+	
+	@Override
+	public void remove(Iterable<Statement> triples, String namedGraphURI) {
+		final Model model = getModel(namedGraphURI);
+		
+		model.enterCriticalSection(Lock.WRITE);
+		try {
+			model.remove((List<Statement>) triples);
+		} finally { 
+			model.leaveCriticalSection();
+			model.commit();
+		}
+	}
+
+	@Override
 	public IResultSet<RDFNode, Resource, Literal> selectQuery(String query, String graphURI) {
 		IResultSet<RDFNode, Resource, Literal> rs = null;
 		final Model model = getModel(graphURI);
-
+		
 		model.enterCriticalSection(Lock.READ);
 		try {
 			final QueryExecution qexec = getQueryExecution(query, model);

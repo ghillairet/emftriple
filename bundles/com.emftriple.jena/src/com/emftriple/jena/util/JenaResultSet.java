@@ -12,7 +12,7 @@ package com.emftriple.jena.util;
 
 import java.util.Iterator;
 
-import com.emftriple.datasources.AbstractResultSet;
+import com.emftriple.datasources.IResultSet;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.RDFNode;
@@ -24,7 +24,7 @@ import com.hp.hpl.jena.rdf.model.Resource;
  * @author <a href="mailto:g.hillairet at gmail.com">Guillaume Hillairet</a>
  * @since 0.6.1
  */
-public class JenaResultSet extends AbstractResultSet<RDFNode, Resource, Literal> {
+public class JenaResultSet implements IResultSet<RDFNode, Resource, Literal> {
 	
 	private com.hp.hpl.jena.query.ResultSet resultSet;
 	

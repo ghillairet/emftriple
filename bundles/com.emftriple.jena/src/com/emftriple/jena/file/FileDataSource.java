@@ -33,20 +33,18 @@ public class FileDataSource
 
 	private final String fileLocation;
 
-	private final Model model;
-
 	private final String fileFormat;
 
-	protected FileDataSource(Model model, String fileLocation, String format) {
+	protected FileDataSource(String fileLocation, String format) {
 		this.fileLocation = fileLocation;
 		this.fileFormat = format;
-		this.model = model;
 	}
 
 	@Override
 	public void add(Iterable<Statement> triples, String graphURI) {
-		model.enterCriticalSection(Lock.WRITE);
+		Model model = getModel(graphURI);
 		
+		model.enterCriticalSection(Lock.WRITE);
 		try {
 			model.add((List<Statement>)triples);
 			try {
@@ -61,6 +59,8 @@ public class FileDataSource
 
 	@Override
 	public void remove(Iterable<Statement> triples, String graphURI) {
+		Model model = getModel(graphURI);
+		
 		model.enterCriticalSection(Lock.WRITE);
 		try {
 			model.remove( (List<Statement>)triples );
@@ -75,13 +75,8 @@ public class FileDataSource
 	}
 
 	@Override
-	public Model getModel() {
-		return model;
-	}
-
-	@Override
 	public Model getModel(String graph) {
-		throw new UnsupportedOperationException();
+		return FileUtil.getModel(fileLocation, fileFormat);
 	}
 
 	@Override
@@ -92,7 +87,6 @@ public class FileDataSource
 	@Override
 	protected void finalize() throws Throwable {
 		super.finalize();
-		model.close();
 	}
 
 	@Override
@@ -112,6 +106,8 @@ public class FileDataSource
 
 	@Override
 	public void delete(String graphURI) {
+		Model model = getModel(graphURI);
+		
 		model.removeAll();
 		try {
 			model.write(new FileOutputStream(new File(fileLocation)), fileFormat);

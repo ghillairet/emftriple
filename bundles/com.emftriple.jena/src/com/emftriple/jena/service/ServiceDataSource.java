@@ -40,13 +40,8 @@ public class ServiceDataSource
 	}
 	
 	@Override
-	public Model getModel() {
-		return ModelFactory.createDefaultModel();
-	}
-	
-	@Override
 	public Model getModel(String graph) {
-		return getModel();
+		return ModelFactory.createDefaultModel();
 	}
 
 	@Override
@@ -66,8 +61,7 @@ public class ServiceDataSource
 
 	@Override
 	public boolean supportsNamedGraph() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
