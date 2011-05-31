@@ -7,5 +7,4 @@ Bundle-Vendor: eclipselabs
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: com.emftriple.restlet
 Require-Bundle: org.eclipse.emf.ecore,
- com.emf4sw.rdf,
  com.emftriple
