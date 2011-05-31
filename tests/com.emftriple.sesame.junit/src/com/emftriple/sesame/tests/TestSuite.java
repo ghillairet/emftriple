@@ -8,14 +8,17 @@
  * Contributors:
  *    Guillaume Hillairet - initial API and implementation
  *******************************************************************************/
-package com.emftriple.jena.tests;
+package com.emftriple.sesame.tests;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({BaseTest.class, TDBTest.class, FileTest.class, ObjectIdTest.class, QueryResultTest.class})
+@SuiteClasses({
+	BasicSesameMemTest.class, 
+	BasicSesameNativeTest.class, BasicSesameNativeGraphTest.class, 
+	QueryResultTest.class})
 public class TestSuite {
 
 }

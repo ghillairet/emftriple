@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2011 Guillaume Hillairet.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Guillaume Hillairet - initial API and implementation
+ *******************************************************************************/
 package com.emftriple.jena.tests;
 
 import static org.junit.Assert.assertNotNull;
@@ -15,6 +25,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.emftriple.jena.tdb.TDBResourceFactory;
+import com.emftriple.util.ETripleOptions;
 import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.tdb.TDBFactory;
 import com.junit.model.ModelFactory;
@@ -31,11 +42,12 @@ public class ObjectIdTest {
 	
 	@Test
 	public void createPersonsAndBooks() throws IOException {
-		Dataset ds = TDBFactory.createDataset("idtest");
+		Dataset ds = TDBFactory.createDataset("id-test");
 		ds.getDefaultModel().removeAll();
 		ds.getDefaultModel().commit();
 		
 		ResourceSet resourceSet = new ResourceSetImpl();
+		resourceSet.getLoadOptions().put(ETripleOptions.OPTION_DATASOURCE_LOCATION, "id-test");
 		Resource resource = resourceSet.createResource(URI.createURI("emftriple://idtest"));
 		resource.load(null);
 		
@@ -43,6 +55,7 @@ public class ObjectIdTest {
 		
 		PrimaryObject p1 = ModelFactory.eINSTANCE.createPrimaryObject();
 		p1.setId(1);
+		p1.setName("name");
 		
 		TargetObject t1 = ModelFactory.eINSTANCE.createTargetObject();
 		t1.setId(1);
