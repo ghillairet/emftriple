@@ -8,12 +8,19 @@
  * Contributors:
  *    Guillaume Hillairet - initial API and implementation
  *******************************************************************************/
-package com.emftriple.util;
+package com.emftriple.query.result;
 
-public final class ETripleOptions {
-	
-	public static final String OPTION_DATASOURCE_LOCATION = "OPTION_DATASOURCE_LOCATION";
-	
-	public static final String OPTION_DATASOURCE_OBJECT = "OPTION_DATASOURCE_OBJECT";
-	
-}
+import org.eclipse.emf.ecore.EObject;
+
+/**
+ * <!-- begin-user-doc -->
+ * A representation of the model object '<em><b>Query Result</b></em>'.
+ * <!-- end-user-doc -->
+ *
+ *
+ * @see com.emftriple.query.result.ResultPackage#getQueryResult()
+ * @model abstract="true"
+ * @generated
+ */
+public interface QueryResult extends EObject {
+} // QueryResult

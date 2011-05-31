@@ -10,11 +10,9 @@
  *******************************************************************************/
 package com.emftriple.util;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EAttribute;
@@ -36,23 +34,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 public class ETripleEcoreUtil {
 
 	private static final Map<EClass, EAttribute> cacheid = new HashMap<EClass, EAttribute>();
-
-	/**
-	 * Get all sub hierarchy of a given {@link EClass} from a given set. 
-	 * 
-	 * @param eClass to get the sub hierarchy.
-	 * @param classes set of {@link EClass}.
-	 * @return a {@link EList} of {@link EClass} being the sub hierarchy of eClass parameter.
-	 */
-	public static EList<EClass> getESubClasses(EClass eClass, Collection<EClass> classes) {
-		EList<EClass> allSubClasses = new BasicEList<EClass>();
-		for (EClass other: classes) {
-			if (other.getEAllSuperTypes().contains(eClass)) {
-				allSubClasses.add(other);
-			}
-		}
-		return allSubClasses;
-	}
 
 	public static EAnnotation getETripleAnnotation(EModelElement element, String name) {
 		EAnnotation ann = element.getEAnnotation(name);

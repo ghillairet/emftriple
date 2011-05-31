@@ -8,12 +8,14 @@
  * Contributors:
  *    Guillaume Hillairet - initial API and implementation
  *******************************************************************************/
-package com.emftriple.util;
+package com.emftriple.query;
 
-public final class ETripleOptions {
+import org.eclipse.emf.common.util.URI;
+
+public interface Query {
 	
-	public static final String OPTION_DATASOURCE_LOCATION = "OPTION_DATASOURCE_LOCATION";
+	URI toURI(URI resourceURI);
 	
-	public static final String OPTION_DATASOURCE_OBJECT = "OPTION_DATASOURCE_OBJECT";
+	String get();
 	
 }

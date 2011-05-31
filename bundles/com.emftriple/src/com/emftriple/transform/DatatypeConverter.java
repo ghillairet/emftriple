@@ -24,8 +24,8 @@ import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
 
-import com.emftriple.util.RDFS;
-import com.emftriple.util.XSD;
+import com.emftriple.vocabularies.RDFS;
+import com.emftriple.vocabularies.XSD;
 
 /**
  * 

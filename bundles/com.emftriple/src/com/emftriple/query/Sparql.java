@@ -16,8 +16,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 
-public class Sparql implements ETripleQuery {
+import com.emftriple.transform.MetamodelImpl;
+
+public class Sparql implements Query {
 	
 	private List<String> select;
 	private GraphPattern[] where;
@@ -52,17 +56,128 @@ public class Sparql implements ETripleQuery {
 			res+="prefix "+p+": <"+prefixes.get(p)+"> ";
 		}
 		res+= "select ";
-		for (String s: select)
-			res+=s+" ";
+		if (select.isEmpty())
+			res+="* ";
+		else
+			for (String s: select)
+				res+=getVariable(s)+" ";
 		res+="where { ";
 		for (GraphPattern g: where)
 			res+=g.get();
 		res+="}";
 		return res;
 	}
+
+	public static GraphPattern triple(Node s, EStructuralFeature feature, Node o) {
+		final String rdf = MetamodelImpl.INSTANCE.getRdfType(feature);
 		
+		return new TripleGraphPattern(s.get(), iri(rdf).get(), o.get());
+	}
+	
+	public static GraphPattern triple(Node s, Node p, EClass eClass) {
+		final String rdf = MetamodelImpl.INSTANCE.getRdfTypes(eClass).get(0);
+		
+		return new TripleGraphPattern(s.get(), p.get(), iri(rdf).get());
+	}
+	
+	public static GraphPattern triple(Node s, Node p, Node o) {
+		return new TripleGraphPattern(s.get(), p.get(), o.get());
+	}
+
+	public static IRI iri(String iri) {
+		return new IRI(getIRI(iri));
+	}
+	
+	public static Literal literal(String lit) {
+		return new Literal(lit, null, null);
+	}
+
+	public static Literal literal(String lit, String type) {
+		return new Literal(lit, null, type);
+	}
+	
+	public static Var var(String var) {
+		return new Var(getVariable(var));
+	}
+	
+	public static Filter filter(String expression) {
+		return new Filter(expression);
+	}
+
+	public static GraphPattern optional(GraphPattern... patterns) {
+		return new OptionalGraphPattern(patterns);
+	}
+
+	private static String getVariable(String var) {
+		return var.startsWith("?") ? var : "?"+var;	
+	}
+	
+	private static String getIRI(String iri) {
+		return iri.startsWith("<") ? iri : "<"+iri+">";
+	}
+	
 	public interface GraphPattern {
 		String get();
+	}
+	
+	public interface Node {
+		String get();
+	}
+	
+	public static class IRI implements Node {
+		private String node;
+
+		IRI(String node) {
+			this.node = node;
+		}
+		
+		@Override
+		public String get() {
+			return node;
+		}
+		
+	}
+	
+	public static class Var implements Node {
+		private String node;
+		
+		Var(String node) {
+			this.node = node;
+		}
+		
+		@Override
+		public String get() {
+			return node;
+		}
+		
+	}
+	
+	public static class Literal implements Node {
+		private String node;
+		@SuppressWarnings("unused")
+		private String lang;
+		@SuppressWarnings("unused")
+		private String type;
+		
+		Literal(String node, String lang, String type) {
+			this.node = node;
+			this.lang = lang;
+			this.type = type;
+		}
+		
+		@Override
+		public String get() {
+			String var = "?"+node;
+			String literal = var + " . filter (str("+var+") = \""+node+"\")";
+//			if (type != null) {
+//				literal += "^^"+type;
+//			}
+//			if (lang != null) {
+//				literal += "@@"+lang;
+//			}
+			return literal;
+		}
+		
 	}
 	
 	public static class TripleGraphPattern implements GraphPattern {
@@ -74,10 +189,6 @@ public class Sparql implements ETripleQuery {
 			this.s = s;
 			this.p = p;
 			this.o = o;
-		}
-		
-		public static GraphPattern triple(String s, String p, String o) {
-			return new TripleGraphPattern(s, p, o);
 		}
 		
 		public String get() {
@@ -92,10 +203,6 @@ public class Sparql implements ETripleQuery {
 			this.patterns = patterns;
 		}
 		
-		public static GraphPattern optional(GraphPattern... patterns) {
-			return new OptionalGraphPattern(patterns);
-		}
-		
 		public String get() {
 			String res = "optional { ";
 				for (GraphPattern p: patterns)
@@ -105,10 +212,27 @@ public class Sparql implements ETripleQuery {
 		}
 	}
 	
+	public static class Filter implements GraphPattern {
+		private String filter;
+
+		Filter(String filter) {
+			this.filter = filter;
+		}
+
+		@Override
+		public String get() {
+			return "filter ("+filter+")";
+		}
+	}
+	
 	@Override
 	public URI toURI(URI resourceURI) {
-		String query = get().replaceAll(" ", "%20").replaceAll("#", "%23");
-		return URI.createURI(resourceURI+"&query="+query);
+		final String query = get().replaceAll(" ", "%20").replaceAll("#", "%23");
+		final URI uri = resourceURI.hasQuery() ?
+		 URI.createURI(resourceURI+"&query="+query) :
+			 URI.createURI(resourceURI+"?query="+query);
+		 
+		return uri;
 	}
 
 }

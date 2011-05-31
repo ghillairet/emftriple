@@ -80,13 +80,6 @@ public class MetamodelImpl implements Metamodel {
 		return null;
 	}
 	
-	private EClass doGetEClassByRdfType(String uri) {
-		if (Metamodel.Registry.INSTANCE.mapOfEntities().containsKey(uri)) {
-			return Metamodel.Registry.INSTANCE.mapOfEntities().get(uri);
-		}
-		return null;
-	}
-
 	@Override
 	public EClass getEClassByRdfType(List<String> uris) {
 		for (String uri: uris) {
@@ -175,6 +168,13 @@ public class MetamodelImpl implements Metamodel {
 		cacheFeature.put(feature, annotationURI);
 		
 		return annotationURI;
+	}
+
+	private EClass doGetEClassByRdfType(String uri) {
+		if (Metamodel.Registry.INSTANCE.mapOfEntities().containsKey(uri)) {
+			return Metamodel.Registry.INSTANCE.mapOfEntities().get(uri);
+		}
+		return null;
 	}
 	
 }

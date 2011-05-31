@@ -1,0 +1,14 @@
+@namespace(uri="http://www.eclipselabs.org/emftriple/result", prefix="result")
+package result;
+
+abstract class QueryResult {
+   
+}
+
+class SingleResult extends QueryResult {
+   val EObject result;
+}
+
+class ListResult extends QueryResult {
+   val EObject[*] result;
+}

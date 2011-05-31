@@ -8,29 +8,32 @@
  * Contributors:
  *    Guillaume Hillairet - initial API and implementation
  *******************************************************************************/
-package com.emftriple.datasources;
-
-import java.util.HashMap;
-import java.util.Map;
+package com.emftriple.query;
 
 import org.eclipse.emf.common.util.URI;
 
-import com.emftriple.datasources.IDataSource.Registry;
+public class SparqlNative implements Query {
 
-public class DataSourceRegistry implements Registry {
+	private final String query;
 
-	@SuppressWarnings("rawtypes")
-	private static final Map<URI, IDataSource> map = new HashMap<URI, IDataSource>();
+	public SparqlNative(String query) {
+		this.query = query;
+	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public <G, T, N, U, L> IDataSource<G, T, N, U, L> getDataSource(URI uri) {
-		return map.get(uri);
+	public String get() {
+		return query;
 	}
-
+	
 	@Override
-	public <G, T, N, U, L> void register(URI uri, IDataSource<G, T, N, U, L> dataSource) {
-		map.put(uri, dataSource);
+	public URI toURI(URI resourceURI) {
+		final String uri;
+		if (resourceURI.hasQuery()) {
+			uri=resourceURI+"&query=";
+		} else {
+			uri=resourceURI+"?query=";
+		}
+		String query = get().replaceAll(" ", "%20").replaceAll("#", "%23");
+		return URI.createURI(uri+query);
 	}
-
 }

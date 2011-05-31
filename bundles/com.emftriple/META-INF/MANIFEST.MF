@@ -6,12 +6,15 @@ Bundle-Version: 0.7.2.qualifier
 Bundle-ClassPath: .
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: com.emftriple,
- com.emftriple.datasources,
+Export-Package: com.emftriple.datasources,
  com.emftriple.query,
+ com.emftriple.query.result,
+ com.emftriple.query.result.impl,
+ com.emftriple.query.result.util,
  com.emftriple.resource,
  com.emftriple.transform,
- com.emftriple.util
+ com.emftriple.util,
+ com.emftriple.vocabularies
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: eclipselabs
 Require-Bundle: org.eclipse.emf.ecore

@@ -25,6 +25,8 @@ import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 
 import com.emftriple.datasources.IDataSource;
 import com.emftriple.datasources.IResultSet;
+import com.emftriple.query.result.ListResult;
+import com.emftriple.query.result.ResultFactory;
 
 /**
  * 
@@ -51,10 +53,11 @@ implements ETripleResource<G, T, N, U, L> {
 		}
 
 		if (dataSource.isMutable()) {
-//			dataSource.connect();
+			dataSource.connect();
 			final Map<String, String> queries = decodeQueryString(getURI().query());
 			dataSource.delete(queries.get("graph"));
-//			dataSource.disconnect();
+			getContents().clear();
+			dataSource.disconnect();
 		}
 	}
 
@@ -104,6 +107,9 @@ implements ETripleResource<G, T, N, U, L> {
 			}
 			dataSource.disconnect();
 		} else {
+			if (dataSource.isConnected()) {
+				dataSource.disconnect();
+			}
 			dataSource.connect();
 			loadByQuery(dataSource, queries);
 			dataSource.disconnect();
@@ -130,11 +136,16 @@ implements ETripleResource<G, T, N, U, L> {
 		final String query;
 		dataSource.connect();
 		
-		if (queries.containsKey("query")) {
+		final boolean isQuery = queries.containsKey("query");
+		
+		if (isQuery) {
 			query = queries.get("query").replaceAll("%20", " ").replaceAll("%23", "#"); 
-		}
-		else {
-			query ="select ?s where { ?s ?p ?o }";
+		} else {
+			if (queries.containsKey("graph")) {
+				query = "select ?s where { graph <"+queries.get("graph")+"> { ?s ?p ?o } }";
+			} else {
+				query = "select ?s where { ?s ?p ?o }";
+			}
 		}
 
 		final IResultSet<N, U, L> rs;
@@ -151,14 +162,31 @@ implements ETripleResource<G, T, N, U, L> {
 		final Set<String> uris = loadingContentFromResultSet(rs);
 
 		if (!uris.isEmpty()) {
-			loadingEObjectsFromURIs(uris, queries.get("graph"), dataSource);
+			if (isQuery) {
+				loadingQueryResultFromURIs(uris, queries.get("graph"), dataSource);
+			} else {
+				loadingEObjectsFromURIs(uris, queries.get("graph"), dataSource);
+			}
 		}
 		
 		dataSource.disconnect();
 	}
 
 	protected abstract Set<String> loadingContentFromResultSet(IResultSet<N, U, L> resultSet);
-
+	
+	private void loadingQueryResultFromURIs(Set<String> uris, String graph, IDataSource<G, T, N, U, L> dataSource) {
+		final ListResult result = ResultFactory.eINSTANCE.createListResult();
+		
+		for (String uri: uris) {
+			EObject object = load(dataSource, uri, graph);
+			if (object != null) {
+				result.getResult().add(object);
+			}
+		}
+		
+		getContents().add(0, result);
+	}
+	
 	private void loadingEObjectsFromURIs(Set<String> uris, String graph, IDataSource<G, T, N, U, L> dataSource) {
 		for (String uri: uris) {
 			EObject object = load(dataSource, uri, graph);
