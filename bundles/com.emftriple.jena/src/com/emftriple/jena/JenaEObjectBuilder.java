@@ -10,6 +10,9 @@
  *******************************************************************************/
 package com.emftriple.jena;
 
+import static com.emftriple.transform.SparqlQueries.selectObjectByURI;
+
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
@@ -19,6 +22,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 
 import com.emftriple.datasources.IDataSource;
+import com.emftriple.datasources.IResultSet;
 import com.emftriple.transform.DatatypeConverter;
 import com.emftriple.transform.EObjectTransform;
 import com.emftriple.transform.Metamodel;
@@ -41,16 +45,27 @@ public class JenaEObjectBuilder extends EObjectTransform<RDFNode, Resource, Lite
 
 			EObject value = null;
 
-			if (resource.getPrimaryCache().hasKey(res.getURI())) {
-				value = resource.getPrimaryCache().getObjectByKey(res.getURI());
+			String uri;
+			if (res.isAnon() && reference.isContainment()) {
+				uri = "_:" + res.getId().getLabelString();
+			} else {
+				uri = res.getURI();
+			}
+			
+			if (resource.getPrimaryCache().hasKey(uri)) {
+				value = resource.getPrimaryCache().getObjectByKey(uri);
 			} else {
 				@SuppressWarnings("unchecked")
 				List<String> uris =
-					SparqlQueries.selectAllTypes(dataSource, res.getURI(), resource.getGraph());
+					SparqlQueries.selectAllTypes(dataSource, uri, resource.getGraph());
 					
 				EClass eClass = Metamodel.INSTANCE.getEClassByRdfType(uris);
+				
+				if (eClass == null) {
+					eClass = reference.getEReferenceType();
+				}
 					
-				value = createProxy(eClass, res.getURI());
+				value = createProxy(eClass, uri);
 			}
 			
 			if (reference.isMany()) {
@@ -65,14 +80,34 @@ public class JenaEObjectBuilder extends EObjectTransform<RDFNode, Resource, Lite
 
 
 	@Override
+	protected IResultSet<RDFNode, Resource, Literal> getResultSet(
+			EClass eClass, String key, String graphURI, IDataSource dataSource) {
+		if (key.startsWith("_:")) {
+			return dataSource.selectQuery(selectObjectByURI(eClass, key, graphURI), null);
+		} else {
+			return super.getResultSet(eClass, key, graphURI, dataSource);
+		}
+
+	}
+
+	@Override
 	protected void setEAttributeValue(EObject object, EAttribute attribute, RDFNode node) {
+		Object value = null;
 		if (node.isLiteral()) {
 			Literal literal = node.asLiteral();
-			Object value = DatatypeConverter.convert(attribute.getEAttributeType(), literal.getLexicalForm());
-			if (value != null) {
+			value = DatatypeConverter.convert(attribute.getEAttributeType(), literal.getLexicalForm());
+		} else if (node.isURIResource()) {
+			value = node.asResource().getURI();
+		}
+		
+		if (value != null) {
+			if (attribute.isMany()){
+				((Collection<Object>)object.eGet(attribute)).add(value);
+			} else {
 				object.eSet(attribute, value);
 			}
 		}
+
 	}
 
 }

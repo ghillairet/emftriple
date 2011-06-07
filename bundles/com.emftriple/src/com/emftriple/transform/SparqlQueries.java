@@ -65,27 +65,77 @@ public class SparqlQueries {
 	private static final String prefixes = 
 		"prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> ";
 	
-	public static String selectObjectByClass(EClass eClass, String uri, String graph) {
-		String query = prefixes + "\n SELECT DISTINCT " + getVarFrom(eClass.getEAllStructuralFeatures())+" WHERE { ";
+	public static String selectObjectByClass(EClass eClass, String uri,
+			String graph) {
+		StringBuilder sb = new StringBuilder(128);
+		sb.append(prefixes);
+		sb.append("\n SELECT DISTINCT ");
+		sb.append(getVarFrom(eClass.getEAllStructuralFeatures()));
+		sb.append(" WHERE { ");
 		if (graph != null) {
-			query+="\n GRAPH <"+graph+"> { ";
+			sb.append("\n GRAPH <");
+			sb.append(graph);
+			sb.append("> { ");
 		}
-		for (final String type: metamodel.getRdfTypes(eClass)) {
-			query+="<"+uri+"> rdf:type <"+type+"> . \n";
+		for (final String type : metamodel.getRdfTypes(eClass)) {
+			sb.append("<");
+			sb.append(uri);
+			sb.append("> rdf:type <");
+			sb.append(type);
+			sb.append("> . \n");
 		}
-		
-		for (final EStructuralFeature feature: eClass.getEAllStructuralFeatures()) {
+
+		selectFeatures(sb, eClass, uri);
+		sb.append(" }");
+		if (graph != null) {
+			sb.append(" }");
+		}
+		return sb.toString();
+	}
+	
+	public static String selectObjectByURI(EClass eClass, String uri,
+			String graph) {
+		StringBuilder sb = new StringBuilder(128);
+		sb.append(prefixes);
+		sb.append("\n SELECT DISTINCT ");
+		sb.append(getVarFrom(eClass.getEAllStructuralFeatures()));
+		sb.append(" WHERE { ");
+		if (graph != null) {
+			sb.append("\n GRAPH <");
+			sb.append(graph);
+			sb.append("> { ");
+		}
+
+		selectFeatures(sb, eClass, uri);
+		sb.append(" }");
+		if (graph != null) {
+			sb.append(" }");
+		}
+		return sb.toString();
+	}
+
+	private static void selectFeatures(StringBuilder result, EClass eClass,
+			String uri) {
+		for (final EStructuralFeature feature : eClass
+				.getEAllStructuralFeatures()) {
 			if (feature.getLowerBound() < 1) {
-				query+=" OPTIONAL { \n <"+uri+"> <"+metamodel.getRdfType(feature)+"> ?"+feature.getName()+" \n } \n";
+				result.append(" OPTIONAL { \n <");
+				result.append(uri);
+				result.append("> <");
+				result.append(metamodel.getRdfType(feature));
+				result.append("> ?");
+				result.append(feature.getName());
+				result.append(" \n } \n");
 			} else {
-				query+="<"+uri+"> <"+metamodel.getRdfType(feature)+"> ?"+feature.getName()+" . \n ";
+				result.append("<");
+				result.append(uri);
+				result.append("> <");
+				result.append(metamodel.getRdfType(feature));
+				result.append("> ?");
+				result.append(feature.getName());
+				result.append(" . \n ");
 			}
 		}
-		query+=" }";
-		if (graph != null) {
-			return query+=" }";
-		}
-		return query;
 	}
 
 	private static String getVarFrom(List<EStructuralFeature> list) {
