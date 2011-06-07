@@ -98,7 +98,7 @@ public abstract class JenaResourceImpl
 			for (String var: s.getSolutionNames()) {
 				if (s.isResource(var)) {
 					Resource res = s.getResource(var);
-					if (!uris.contains(res.getURI())) {
+					if (!res.isAnon() && !uris.contains(res.getURI())) {
 						uris.add(res.getURI());
 					}
 				}
