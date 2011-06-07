@@ -32,7 +32,7 @@ extends JenaResourceImpl {
 
 	@Override
 	public IDataSource<Model, Statement, RDFNode, com.hp.hpl.jena.rdf.model.Resource, Literal> getDataSource(Map<?, ?> options) {
-		return FileUtil.getModel(options);
+		return FileUtil.getModel(getURI().toString(), (Map<?, ?>) options);
 	}
 
 	@Override

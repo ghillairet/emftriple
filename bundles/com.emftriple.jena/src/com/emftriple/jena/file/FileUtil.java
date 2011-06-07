@@ -23,8 +23,11 @@ public class FileUtil {
 		manager.setModelCaching(true);
 	}
 
-	static FileDataSource getModel(Map<?,?> options) {
-		final String url = (String) options.get(ETripleOptions.OPTION_DATASOURCE_LOCATION);
+	static FileDataSource getModel(String resourceURI, Map<?,?> options) {
+		String url = (String) options.get(ETripleOptions.OPTION_DATASOURCE_LOCATION);
+		if (url == null){
+			url = resourceURI;
+		}
 		
 		String fileFormat = null;
 		if (options.containsKey(FileResourceImpl.OPTION_RDF_FORMAT)) {
