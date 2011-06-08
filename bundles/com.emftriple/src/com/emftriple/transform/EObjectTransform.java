@@ -48,11 +48,11 @@ public abstract class EObjectTransform<N, U, L> {
 	}
 
 	public EObject loadEObject(EObject object, String key, String graphURI) {
-		final IResultSet<N, U, L> resultSet = getResultSet(object.eClass(), key, graphURI, dataSource); 		
+		final IResultSet<N, U, L> resultSet = getResultSet(object, key, graphURI, dataSource); 		
 		final Map<String, Set<N>> values = createMapOfValues(object.eClass(), resultSet);
 
 		final EAttribute attrId = ETripleEcoreUtil.getId(object.eClass());
-		setIdValue(object, key.toString(), attrId);
+		setIdValue(object, key, attrId);
 
 		for (String featureName: values.keySet()) {
 			EStructuralFeature feature = object.eClass().getEStructuralFeature(featureName);
@@ -96,6 +96,11 @@ public abstract class EObjectTransform<N, U, L> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected IResultSet<N, U, L> getResultSet(EClass eClass, String key, String graphURI, IDataSource dataSource) {
 		return dataSource.selectQuery(selectObjectByClass(eClass, key, graphURI), null);
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	protected IResultSet<N, U, L> getResultSet(EObject object, String key, String graphURI, IDataSource dataSource) {
+		return dataSource.selectQuery(selectObjectByClass(object.eClass(), key, graphURI), null);
 	}
 
 	protected Map<String, Set<N>> createMapOfValues(EClass eClass, IResultSet<N, U, L> resultSet) {
