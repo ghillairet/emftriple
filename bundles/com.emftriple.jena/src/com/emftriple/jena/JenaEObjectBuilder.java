@@ -100,7 +100,6 @@ public class JenaEObjectBuilder extends EObjectTransform<RDFNode, Resource, Lite
 	@Override
 	protected IResultSet<RDFNode, Resource, Literal> getResultSet(
 			EObject object, String key, String graphURI, IDataSource dataSource) {
-		System.out.println(key);
 		if (null == key) {
 			return dataSource.selectQuery(selectObjectByURI(object.eClass(),object.eContainer(), (EReference)object.eContainingFeature(), graphURI), null);
 		} else {

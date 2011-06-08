@@ -130,7 +130,6 @@ public class SparqlQueries {
 		if (graph != null) {
 			return query+=" }";
 		}
-		System.out.println(query);
 		return query;
 	}
 	
@@ -220,7 +219,6 @@ public class SparqlQueries {
 		if (graph != null) {
 			sb.append(" }");
 		}
-		System.out.println(sb);
 		return sb.toString();
 	}
 
