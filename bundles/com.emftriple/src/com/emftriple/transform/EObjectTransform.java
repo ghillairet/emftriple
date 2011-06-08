@@ -134,12 +134,7 @@ public abstract class EObjectTransform<N, U, L> {
 			EObject object = EcoreUtil.create(eClass);
 			setIdValue(object, key, ETripleEcoreUtil.getId(eClass));
 			
-			final URI proxyURI;
-//			if (resource.getURI().hasQuery()) {
-//				proxyURI = URI.createURI(resource.getURI().trimQuery() + "?uri="+key);
-//			} else {
-				proxyURI = URI.createURI(resource.getURI()+"#uri="+key);
-//			}
+			final URI proxyURI = URI.createURI(resource.getURI()+"#uri="+key);
 			
 			((InternalEObject)object).eSetProxyURI(proxyURI);
 			resource.getPrimaryCache().cache(key, object);

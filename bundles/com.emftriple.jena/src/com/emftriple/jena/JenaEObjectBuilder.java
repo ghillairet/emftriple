@@ -33,7 +33,8 @@ import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 
-public class JenaEObjectBuilder extends EObjectTransform<RDFNode, Resource, Literal> {
+public class JenaEObjectBuilder 
+	extends EObjectTransform<RDFNode, Resource, Literal> {
 
 	@SuppressWarnings("rawtypes")
 	public JenaEObjectBuilder(JenaResourceImpl resource, IDataSource dataSource) {

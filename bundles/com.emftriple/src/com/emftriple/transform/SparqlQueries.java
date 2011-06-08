@@ -136,8 +136,7 @@ public class SparqlQueries {
 	private static final String prefixes = 
 		"prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> ";
 	
-	public static String selectObjectByClass(EClass eClass, String uri,
-			String graph) {
+	public static String selectObjectByClass(EClass eClass, String uri, String graph) {
 		StringBuilder sb = new StringBuilder(128);
 		sb.append(prefixes);
 		sb.append("\n SELECT DISTINCT ");
@@ -156,8 +155,7 @@ public class SparqlQueries {
 			sb.append("> . \n");
 		}
 
-		for (final EStructuralFeature feature : eClass
-				.getEAllStructuralFeatures()) {
+		for (final EStructuralFeature feature : eClass.getEAllStructuralFeatures()) {
 			if (feature.getLowerBound() < 1) {
 				sb.append(" OPTIONAL { \n <");
 				sb.append(uri);
@@ -183,8 +181,7 @@ public class SparqlQueries {
 		return sb.toString();
 	}
 	
-	public static String selectObjectByURI(EClass eClass, EObject parent,
-			EReference reference, String graph) {
+	public static String selectObjectByURI(EClass eClass, EObject parent, EReference reference, String graph) {
 		StringBuilder pre = new StringBuilder();
 		StringBuilder post = new StringBuilder();
 		generateAccessPattern(parent, reference, pre, post);
