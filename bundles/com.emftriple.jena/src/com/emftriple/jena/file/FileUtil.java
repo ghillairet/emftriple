@@ -10,6 +10,8 @@
  *******************************************************************************/
 package com.emftriple.jena.file;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 import com.emftriple.util.ETripleOptions;
@@ -18,7 +20,7 @@ import com.hp.hpl.jena.util.FileManager;
 
 public class FileUtil {
 	
-	private static FileManager manager = new FileManager(FileManager.get());
+	private static FileManager manager = FileManager.get();
 	static {
 		manager.setModelCaching(true);
 	}
@@ -38,9 +40,19 @@ public class FileUtil {
 	}
 
 	public static Model getModel(String fileLocation, String fileFormat) {
-		
 		Model model = manager.getFromCache(fileLocation);
-		if (model == null){
+		if (model == null) {
+			File file = new File(fileLocation);
+			if (!file.exists()) {
+				try {
+					file.createNewFile();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			if (!file.isFile()) {
+				throw new IllegalArgumentException(fileLocation+" is not a file.");
+			}
 			model = manager.loadModel(fileLocation, fileFormat);
 		}
 		
