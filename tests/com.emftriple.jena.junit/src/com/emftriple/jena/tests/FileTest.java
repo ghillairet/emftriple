@@ -40,7 +40,8 @@ import com.junit.model.ModelPackage;
 import com.junit.model.Person;
 
 public class FileTest {
-Map<String, Object> options = new HashMap<String, Object>();
+	
+	Map<String, Object> options = new HashMap<String, Object>();
 	
 	@Before
 	public void tearUp() {
@@ -56,7 +57,7 @@ Map<String, Object> options = new HashMap<String, Object>();
 		ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.getLoadOptions().putAll(options);
 		
-		Resource resource = resourceSet.createResource(URI.createURI("emftriple://tdb"));
+		Resource resource = resourceSet.createResource(URI.createURI("emftriple://file"));
 		
 		resource.delete(null);
 	}
@@ -64,7 +65,7 @@ Map<String, Object> options = new HashMap<String, Object>();
 	@Test
 	public void testCreateAndStore() throws IOException {
 		ResourceSet resourceSet = new ResourceSetImpl();
-		Resource resource = resourceSet.createResource(URI.createURI("emftriple://tdb"));
+		Resource resource = resourceSet.createResource(URI.createURI("emftriple://file"));
 		resource.load(options);
 		
 		assertTrue(resource.getContents().isEmpty());
@@ -91,7 +92,7 @@ Map<String, Object> options = new HashMap<String, Object>();
 	@Test
 	public void testLoadResource() throws IOException {
 		ResourceSet resourceSet = new ResourceSetImpl();
-		Resource resource = resourceSet.createResource(URI.createURI("emftriple://tdb"));
+		Resource resource = resourceSet.createResource(URI.createURI("emftriple://file"));
 		
 		assertNotNull(resource);
 		resource.load(options);
@@ -126,7 +127,7 @@ Map<String, Object> options = new HashMap<String, Object>();
 				new SparqlNative(
 						"prefix m: <http://www.eclipselabs.org/emf/junit#> " +
 						"select ?s where { ?s a m:Person }").toURI(
-				URI.createURI("emftriple://data")));
+				URI.createURI("emftriple://file")));
 		query.load(options);
 		
 		assertFalse(query.getContents().isEmpty());

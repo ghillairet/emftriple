@@ -180,7 +180,7 @@ public class TDBTest {
 	public void testLoadResourceFromGraph() throws IOException {
 		resourceSet.getResources().clear();
 		
-		Resource resource = resourceSet.createResource(URI.createURI("emftriple://tdb-graph?graph=http://graph"));
+		Resource resource = resourceSet.createResource(URI.createURI("emftriple://tdb?graph=http://graph"));
 		
 		assertNotNull(resource);
 		resource.load(null);
