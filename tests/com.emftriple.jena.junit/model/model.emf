@@ -13,6 +13,17 @@ class Book {
   attr char[*] data;
 }
 
+class PersonBNode {
+  attr String name;
+  ref BookBNode[*]#authors books;	   
+}
+
+@BlankNode(foo=bar)
+class BookBNode {
+   attr String title;
+   ref PersonBNode[*]#books authors;
+}
+
 class Library {
   !resolve val Book[*] books;
   val Location location;
