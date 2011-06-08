@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Guillaume Hillairet - initial API and implementation
+ *    Moritz Hoffmann - bnode handling
  *******************************************************************************/
 package com.emftriple.jena;
 
@@ -20,6 +21,7 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import com.emftriple.datasources.IDataSource;
 import com.emftriple.datasources.IResultSet;
@@ -45,35 +47,51 @@ public class JenaEObjectBuilder extends EObjectTransform<RDFNode, Resource, Lite
 
 			EObject value = null;
 
-			String uri;
 			if (res.isAnon() && reference.isContainment()) {
-				uri = "_:" + res.getId().getLabelString();
-			} else {
-				uri = res.getURI();
-			}
-			
-			if (resource.getPrimaryCache().hasKey(uri)) {
-				value = resource.getPrimaryCache().getObjectByKey(uri);
-			} else {
-				@SuppressWarnings("unchecked")
+				// special handling for contained objects + bnode.
 				List<String> uris =
-					SparqlQueries.selectAllTypes(dataSource, uri, resource.getGraph());
-					
+					SparqlQueries.selectAllTypes(dataSource, object, reference, resource.getGraph());
 				EClass eClass = Metamodel.INSTANCE.getEClassByRdfType(uris);
 				
 				if (eClass == null) {
 					eClass = reference.getEReferenceType();
 				}
-					
-				value = createProxy(eClass, uri);
-			}
-			
-			if (reference.isMany()) {
-				@SuppressWarnings("unchecked")
-				EList<EObject> values = (EList<EObject>) object.eGet(reference);
-				values.add(value);
+				
+				value = EcoreUtil.create(eClass);
+				// need to add it to the collection to make value::eContainer work.
+				if (reference.isMany()) {
+					@SuppressWarnings("unchecked")
+					Collection<Object> values = (Collection<Object>) object.eGet(reference);
+					values.add(value);
+				} else {
+					object.eSet(reference, value);
+				}
+				// The object has no key.
+				loadEObject(value, null, resource.getGraph());
 			} else {
-				object.eSet(reference, value);
+				String uri = res.getURI();
+				if (resource.getPrimaryCache().hasKey(uri)) {
+					value = resource.getPrimaryCache().getObjectByKey(uri);
+				} else {
+					@SuppressWarnings("unchecked")
+					List<String> uris =
+						SparqlQueries.selectAllTypes(dataSource, uri, resource.getGraph());
+						
+					EClass eClass = Metamodel.INSTANCE.getEClassByRdfType(uris);
+					
+					if (eClass == null) {
+						eClass = reference.getEReferenceType();
+					}
+						
+					value = createProxy(eClass, uri);
+				}
+				if (reference.isMany()) {
+					@SuppressWarnings("unchecked")
+					EList<EObject> values = (EList<EObject>) object.eGet(reference);
+					values.add(value);
+				} else {
+					object.eSet(reference, value);
+				}
 			}
 		}
 	}
@@ -81,11 +99,12 @@ public class JenaEObjectBuilder extends EObjectTransform<RDFNode, Resource, Lite
 
 	@Override
 	protected IResultSet<RDFNode, Resource, Literal> getResultSet(
-			EClass eClass, String key, String graphURI, IDataSource dataSource) {
-		if (key.startsWith("_:")) {
-			return dataSource.selectQuery(selectObjectByURI(eClass, key, graphURI), null);
+			EObject object, String key, String graphURI, IDataSource dataSource) {
+		System.out.println(key);
+		if (null == key) {
+			return dataSource.selectQuery(selectObjectByURI(object.eClass(),object.eContainer(), (EReference)object.eContainingFeature(), graphURI), null);
 		} else {
-			return super.getResultSet(eClass, key, graphURI, dataSource);
+			return super.getResultSet(object, key, graphURI, dataSource);
 		}
 
 	}
