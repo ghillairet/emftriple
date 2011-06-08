@@ -1,0 +1,16 @@
+<http://www.eclipselabs.org/emf/junit/person/f68b5b7c-1c67-455b-860c-6fd000348434>
+      a       <http://www.eclipselabs.org/emf/junit#Person> ;
+      <http://www.eclipselabs.org/emf/junit#books> [
+	      	a       <http://www.eclipselabs.org/emf/junit#Book> ;
+	      	<http://www.eclipselabs.org/emf/junit#authors>
+	              <http://www.eclipselabs.org/emf/junit/person/f68b5b7c-1c67-455b-860c-6fd000348434> ;
+	      	<http://www.eclipselabs.org/emf/junit#title>
+	              "Book of Stuff"^^<http://www.w3.org/2001/XMLSchema#string> ] ;
+	<http://www.eclipselabs.org/emf/junit#books> [              
+	      a       <http://www.eclipselabs.org/emf/junit#Book> ;
+	      <http://www.eclipselabs.org/emf/junit#authors>
+	              <http://www.eclipselabs.org/emf/junit/person/f68b5b7c-1c67-455b-860c-6fd000348434> ;
+	      <http://www.eclipselabs.org/emf/junit#title>
+	              "Valley Of Thing"^^<http://www.w3.org/2001/XMLSchema#string> ] ;
+      <http://www.eclipselabs.org/emf/junit#name>
+              "John Doe"^^<http://www.w3.org/2001/XMLSchema#string> .
