@@ -13,7 +13,8 @@ Export-Package: com.emftriple.sesame,
  com.emftriple.sesame.nat
 Require-Bundle: org.eclipse.emf.ecore,
  com.emftriple,
- com.emftriple.sail
+ com.emftriple.sail,
+ org.openrdf;bundle-version="2.4.0"
 Import-Package: org.openrdf.model,
  org.openrdf.model.impl,
  org.openrdf.query,

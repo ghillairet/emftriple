@@ -1,32 +1,10 @@
 
-emfriple lets you store and retrieve EMF domain models from RDF repositories.
+emftriple lets you store and load EMF models from RDF data sources. It supports various RDF stores, including Jena TDB, SDB, Joseki, Sesame, sparql endpoints (read only). It also supports various graph databases (Neo4J, OrientDB, Dex, Rexster) through the sail implementations provided by tinkerpop blueprints.
 
-googlecode project : http://code.google.com/a/eclipselabs.org/p/emftriple/
+eclipselabs pages: http://code.google.com/a/eclipselabs.org/p/emftriple/
 
-# Basic Usage
+Starter Guide: http://code.google.com/a/eclipselabs.org/p/emftriple/wiki/BasicUsage
 
-Init emftriple:
-    
-    Resource.Factory.Registry.INSTANCE.getProtocolToFactoryMap().put("emftriple", new TDBResourceFactory());
+License: 
 
-Storing objects:
-    
-    ResourceSet resourceSet = new ResourceSetImpl();
-    Resource resource = resourceSet.createResource(URI.createURI("emftriple://data?graph=http://graph"));
-    	
-    Person person = ModelFactory.eINSTANCE.createPerson();
-    person.setName("John Doe");
-    
-    resource.getContents().add(person);
-    resource.save(null);
-
-Loading objects:
-    
-    ResourceSet resourceSet = new ResourceSetImpl();
-    Resource resource = resourceSet.createResource(URI.createURI("emftriple://data?graph=http://graph"));
-    resource.load(null);
-
-    Person obj = (Person) EcoreUtil.getObjectByType(resource.getContents(), ModelPackage.eINSTANCE.getPerson());
-
-
-
+Eclipse Public License www.eclipse.org/legal/epl-v10.html
