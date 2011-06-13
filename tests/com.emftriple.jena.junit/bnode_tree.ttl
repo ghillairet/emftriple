@@ -1,0 +1,17 @@
+<http://www.eclipselabs.org/emf/junit/bnode/1>
+	a <http://www.eclipselabs.org/emf/junit#BNode> ;
+	<http://www.eclipselabs.org/emf/junit#child> [
+		a <http://www.eclipselabs.org/emf/junit#BNode> ;
+		<http://www.eclipselabs.org/emf/junit#id> 2 ;
+		<http://www.eclipselabs.org/emf/junit#child> [
+			<http://www.eclipselabs.org/emf/junit#id> 4 ;
+			a <http://www.eclipselabs.org/emf/junit#BNode> 
+		]
+	] ;
+	<http://www.eclipselabs.org/emf/junit#child> [
+		a <http://www.eclipselabs.org/emf/junit#BNode> ;
+		<http://www.eclipselabs.org/emf/junit#id> 3 ;
+		<http://www.eclipselabs.org/emf/junit#child> [
+			a <http://www.eclipselabs.org/emf/junit#BNode> 
+		]
+	] .
