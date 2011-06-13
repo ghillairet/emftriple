@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.junit.model.impl;
 
+import com.junit.model.BNode;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
@@ -18,6 +19,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import com.junit.model.Book;
+import com.junit.model.BookBNode;
 import com.junit.model.ETypes;
 import com.junit.model.Library;
 import com.junit.model.Location;
@@ -25,6 +27,7 @@ import com.junit.model.MappedLibrary;
 import com.junit.model.ModelFactory;
 import com.junit.model.ModelPackage;
 import com.junit.model.Person;
+import com.junit.model.PersonBNode;
 import com.junit.model.PrimaryObject;
 import com.junit.model.TargetObject;
 
@@ -48,6 +51,27 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * @generated
 	 */
 	private EClass bookEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass personBNodeEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass bookBNodeEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass bNodeEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -229,6 +253,87 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 */
 	public EAttribute getBook_Data() {
 		return (EAttribute)bookEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getPersonBNode() {
+		return personBNodeEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getPersonBNode_Name() {
+		return (EAttribute)personBNodeEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getPersonBNode_Books() {
+		return (EReference)personBNodeEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getBookBNode() {
+		return bookBNodeEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getBookBNode_Title() {
+		return (EAttribute)bookBNodeEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getBookBNode_Authors() {
+		return (EReference)bookBNodeEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getBNode() {
+		return bNodeEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getBNode_Id() {
+		return (EAttribute)bNodeEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getBNode_Child() {
+		return (EReference)bNodeEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -701,6 +806,18 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 		createEAttribute(bookEClass, BOOK__TAGS);
 		createEAttribute(bookEClass, BOOK__DATA);
 
+		personBNodeEClass = createEClass(PERSON_BNODE);
+		createEAttribute(personBNodeEClass, PERSON_BNODE__NAME);
+		createEReference(personBNodeEClass, PERSON_BNODE__BOOKS);
+
+		bookBNodeEClass = createEClass(BOOK_BNODE);
+		createEAttribute(bookBNodeEClass, BOOK_BNODE__TITLE);
+		createEReference(bookBNodeEClass, BOOK_BNODE__AUTHORS);
+
+		bNodeEClass = createEClass(BNODE);
+		createEAttribute(bNodeEClass, BNODE__ID);
+		createEReference(bNodeEClass, BNODE__CHILD);
+
 		libraryEClass = createEClass(LIBRARY);
 		createEReference(libraryEClass, LIBRARY__BOOKS);
 		createEReference(libraryEClass, LIBRARY__LOCATION);
@@ -798,6 +915,18 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 		initEAttribute(getBook_Tags(), ecorePackage.getEString(), "tags", null, 0, -1, Book.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getBook_Data(), ecorePackage.getEChar(), "data", null, 0, -1, Book.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		initEClass(personBNodeEClass, PersonBNode.class, "PersonBNode", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getPersonBNode_Name(), ecorePackage.getEString(), "name", null, 0, 1, PersonBNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getPersonBNode_Books(), this.getBookBNode(), null, "books", null, 0, -1, PersonBNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(bookBNodeEClass, BookBNode.class, "BookBNode", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getBookBNode_Title(), ecorePackage.getEString(), "title", null, 0, 1, BookBNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getBookBNode_Authors(), this.getPersonBNode(), null, "authors", null, 0, -1, BookBNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(bNodeEClass, BNode.class, "BNode", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getBNode_Id(), ecorePackage.getEInt(), "id", null, 0, 1, BNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getBNode_Child(), this.getBNode(), null, "child", null, 0, -1, BNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
 		initEClass(libraryEClass, Library.class, "Library", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getLibrary_Books(), this.getBook(), null, "books", null, 0, -1, Library.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getLibrary_Location(), this.getLocation(), null, "location", null, 0, 1, Library.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -858,10 +987,34 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 		createResource(eNS_URI);
 
 		// Create annotations
+		// BlankNode
+		createBlankNodeAnnotations();
 		// http:///org/eclipse/emf/ecore/util/ExtendedMetaData
 		createExtendedMetaDataAnnotations();
 		// Id
 		createIdAnnotations();
+	}
+
+	/**
+	 * Initializes the annotations for <b>BlankNode</b>.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void createBlankNodeAnnotations() {
+		String source = "BlankNode";		
+		addAnnotation
+		  (bookBNodeEClass, 
+		   source, 
+		   new String[] {
+			 "foo", "bar"
+		   });		
+		addAnnotation
+		  (getBNode_Child(), 
+		   source, 
+		   new String[] {
+			 "foo", "bar"
+		   });											
 	}
 
 	/**
@@ -871,7 +1024,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * @generated
 	 */
 	protected void createExtendedMetaDataAnnotations() {
-		String source = "http:///org/eclipse/emf/ecore/util/ExtendedMetaData";		
+		String source = "http:///org/eclipse/emf/ecore/util/ExtendedMetaData";				
 		addAnnotation
 		  (getMappedLibrary_RareBooks(), 
 		   source, 
@@ -935,7 +1088,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * @generated
 	 */
 	protected void createIdAnnotations() {
-		String source = "Id";					
+		String source = "Id";							
 		addAnnotation
 		  (getPrimaryObject_Id(), 
 		   source, 

@@ -157,6 +157,117 @@ public interface ModelPackage extends EPackage {
 	int BOOK_FEATURE_COUNT = 4;
 
 	/**
+	 * The meta object id for the '{@link com.junit.model.impl.PersonBNodeImpl <em>Person BNode</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see com.junit.model.impl.PersonBNodeImpl
+	 * @see com.junit.model.impl.ModelPackageImpl#getPersonBNode()
+	 * @generated
+	 */
+	int PERSON_BNODE = 2;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PERSON_BNODE__NAME = 0;
+
+	/**
+	 * The feature id for the '<em><b>Books</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PERSON_BNODE__BOOKS = 1;
+
+	/**
+	 * The number of structural features of the '<em>Person BNode</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PERSON_BNODE_FEATURE_COUNT = 2;
+
+	/**
+	 * The meta object id for the '{@link com.junit.model.impl.BookBNodeImpl <em>Book BNode</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see com.junit.model.impl.BookBNodeImpl
+	 * @see com.junit.model.impl.ModelPackageImpl#getBookBNode()
+	 * @generated
+	 */
+	int BOOK_BNODE = 3;
+
+	/**
+	 * The feature id for the '<em><b>Title</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BOOK_BNODE__TITLE = 0;
+
+	/**
+	 * The feature id for the '<em><b>Authors</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BOOK_BNODE__AUTHORS = 1;
+
+	/**
+	 * The number of structural features of the '<em>Book BNode</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BOOK_BNODE_FEATURE_COUNT = 2;
+
+	/**
+	 * The meta object id for the '{@link com.junit.model.impl.BNodeImpl <em>BNode</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see com.junit.model.impl.BNodeImpl
+	 * @see com.junit.model.impl.ModelPackageImpl#getBNode()
+	 * @generated
+	 */
+	int BNODE = 4;
+
+	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BNODE__ID = 0;
+
+	/**
+	 * The feature id for the '<em><b>Child</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BNODE__CHILD = 1;
+
+	/**
+	 * The number of structural features of the '<em>BNode</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BNODE_FEATURE_COUNT = 2;
+
+	/**
 	 * The meta object id for the '{@link com.junit.model.impl.LibraryImpl <em>Library</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -164,7 +275,7 @@ public interface ModelPackage extends EPackage {
 	 * @see com.junit.model.impl.ModelPackageImpl#getLibrary()
 	 * @generated
 	 */
-	int LIBRARY = 2;
+	int LIBRARY = 5;
 
 	/**
 	 * The feature id for the '<em><b>Books</b></em>' containment reference list.
@@ -210,7 +321,7 @@ public interface ModelPackage extends EPackage {
 	 * @see com.junit.model.impl.ModelPackageImpl#getLocation()
 	 * @generated
 	 */
-	int LOCATION = 3;
+	int LOCATION = 6;
 
 	/**
 	 * The feature id for the '<em><b>Address</b></em>' attribute.
@@ -256,7 +367,7 @@ public interface ModelPackage extends EPackage {
 	 * @see com.junit.model.impl.ModelPackageImpl#getETypes()
 	 * @generated
 	 */
-	int ETYPES = 4;
+	int ETYPES = 7;
 
 	/**
 	 * The feature id for the '<em><b>EBig Decimal</b></em>' attribute.
@@ -401,7 +512,7 @@ public interface ModelPackage extends EPackage {
 	 * @see com.junit.model.impl.ModelPackageImpl#getMappedLibrary()
 	 * @generated
 	 */
-	int MAPPED_LIBRARY = 5;
+	int MAPPED_LIBRARY = 8;
 
 	/**
 	 * The feature id for the '<em><b>Location</b></em>' containment reference.
@@ -456,7 +567,7 @@ public interface ModelPackage extends EPackage {
 	 * @see com.junit.model.impl.ModelPackageImpl#getPrimaryObject()
 	 * @generated
 	 */
-	int PRIMARY_OBJECT = 6;
+	int PRIMARY_OBJECT = 9;
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
@@ -601,7 +712,7 @@ public interface ModelPackage extends EPackage {
 	 * @see com.junit.model.impl.ModelPackageImpl#getTargetObject()
 	 * @generated
 	 */
-	int TARGET_OBJECT = 7;
+	int TARGET_OBJECT = 10;
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
@@ -647,7 +758,7 @@ public interface ModelPackage extends EPackage {
 	 * @see com.junit.model.impl.ModelPackageImpl#getURI()
 	 * @generated
 	 */
-	int URI = 8;
+	int URI = 11;
 
 
 	/**
@@ -735,6 +846,102 @@ public interface ModelPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getBook_Data();
+
+	/**
+	 * Returns the meta object for class '{@link com.junit.model.PersonBNode <em>Person BNode</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Person BNode</em>'.
+	 * @see com.junit.model.PersonBNode
+	 * @generated
+	 */
+	EClass getPersonBNode();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.junit.model.PersonBNode#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see com.junit.model.PersonBNode#getName()
+	 * @see #getPersonBNode()
+	 * @generated
+	 */
+	EAttribute getPersonBNode_Name();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link com.junit.model.PersonBNode#getBooks <em>Books</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Books</em>'.
+	 * @see com.junit.model.PersonBNode#getBooks()
+	 * @see #getPersonBNode()
+	 * @generated
+	 */
+	EReference getPersonBNode_Books();
+
+	/**
+	 * Returns the meta object for class '{@link com.junit.model.BookBNode <em>Book BNode</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Book BNode</em>'.
+	 * @see com.junit.model.BookBNode
+	 * @generated
+	 */
+	EClass getBookBNode();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.junit.model.BookBNode#getTitle <em>Title</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Title</em>'.
+	 * @see com.junit.model.BookBNode#getTitle()
+	 * @see #getBookBNode()
+	 * @generated
+	 */
+	EAttribute getBookBNode_Title();
+
+	/**
+	 * Returns the meta object for the reference list '{@link com.junit.model.BookBNode#getAuthors <em>Authors</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Authors</em>'.
+	 * @see com.junit.model.BookBNode#getAuthors()
+	 * @see #getBookBNode()
+	 * @generated
+	 */
+	EReference getBookBNode_Authors();
+
+	/**
+	 * Returns the meta object for class '{@link com.junit.model.BNode <em>BNode</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>BNode</em>'.
+	 * @see com.junit.model.BNode
+	 * @generated
+	 */
+	EClass getBNode();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.junit.model.BNode#getId <em>Id</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Id</em>'.
+	 * @see com.junit.model.BNode#getId()
+	 * @see #getBNode()
+	 * @generated
+	 */
+	EAttribute getBNode_Id();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link com.junit.model.BNode#getChild <em>Child</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Child</em>'.
+	 * @see com.junit.model.BNode#getChild()
+	 * @see #getBNode()
+	 * @generated
+	 */
+	EReference getBNode_Child();
 
 	/**
 	 * Returns the meta object for class '{@link com.junit.model.Library <em>Library</em>}'.
@@ -1347,6 +1554,84 @@ public interface ModelPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute BOOK__DATA = eINSTANCE.getBook_Data();
+
+		/**
+		 * The meta object literal for the '{@link com.junit.model.impl.PersonBNodeImpl <em>Person BNode</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see com.junit.model.impl.PersonBNodeImpl
+		 * @see com.junit.model.impl.ModelPackageImpl#getPersonBNode()
+		 * @generated
+		 */
+		EClass PERSON_BNODE = eINSTANCE.getPersonBNode();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PERSON_BNODE__NAME = eINSTANCE.getPersonBNode_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Books</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference PERSON_BNODE__BOOKS = eINSTANCE.getPersonBNode_Books();
+
+		/**
+		 * The meta object literal for the '{@link com.junit.model.impl.BookBNodeImpl <em>Book BNode</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see com.junit.model.impl.BookBNodeImpl
+		 * @see com.junit.model.impl.ModelPackageImpl#getBookBNode()
+		 * @generated
+		 */
+		EClass BOOK_BNODE = eINSTANCE.getBookBNode();
+
+		/**
+		 * The meta object literal for the '<em><b>Title</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute BOOK_BNODE__TITLE = eINSTANCE.getBookBNode_Title();
+
+		/**
+		 * The meta object literal for the '<em><b>Authors</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference BOOK_BNODE__AUTHORS = eINSTANCE.getBookBNode_Authors();
+
+		/**
+		 * The meta object literal for the '{@link com.junit.model.impl.BNodeImpl <em>BNode</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see com.junit.model.impl.BNodeImpl
+		 * @see com.junit.model.impl.ModelPackageImpl#getBNode()
+		 * @generated
+		 */
+		EClass BNODE = eINSTANCE.getBNode();
+
+		/**
+		 * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute BNODE__ID = eINSTANCE.getBNode_Id();
+
+		/**
+		 * The meta object literal for the '<em><b>Child</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference BNODE__CHILD = eINSTANCE.getBNode_Child();
 
 		/**
 		 * The meta object literal for the '{@link com.junit.model.impl.LibraryImpl <em>Library</em>}' class.

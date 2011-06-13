@@ -15,13 +15,19 @@ class Book {
 
 class PersonBNode {
   attr String name;
-  ref BookBNode[*]#authors books;	   
+  val BookBNode[*] books;	   
 }
 
 @BlankNode(foo=bar)
 class BookBNode {
    attr String title;
-   ref PersonBNode[*]#books authors;
+   ref PersonBNode[*] authors;
+}
+
+class BNode {
+   attr int ~id;
+   @BlankNode(foo=bar)   
+   val BNode[*] child;
 }
 
 class Library {

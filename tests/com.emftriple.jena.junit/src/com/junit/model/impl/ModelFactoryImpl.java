@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.junit.model.impl;
 
+import com.junit.model.*;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
@@ -75,6 +76,9 @@ public class ModelFactoryImpl extends EFactoryImpl implements ModelFactory {
 		switch (eClass.getClassifierID()) {
 			case ModelPackage.PERSON: return createPerson();
 			case ModelPackage.BOOK: return createBook();
+			case ModelPackage.PERSON_BNODE: return createPersonBNode();
+			case ModelPackage.BOOK_BNODE: return createBookBNode();
+			case ModelPackage.BNODE: return createBNode();
 			case ModelPackage.LIBRARY: return createLibrary();
 			case ModelPackage.LOCATION: return createLocation();
 			case ModelPackage.ETYPES: return createETypes();
@@ -134,6 +138,36 @@ public class ModelFactoryImpl extends EFactoryImpl implements ModelFactory {
 	public Book createBook() {
 		BookImpl book = new BookImpl();
 		return book;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public PersonBNode createPersonBNode() {
+		PersonBNodeImpl personBNode = new PersonBNodeImpl();
+		return personBNode;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public BookBNode createBookBNode() {
+		BookBNodeImpl bookBNode = new BookBNodeImpl();
+		return bookBNode;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public BNode createBNode() {
+		BNodeImpl bNode = new BNodeImpl();
+		return bNode;
 	}
 
 	/**

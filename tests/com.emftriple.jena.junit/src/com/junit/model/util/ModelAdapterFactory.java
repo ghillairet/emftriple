@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.junit.model.util;
 
+import com.junit.model.*;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
@@ -90,6 +91,18 @@ public class ModelAdapterFactory extends AdapterFactoryImpl {
 				return createBookAdapter();
 			}
 			@Override
+			public Adapter casePersonBNode(PersonBNode object) {
+				return createPersonBNodeAdapter();
+			}
+			@Override
+			public Adapter caseBookBNode(BookBNode object) {
+				return createBookBNodeAdapter();
+			}
+			@Override
+			public Adapter caseBNode(BNode object) {
+				return createBNodeAdapter();
+			}
+			@Override
 			public Adapter caseLibrary(Library object) {
 				return createLibraryAdapter();
 			}
@@ -158,6 +171,48 @@ public class ModelAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createBookAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link com.junit.model.PersonBNode <em>Person BNode</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see com.junit.model.PersonBNode
+	 * @generated
+	 */
+	public Adapter createPersonBNodeAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link com.junit.model.BookBNode <em>Book BNode</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see com.junit.model.BookBNode
+	 * @generated
+	 */
+	public Adapter createBookBNodeAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link com.junit.model.BNode <em>BNode</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see com.junit.model.BNode
+	 * @generated
+	 */
+	public Adapter createBNodeAdapter() {
 		return null;
 	}
 

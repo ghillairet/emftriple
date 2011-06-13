@@ -48,6 +48,33 @@ public interface ModelFactory extends EFactory {
 	Book createBook();
 
 	/**
+	 * Returns a new object of class '<em>Person BNode</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Person BNode</em>'.
+	 * @generated
+	 */
+	PersonBNode createPersonBNode();
+
+	/**
+	 * Returns a new object of class '<em>Book BNode</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Book BNode</em>'.
+	 * @generated
+	 */
+	BookBNode createBookBNode();
+
+	/**
+	 * Returns a new object of class '<em>BNode</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>BNode</em>'.
+	 * @generated
+	 */
+	BNode createBNode();
+
+	/**
 	 * Returns a new object of class '<em>Library</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
