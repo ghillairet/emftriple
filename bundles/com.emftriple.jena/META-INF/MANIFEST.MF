@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: emftriple jena adapter
+Bundle-Name: emftriple jena
 Bundle-SymbolicName: com.emftriple.jena;singleton:=true
-Bundle-Version: 0.7.2.qualifier
+Bundle-Version: 0.8.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: 
  com.emftriple.jena,
@@ -13,5 +13,12 @@ Export-Package:
 Bundle-ClassPath: .
 Bundle-Vendor: eclipselabs
 Require-Bundle: org.eclipse.emf.ecore,
- com.emftriple,
- org.openjena
+ com.emftriple
+Import-Package: com.hp.hpl.jena.query,
+ com.hp.hpl.jena.rdf.model,
+ com.hp.hpl.jena.sdb,
+ com.hp.hpl.jena.shared,
+ com.hp.hpl.jena.sparql.resultset,
+ com.hp.hpl.jena.tdb,
+ com.hp.hpl.jena.tdb.base.file,
+ com.hp.hpl.jena.util
