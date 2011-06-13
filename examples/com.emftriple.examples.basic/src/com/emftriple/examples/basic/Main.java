@@ -49,13 +49,9 @@ public class Main {
 		
 			resource.getContents().add(parent);
 			resource.save(null);
+			resource.getContents().clear();
 		}
 		
-		System.out.println("\nobjects created");
-		// Time to save data depends on the store capability
-		
-		
-		System.out.println();
 		long endTime = System.currentTimeMillis();
 		System.out.println("Time to create and store " + (PARENT_COUNT * CHILD_COUNT) + " objects: " + ((endTime - startTime) / 1000.0) + " sec");
 
