@@ -13,28 +13,31 @@ package com.emftriple.datasources;
 import org.eclipse.emf.common.util.URI;
 
 /**
- * The {@link IDataSource} interface provides an abstraction over diverse kinds of RDF data sources. 
+ * The {@link IDataSource} interface provides an abstraction over diverse kinds of RDF data sources.
  * 
  * @author <a href="mailto:g.hillairet at gmail.com">Guillaume Hillairet</a>
- * @since 0.5.5
+ * @since 0.8.0
+ * 
+ * @param <G> abstract type for RDF Graph
+ * @param <T> abstract type for RDF Triple
+ * @param <N> abstract type for RDF Node
+ * @param <U> abstract type for RDF URI
+ * @param <L> abstract type for RDF Literal
  */
-public abstract interface IDataSource<G, T, N, U, L> {
+public abstract interface IDataSource<G, T, N, U extends N, L extends N> {
 	
 	/**
-	 * 
-	 * @return
+	 * Returns true if the data source supports named graphs.
 	 */
 	boolean supportsNamedGraph();
 	
 	/**
-	 * 
-	 * @return
+	 * Returns true if the data source can be modified.
 	 */
 	boolean isMutable();
 	
 	/**
-	 * 
-	 * @return
+	 * Returns true if the data source supports SPARQL 1.1 Update Queries.
 	 */
 	boolean supportsUpdateQuery();
 	
@@ -63,6 +66,7 @@ public abstract interface IDataSource<G, T, N, U, L> {
 	void constructQuery(String aQuery, String graphURI, G aGraph);
 	
 	/**
+	 * Execute a describre query against the data source.
 	 * 
 	 * @param query to execute
 	 * @return query execution value
@@ -111,9 +115,11 @@ public abstract interface IDataSource<G, T, N, U, L> {
 	void disconnect();
 	
 	/**
+	 * Returns the graph identify by the URI. If URI is null, it 
+	 * returns the default graph.
 	 * 
-	 * @param graphURI
-	 * @return
+	 * @param graphURI identifying the named graph.
+	 * @return graph
 	 */
 	G getGraph(String graphURI);
 
@@ -136,13 +142,43 @@ public abstract interface IDataSource<G, T, N, U, L> {
 	 */
 	void remove(Iterable<T> triples, String graphURI);
 
+	/**
+	 * Registry for {@link IDataSource}
+	 * 
+	 * @author guillaume hillairet
+	 * @since 0.8.0
+	 */
 	public interface Registry {
 		
 		public final static Registry INSTANCE = new DataSourceRegistry();
 		
-		<G, T, N, U, L> IDataSource<G, T, N, U, L> getDataSource(URI uri);
+		/**
+		 * Returns the data source identified by the URI.
+		 * 
+		 * @param <G> abstract type for RDF Graph
+		 * @param <T> abstract type for RDF Triple
+		 * @param <N> abstract type for RDF Node
+		 * @param <U> abstract type for RDF URI
+		 * @param <L> abstract type for RDF Literal
+		 * @param uri identifying the data source
+		 * 
+		 * @return IDataSource
+		 */
+		<G, T, N, U extends N, L extends N> IDataSource<G, T, N, U, L> getDataSource(URI uri);
 		
-		<G, T, N, U, L> void register(URI uri, IDataSource<G, T, N, U, L> dataSource);
+		/**
+		 * Register the IDataSource to the given URI.
+		 * 
+		 * @param <G> abstract type for RDF Graph
+		 * @param <T> abstract type for RDF Triple
+		 * @param <N> abstract type for RDF Node
+		 * @param <U> abstract type for RDF URI
+		 * @param <L> abstract type for RDF Literal
+		 * @param uri identifying the data source
+		 * 
+		 * @return IDataSource
+		 */
+		<G, T, N, U extends N, L extends N> void register(URI uri, IDataSource<G, T, N, U, L> dataSource);
 		
 	}
 }

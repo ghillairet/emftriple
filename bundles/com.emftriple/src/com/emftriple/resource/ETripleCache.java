@@ -12,6 +12,13 @@ package com.emftriple.resource;
 
 import org.eclipse.emf.ecore.EObject;
 
+/**
+ * The {@link ETripleCache} interface defines implementation of a basic cache system for 
+ * ETripleResource.
+ * 
+ * @author guillaume hillairet
+ * @since 0.8.0
+ */
 public interface ETripleCache {
 
 	boolean hasKey(String key);

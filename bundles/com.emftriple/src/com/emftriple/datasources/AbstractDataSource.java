@@ -10,15 +10,20 @@
  *******************************************************************************/
 package com.emftriple.datasources;
 
-
-
 /**
- * {@link AbstractDataSource}
+ * The abstract class {@link AbstractDataSource} provides abstract implementation of {@link IDataSource}. This 
+ * class needs to be extended to support specific RDF stores.
  * 
  * @author <a href="mailto:g.hillairet at gmail.com">Guillaume Hillairet</a>
- * @since 0.5.5
+ * @since 0.8.0
+ * 
+ * @param <G> abstract type for RDF Graph
+ * @param <T> abstract type for RDF Triple
+ * @param <N> abstract type for RDF Node
+ * @param <U> abstract type for RDF URI
+ * @param <L> abstract type for RDF Literal
  */
-public abstract class AbstractDataSource<G, T, N, U, L> 
+public abstract class AbstractDataSource<G, T, N, U extends N, L extends N> 
 	implements IDataSource<G, T, N, U, L> {
 	
 	private boolean isConnected = false;

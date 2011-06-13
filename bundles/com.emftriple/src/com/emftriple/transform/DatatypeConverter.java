@@ -28,8 +28,8 @@ import com.emftriple.vocabularies.RDFS;
 import com.emftriple.vocabularies.XSD;
 
 /**
- * 
- * 
+ * The {@link DatatypeConverter} class provides methods for converting datatypes between EMF and RDF (XSD).
+ *	
  * @author <a href="mailto:g.hillairet at gmail.com">Guillaume Hillairet</a>
  * @since 0.5.5
  */

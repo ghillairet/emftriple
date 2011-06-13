@@ -14,7 +14,16 @@ import java.util.HashMap;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 
+/**
+ * The class {@link ETripleResourceCacheImpl} is an implementation of a cache system for 
+ * {@link ETripleResource}. It allows fast retrieval of EObjects available in the associated 
+ * {@link Resource}. 
+ * 
+ * @author guillaume hillairet
+ * @since 0.8.0
+ */
 public class ETripleResourceCacheImpl implements ETripleCache {
 	
 	private final HashMap<String, EObject> keyToObjects = new HashMap<String, EObject>();

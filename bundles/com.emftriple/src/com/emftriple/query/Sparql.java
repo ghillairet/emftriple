@@ -21,6 +21,12 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 
 import com.emftriple.transform.MetamodelImpl;
 
+/**
+ * The class Sparql provides easy to use API to create SPARQL queries. 
+ * 
+ * @author guillaume hillairet
+ * @since 0.8.0
+ */
 public class Sparql implements Query {
 	
 	private List<String> select;
@@ -116,14 +122,31 @@ public class Sparql implements Query {
 		return iri.startsWith("<") ? iri : "<"+iri+">";
 	}
 	
+	/**
+	 * SPARQL Graph Pattern.
+	 * 
+	 * @author guillaume hillairet
+	 * @since 0.8.0
+	 */
 	public interface GraphPattern {
 		String get();
 	}
 	
+	/**
+	 * SPARQL Node.
+	 * 
+	 * @author guillaume hillairet
+	 * @since 0.8.0
+	 */
 	public interface Node {
 		String get();
 	}
 	
+	/**
+	 * 
+	 * @author guillaume hillairet
+	 * @since 0.8.0
+	 */
 	public static class IRI implements Node {
 		private String node;
 
@@ -138,6 +161,11 @@ public class Sparql implements Query {
 		
 	}
 	
+	/**
+	 * 
+	 * @author guillaume hillairet
+	 * @since 0.8.0
+	 */
 	public static class Var implements Node {
 		private String node;
 		
@@ -152,6 +180,11 @@ public class Sparql implements Query {
 		
 	}
 	
+	/**
+	 * 
+	 * @author guillaume hillairet
+	 * @since 0.8.0
+	 */
 	public static class Literal implements Node {
 		private String node;
 		@SuppressWarnings("unused")
@@ -180,6 +213,11 @@ public class Sparql implements Query {
 		
 	}
 	
+	/**
+	 * 
+	 * @author guillaume hillairet
+	 * @since 0.8.0
+	 */
 	public static class TripleGraphPattern implements GraphPattern {
 		private String s;
 		private String p;
@@ -196,6 +234,11 @@ public class Sparql implements Query {
 		}
 	}
 	
+	/**
+	 * 
+	 * @author guillaume hillairet
+	 * @since 0.8.0
+	 */
 	public static class OptionalGraphPattern implements GraphPattern {
 		private GraphPattern[] patterns;
 
@@ -212,6 +255,11 @@ public class Sparql implements Query {
 		}
 	}
 	
+	/**
+	 * 
+	 * @author guillaume hillairet
+	 * @since 0.8.0
+	 */
 	public static class Filter implements GraphPattern {
 		private String filter;
 

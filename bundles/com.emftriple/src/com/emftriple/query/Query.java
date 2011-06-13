@@ -11,11 +11,28 @@
 package com.emftriple.query;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
 
+/**
+ * Query interface for sparql queries.
+ * 
+ * @author guillaume hillairet
+ * @since 0.8.0
+ */
 public interface Query {
 	
+	/**
+	 * Returns a URI containing the query. The parameter is the {@link Resource} URI to 
+	 * which the query will be associated.
+	 * 
+	 * @param resourceURI
+	 * @return URI with current Query as query parameter.
+	 */
 	URI toURI(URI resourceURI);
 	
+	/**
+	 * Returns String representation of the query.
+	 */
 	String get();
 	
 }

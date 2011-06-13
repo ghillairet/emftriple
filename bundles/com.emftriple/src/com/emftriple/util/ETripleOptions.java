@@ -10,6 +10,16 @@
  *******************************************************************************/
 package com.emftriple.util;
 
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+
+/**
+ * The class {@link ETripleOptions} defines options that can be used as load options for a {@link ResourceSet} or 
+ * {@link Resource}.
+ * 
+ * @author guillaume hillairet
+ * @since 0.8.0
+ */
 public final class ETripleOptions {
 	
 	public static final String OPTION_DATASOURCE_LOCATION = "OPTION_DATASOURCE_LOCATION";

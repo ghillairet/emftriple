@@ -22,9 +22,9 @@ import com.emftriple.datasources.IResultSet.Solution;
  * @author <a href="mailto:g.hillairet at gmail.com">Guillaume Hillairet</a>
  * @since 0.6.0
  */
-public interface IResultSet<N, U, L> extends Iterator<Solution<N, U, L>> {
+public interface IResultSet<N, U extends N, L extends N> extends Iterator<Solution<N, U, L>> {
 
-	public static interface Solution<N, U, L> {
+	public static interface Solution<N, U extends N, L extends N> {
 		
 		N get(String varName);
 		

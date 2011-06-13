@@ -12,6 +12,13 @@ package com.emftriple.resource;
 
 import org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl;
 
+/**
+ * Specific {@link ResourceFactoryImpl} for {@link ETripleResource}. This class needs to be extended 
+ * by specific implementation dependent to accessible RDF stores.
+ * 
+ * @author guillaume hillairet
+ * @since 0.8.0
+ */
 public abstract class ETripleResourceFactoryImpl extends ResourceFactoryImpl {
 	
 }

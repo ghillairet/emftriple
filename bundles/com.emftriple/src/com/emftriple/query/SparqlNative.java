@@ -12,6 +12,13 @@ package com.emftriple.query;
 
 import org.eclipse.emf.common.util.URI;
 
+/**
+ * The class {@link SparqlNative} allows creation of SPARQL queries from 
+ * plain String.
+ * 
+ * @author guillaume hillairet
+ * @since 0.8.0
+ */
 public class SparqlNative implements Query {
 
 	private final String query;

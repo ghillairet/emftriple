@@ -19,11 +19,18 @@ import org.eclipse.emf.ecore.resource.Resource;
 import com.emftriple.datasources.IDataSource;
 
 /**
+ * Specific {@link Resource} for persisting models in RDF data sources. 
  * 
  * 
+ * @author guillaume hillairet
  *
+ * @param <G> abstract type for RDF Graph
+ * @param <T> abstract type for RDF Triple
+ * @param <N> abstract type for RDF Node
+ * @param <U> abstract type for RDF URI
+ * @param <L> abstract type for RDF Literal
  */
-public interface ETripleResource<G, T, N, U, L> extends Resource {
+public interface ETripleResource<G, T, N, U extends N, L extends N> extends Resource {
 	
 	/**
 	 * Returns the {@link IDataSource} interface to the RDF repository.

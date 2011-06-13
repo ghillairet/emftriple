@@ -29,13 +29,15 @@ import com.emftriple.query.result.ListResult;
 import com.emftriple.query.result.ResultFactory;
 
 /**
+ * Abstract implementation of {@link ETripleResource}.
+ *  
  * 
  * @author <a href="mailto:g.hillairet at gmail.com">Guillaume Hillairet</a>
- * @since 0.6.0
+ * @since 0.8.0
  */
-public abstract class ETripleResourceImpl<G, T, N, U, L> 
-extends ResourceImpl 
-implements ETripleResource<G, T, N, U, L> {
+public abstract class ETripleResourceImpl<G, T, N, U extends N, L  extends N> 
+	extends ResourceImpl 
+	implements ETripleResource<G, T, N, U, L> {
 
 	protected final ETripleResourceCacheImpl primaryCache;
 

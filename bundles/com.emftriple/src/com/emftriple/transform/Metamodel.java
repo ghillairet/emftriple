@@ -18,9 +18,12 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
-
 /**
- * {@link Metamodel}
+ * The Metamodel interface allows access to the mapping information.
+ *   
+ * 
+ * @author guillaume hillairet
+ * @since 0.8.0	
  */
 public interface Metamodel {
 	
@@ -64,8 +67,10 @@ public interface Metamodel {
 	EClass getEClass(Class<?> aClass);
 	
 	/**
-	 *	{@link Registry} 
-	 *
+	 * The Registry interface represents a registry of model elements.
+	 * 
+	 * @author guillaume hillairet
+	 * @since 0.8.0
 	 */
 	interface Registry {
 		

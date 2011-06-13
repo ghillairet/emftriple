@@ -23,6 +23,13 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 
 import com.emftriple.util.ETripleEcoreUtil;
 
+/**
+ * The {@link EObjectID} class generates unique identifier for EObject. Identifiers are used to create 
+ * RDF URIs.
+ * 
+ * @author guillaume hillairet
+ *
+ */
 final class EObjectID {
 
 	private static final String ID = "Id";

@@ -24,9 +24,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
 /**
- * {@link ETripleEcoreUtil}
- * 
- * Utility Class for EMFTriple.
+ * The class {@link ETripleEcoreUtil} is a utility class.
  * 
  * @author <a href="mailto:g.hillairet at gmail.com">Guillaume Hillairet</a>
  * @since 0.5.5

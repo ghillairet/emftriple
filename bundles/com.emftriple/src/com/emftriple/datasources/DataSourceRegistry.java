@@ -17,6 +17,14 @@ import org.eclipse.emf.common.util.URI;
 
 import com.emftriple.datasources.IDataSource.Registry;
 
+/**
+ * Registry for {@link IDataSource}
+ * 
+ * The class {@link DataSourceRegistry} registers the currently used data sources.
+ *  
+ * @author guillaume hillairet
+ * @since 0.8.0
+ */
 public class DataSourceRegistry implements Registry {
 
 	@SuppressWarnings("rawtypes")
@@ -24,12 +32,12 @@ public class DataSourceRegistry implements Registry {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public <G, T, N, U, L> IDataSource<G, T, N, U, L> getDataSource(URI uri) {
+	public <G, T, N, U extends N, L extends N> IDataSource<G, T, N, U, L> getDataSource(URI uri) {
 		return map.get(uri);
 	}
 
 	@Override
-	public <G, T, N, U, L> void register(URI uri, IDataSource<G, T, N, U, L> dataSource) {
+	public <G, T, N, U extends N, L extends N> void register(URI uri, IDataSource<G, T, N, U, L> dataSource) {
 		map.put(uri, dataSource);
 	}
 

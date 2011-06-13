@@ -27,10 +27,20 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import com.emftriple.resource.ETripleResource;
 import com.emftriple.vocabularies.RDF;
 
+/**
+ * The {@link RDFTransform} abstract class provides methods for converting EObject to RDF triples. 
+ * This class needs to be extended to fulfill specific RDF APIs.
+ * 
+ * @author guillaume hillairet
+ *
+ * @param <U> abstract type for RDF URI (Label)
+ * @param <L> abstract type for RDF Literal
+ * @param <T> abstract type for RDF Triple (Statement) 
+ * @param <G> abstract type for RDF Graph
+ */
 public abstract class RDFTransform<U, L, T, G> {
 	
-	public RDFTransform() {
-	
+	public RDFTransform() {	
 	}
 	
 	public abstract Collection<T> createTriples(EObject object, String key, G graph);
@@ -41,8 +51,7 @@ public abstract class RDFTransform<U, L, T, G> {
 		final List<T> triples = new ArrayList<T>();
 		
 		for (String type: Metamodel.INSTANCE.getRdfTypes(object.eClass())) {
-			T stmt = 
-				createTripleURI(subject, createURI(RDF.type, graph), createURI(type, graph), graph);
+			T stmt = createTripleURI(subject, createURI(RDF.type, graph), createURI(type, graph), graph);
 			if (stmt != null) {
 				triples.add(stmt);
 			}
@@ -100,6 +109,7 @@ public abstract class RDFTransform<U, L, T, G> {
 			if (FeatureMapUtil.isFeatureMap(attribute)) {
 				FeatureMap.Internal featureMap = (FeatureMap.Internal)value;
 				Iterator<FeatureMap.Entry> iterator = featureMap.basicIterator();
+				
 				while (iterator.hasNext()) {
 					FeatureMap.Entry entry = iterator.next();
 					EStructuralFeature feature = entry.getEStructuralFeature();

@@ -19,6 +19,13 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import com.emftriple.transform.Metamodel;
 
+/**
+ * The class {@link ETripleUtil} provides methods to easily retrieve objects from the content of a 
+ * {@link Resource}.
+ * 
+ * @author guillaume hillairet
+ * @since 0.8.0
+ */
 public class ETripleUtil {
 
 	@SuppressWarnings("unchecked")
@@ -31,4 +38,5 @@ public class ETripleUtil {
 		
 		return (List<T>) col;
 	}
+	
 }
