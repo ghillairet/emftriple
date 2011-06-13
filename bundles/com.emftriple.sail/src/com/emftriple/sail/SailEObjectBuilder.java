@@ -10,6 +10,9 @@
  *******************************************************************************/
 package com.emftriple.sail;
 
+import java.util.Map;
+import java.util.Set;
+
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -20,14 +23,15 @@ import org.openrdf.model.URI;
 import org.openrdf.model.Value;
 
 import com.emftriple.datasources.IDataSource;
+import com.emftriple.datasources.IResultSet;
 import com.emftriple.resource.ETripleResourceImpl;
 import com.emftriple.transform.DatatypeConverter;
-import com.emftriple.transform.EObjectTransform;
+import com.emftriple.transform.EObjectBuilder;
 import com.emftriple.transform.Metamodel;
 import com.emftriple.transform.SparqlQueries;
 
 public class SailEObjectBuilder 
-extends EObjectTransform<Value, URI, Literal>{
+	extends EObjectBuilder<Value, URI, Literal>{
 
 	@SuppressWarnings("rawtypes")
 	public SailEObjectBuilder(ETripleResourceImpl resource, IDataSource dataSource) {
@@ -67,6 +71,18 @@ extends EObjectTransform<Value, URI, Literal>{
 		if (value != null) {
 			object.eSet(attribute, value);
 		}
+	}
+
+	@Override
+	protected String getURI(Value node) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Map<String, Map<String, Set<Value>>> createMapOfValuesForBNode(IResultSet<Value, URI, Literal> resultSet) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
