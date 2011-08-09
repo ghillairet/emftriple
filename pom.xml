@@ -4,21 +4,21 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.emftriple</groupId>
 	<artifactId>build</artifactId>
-	<version>0.8.0-SNAPSHOT</version>
+	<version>0.9.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>bundles/com.emftriple</module>
-		<module>features/com.emftriple.feature</module>
+		<module>bundles/org.eclipselabs.emftriple</module>
+		<module>features/org.eclipselabs.emftriple.feature</module>
 		
-		<module>bundles/com.emftriple.jena</module>
-		<module>features/com.emftriple.jena.feature</module>
+		<module>bundles/org.eclipselabs.emftriple.jena</module>
+		<module>features/org.eclipselabs.emftriple.jena.feature</module>
 		
-		<module>bundles/com.emftriple.sail</module>
-		<module>features/com.emftriple.sail.feature</module>
+		<module>bundles/org.eclipselabs.emftriple.sail</module>
+		<module>features/org.eclipselabs.emftriple.sail.feature</module>
 		
-		<module>bundles/com.emftriple.sesame</module>
-		<module>features/com.emftriple.sesame.feature</module>
+		<module>bundles/org.eclipselabs.emftriple.sesame</module>
+		<module>features/org.eclipselabs.emftriple.sesame.feature</module>
 		
 		<module>build/repository</module>
 	</modules>
@@ -37,7 +37,7 @@
 		<repository>
 			<id>helios</id>
 			<layout>p2</layout>
-			<url>http://download.eclipse.org/releases/helios</url>
+			<url>http://download.eclipse.org/releases/indigo</url>
 		</repository>
         <repository>
 			<id>sesame</id>

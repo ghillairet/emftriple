@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/com.emftriple.feature_0.8.0.qualifier.jar" id="com.emftriple.feature" version="0.8.0.qualifier">
+   <feature url="features/org.eclipselabs.emftriple.feature_0.9.0.qualifier.jar" id="org.eclipselabs.emftriple.feature" version="0.9.0.qualifier">
       <category name="emftriple"/>
    </feature>
-   <feature url="features/com.emftriple.jena.feature_0.8.0.qualifier.jar" id="com.emftriple.jena.feature" version="0.8.0.qualifier">
+   <feature url="features/org.eclipselabs.emftriple.jena.feature_0.9.0.qualifier.jar" id="org.eclipselabs.emftriple.jena.feature" version="0.9.0.qualifier">
       <category name="emftriple"/>
    </feature>
-   <feature url="features/com.emftriple.sesame.feature_0.8.0.qualifier.jar" id="com.emftriple.sesame.feature" version="0.8.0.qualifier">
+   <feature url="features/org.eclipselabs.emftriple.sesame.feature_0.9.0.qualifier.jar" id="org.eclipselabs.emftriple.sesame.feature" version="0.9.0.qualifier">
       <category name="emftriple"/>
    </feature>
-   <feature url="features/com.emftriple.sail.feature_0.8.0.qualifier.jar" id="com.emftriple.sail.feature" version="0.8.0.qualifier">
+   <feature url="features/org.eclipselabs.emftriple.sail.feature_0.9.0.qualifier.jar" id="org.eclipselabs.emftriple.sail.feature" version="0.9.0.qualifier">
       <category name="emftriple"/>
    </feature>
    <category-def name="emftriple" label="emftriple">
