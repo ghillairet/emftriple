@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="com.emftriple.sesame.feature"
+      label="emftriple sesame"
+      version="0.8.0.qualifier"
+      provider-name="eclipselabs">
+
+   <description url="http://www.example.com/description">
+      [Enter Feature Description here.]
+   </description>
+
+   <copyright url="http://www.example.com/copyright">
+      [Enter Copyright Description here.]
+   </copyright>
+
+   <license url="http://www.example.com/license">
+      [Enter License Description here.]
+   </license>
+
+   <requires>
+      <import plugin="org.eclipse.emf.ecore"/>
+      <import plugin="com.emftriple"/>
+      <import plugin="org.openrdf"/>
+      <import plugin="com.emftriple.sail"/>
+   </requires>
+
+   <plugin
+         id="com.emftriple.sesame"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>
