@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: sail tests
+Bundle-SymbolicName: com.emftriple.sail.junit;singleton:=true
+Bundle-Version: 0.8.0
+Bundle-ClassPath: .
+Bundle-Vendor: eclipselabs
+Bundle-Localization: plugin
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: com.junit.model,
+ com.junit.model.impl,
+ com.junit.model.util
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.eclipse.emf.ecore,
+ org.eclipse.emf.ecore.xmi;bundle-version="2.5.0",
+ org.openrdf,
+ org.junit4,
+ com.emftriple.sail,
+ com.emftriple;bundle-version="0.7.2"
