@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="com.emftriple.sesame.feature"
-      label="emftriple sesame"
-      version="0.8.0.qualifier"
-      provider-name="eclipselabs">
+      id="org.eclipselabs.emftriple.sesame.feature"
+      label="%Bundle-Name"
+      version="0.9.0.qualifier"
+      provider-name="%Bundle-Vendor">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
@@ -18,14 +18,14 @@
    </license>
 
    <requires>
-      <import plugin="org.eclipse.emf.ecore"/>
-      <import plugin="com.emftriple"/>
+      <import plugin="org.eclipse.emf.common"/>
+      <import plugin="org.eclipselabs.emftriple"/>
+      <import plugin="org.eclipselabs.emftriple.sail"/>
       <import plugin="org.openrdf"/>
-      <import plugin="com.emftriple.sail"/>
    </requires>
 
    <plugin
-         id="com.emftriple.sesame"
+         id="org.eclipselabs.emftriple.sesame"
          download-size="0"
          install-size="0"
          version="0.0.0"
