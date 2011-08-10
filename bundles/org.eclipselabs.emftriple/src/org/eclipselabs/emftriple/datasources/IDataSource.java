@@ -143,6 +143,23 @@ public abstract interface IDataSource<G, T> {
 	void remove(Iterable<T> triples, String graphURI);
 
 	/**
+	 * @param updateQuery
+	 */
+	void update(String updateQuery);
+	
+	/**
+	 * @param resourceURI
+	 * @return
+	 */
+	boolean contains(String resourceURI);
+
+	/**
+	 * @param resourceURI
+	 * @param graphURI
+	 */
+	void delete(String resourceURI, String graphURI);
+	
+	/**
 	 * Registry for {@link IDataSource}
 	 * 
 	 * @author guillaume hillairet
@@ -174,4 +191,5 @@ public abstract interface IDataSource<G, T> {
 		void register(URI uri, IDataSource<?,?> dataSource);
 		
 	}
+	
 }

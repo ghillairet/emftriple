@@ -21,8 +21,12 @@ import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryParseException;
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.shared.Lock;
+import com.hp.hpl.jena.update.UpdateAction;
+import com.hp.hpl.jena.update.UpdateFactory;
+import com.hp.hpl.jena.update.UpdateRequest;
 
 /**
  * 
@@ -178,6 +182,51 @@ public abstract class ModelDataSource
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipselabs.emftriple.datasources.IDataSource#update(java.lang.String)
+	 */
+	@Override
+	public void update(String updateQuery) {
+		UpdateRequest update = UpdateFactory.create(updateQuery);
+		Model model = getModel(null);
+		
+		UpdateAction.execute(update, model);
+		if (model.supportsTransactions())
+			model.commit();
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipselabs.emftriple.datasources.IDataSource#contains(java.lang.String)
+	 */
+	@Override
+	public boolean contains(String resourceURI) {
+		return askQuery("ask { <"+resourceURI+"> ?p ?o }", null);
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipselabs.emftriple.datasources.IDataSource#delete(java.lang.String)
+	 */
+	@Override
+	public void delete(String graphURI) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipselabs.emftriple.datasources.IDataSource#delete(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public void delete(String resourceURI, String graphURI) {
+		final Model model = getModel(graphURI);
+		Resource sbj = model.getResource(resourceURI);
+		if (sbj != null) {
+			model.removeAll(sbj, null, null);
+		}
+		if (model.supportsTransactions()) {
+			model.commit();
+		}
+	}
+	
 	@Override
 	public Model getGraph(String graphURI) {
 		return getModel(graphURI);

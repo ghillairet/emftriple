@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
@@ -29,6 +30,8 @@ import org.eclipselabs.emftriple.datasources.IDataSource;
 import org.eclipselabs.emftriple.internal.ETripleOutputStream;
 import org.eclipselabs.emftriple.internal.Metamodel;
 import org.eclipselabs.emftriple.internal.util.DatatypeConverter;
+import org.eclipselabs.emftriple.internal.util.UpdateQueries;
+import org.eclipselabs.emftriple.jena.util.JenaUpdateQueries;
 
 import com.hp.hpl.jena.rdf.model.AnonId;
 import com.hp.hpl.jena.rdf.model.Literal;
@@ -48,6 +51,7 @@ public class JenaOutputStream
 	extends ETripleOutputStream {
 	
 	protected final JenaRDFBuilder builder;
+	protected final UpdateQueries<Statement> updates = new JenaUpdateQueries();
 	
 	public JenaOutputStream(URI uri, Map<?, ?> options, IDataSource<?,?> dataSource) {
 		super(uri, options, dataSource);
@@ -57,23 +61,38 @@ public class JenaOutputStream
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void saveContent(TreeIterator<EObject> iterator, Map<String, String> queries) {
-		final Collection<Statement> triples = new ArrayList<Statement>();
 		final Model model = ModelFactory.createDefaultModel();
 		
+		final Map<String, EObject> done = new WeakHashMap<String, EObject>();
+
 		for (;iterator.hasNext();) {
 			EObject obj = iterator.next();
+			final URI key = getID(obj);
 			
-			if (!obj.eIsProxy()) {
-				triples.addAll( getTriples(obj, model) );
-//				((InternalEObject)obj).eSetProxyURI(URI.createURI(uri+"#uri="+getID(obj)));
+			if (!done.containsKey(key.toString())) {
+				
+				Collection<Statement> triples = getTriples(obj, model, key);
+
+				// 	If object already in rdf store, then it needs to be update with its
+				//	new values.
+				//	Simplest way is to delete it and insert new values.
+				//	Here it is done with UpdateQuery but could use IDataSource remove instead.
+				if (!triples.isEmpty()) {
+					
+					if (dataSource.contains(key.toString())) {
+						dataSource.delete(key.toString(), queries.get("graph"));
+					}
+				
+					save(triples, (IDataSource<Model, Statement>) dataSource, queries.get("graph"));
+					
+				}
+				
+				done.put(key.toString(), obj);
 			}
-		}
-		
-		save(triples, (IDataSource<Model, Statement>) dataSource, queries.get("graph"));	
+		}	
 	}
 	
-	protected Collection<Statement> getTriples(EObject object, Model model) {
-		final URI key = getID(object);
+	protected Collection<Statement> getTriples(EObject object, Model model, URI key) {
 		final Collection<Statement> triples = builder.createTriples(object, key.toString(),  model);
 		
 		return triples;
@@ -122,7 +141,9 @@ public class JenaOutputStream
 		public Literal createLiteral(EObject object, EAttribute attribute, Object value, Model graph) {
 			final String literalValue = DatatypeConverter.toString(attribute.getEType().getName(), value);
 			final String dataTypeURI = DatatypeConverter.get((EDataType) attribute.getEType());
-
+			if (literalValue == null) {
+				return null;
+			}
 			return  graph.createTypedLiteral(literalValue, dataTypeURI);
 		}
 

@@ -9,6 +9,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipselabs.emftriple.ETripleOptions;
 import org.eclipselabs.emftriple.ETripleURIHandlerImpl;
 import org.eclipselabs.emftriple.StoreOptionsRegistry;
+import org.eclipselabs.emftriple.datasources.IDataSource;
 import org.eclipselabs.emftriple.jena.JenaInputStream;
 import org.eclipselabs.emftriple.jena.JenaOutputStream;
 
@@ -27,12 +28,20 @@ public class FileURIHandlerImpl
 	
 	@Override
 	public InputStream createInputStream(URI uri, Map<?, ?> options) throws IOException {
-		return new JenaInputStream(uri, options, getDataSource(uri));
+		IDataSource<?, ?> dataSource = getDataSource(uri);
+		if (dataSource == null) {
+			throw new IOException();
+		}
+		return new JenaInputStream(uri, options, dataSource);
 	}
 	
 	@Override
 	public OutputStream createOutputStream(URI uri, Map<?, ?> options) throws IOException {
-		return new JenaOutputStream(uri, options, getDataSource(uri));
+		IDataSource<?, ?> dataSource = getDataSource(uri);
+		if (dataSource == null) {
+			throw new IOException();
+		}
+		return new JenaOutputStream(uri, options, dataSource);
 	}
 	
 	protected FileDataSource getDataSource(URI uri) {

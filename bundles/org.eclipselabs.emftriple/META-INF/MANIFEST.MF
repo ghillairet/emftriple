@@ -27,3 +27,4 @@ Import-Package: org.eclipse.emf.common.notify,
  org.eclipse.emf.ecore.util,
  org.osgi.framework;version="1.6.0"
 Bundle-Activator: org.eclipselabs.emftriple.Activator
+Require-Bundle: org.eclipse.emf.common;bundle-version="2.7.0"

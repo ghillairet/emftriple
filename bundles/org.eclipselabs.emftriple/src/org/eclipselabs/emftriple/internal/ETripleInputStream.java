@@ -48,17 +48,16 @@ import org.eclipselabs.emftriple.query.result.ListResult;
 import org.eclipselabs.emftriple.query.result.ResultFactory;
 import org.eclipselabs.emftriple.vocabularies.RDF;
 
-
 /**
  * The {@link ETripleInputStream} abstract class provides methods from creating EObject from RDF. This class needs to
  * be extended to fulfill specific RDF APIs. 
  * 
- * @author guillaume hillairet
+ * @author ghillairet
  * @since 0.9.0
  */
 public abstract class ETripleInputStream 
-extends InputStream
-implements URIConverter.Loadable {
+	extends InputStream
+	implements URIConverter.Loadable {
 
 	protected final IDataSource<?,?> dataSource;
 	protected final Map<?, ?> options;	
@@ -85,7 +84,7 @@ implements URIConverter.Loadable {
 			dataSource.disconnect();
 
 		} else {
-
+			
 			dataSource.connect();
 			Set<String> uris = loadByQuery(dataSource, queries);
 			if (!uris.isEmpty()) {
@@ -122,6 +121,11 @@ implements URIConverter.Loadable {
 				}
 				((ResourceImpl)resource).getIntrinsicIDToEObjectMap().put(uri, object);
 			}
+		}
+		
+		if (((InternalEObject)object).eIsProxy()) {
+			object = builder.loadEObject(object, uri, graphURI, false);
+			((InternalEObject)object).eSetProxyURI(null);
 		}
 
 		return object;
@@ -180,6 +184,14 @@ implements URIConverter.Loadable {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see java.io.InputStream#read()
+	 */
+	@Override
+	public int read() throws IOException {
+		return 0;
+	}
+	
 	/**
 	 * 
 	 * @author ghillairet
@@ -208,18 +220,27 @@ implements URIConverter.Loadable {
 			for (String featureName: values.keySet()) {
 				EStructuralFeature feature = object.eClass().getEStructuralFeature(featureName);
 				Set<N> nodes = values.get(featureName);
-
+				
 				if (feature instanceof EAttribute && feature != attrId) {
+					
 					if (feature.isMany()) {
-						for (N n: nodes) {
-							setEAttributeValue(object, (EAttribute) feature, n);
+						@SuppressWarnings("unchecked")
+						N[] array = (N[]) nodes.toArray();
+						
+						for (int i=array.length;i > 0; --i) {
+							setEAttributeValue(object, (EAttribute) feature, array[i-1]);
 						}
+						
 					} else {
+						
 						if (!nodes.isEmpty()) {
 							setEAttributeValue(object, (EAttribute) feature, nodes.iterator().next());
 						}
+						
 					}
+					
 				} else if (!isProxy && feature instanceof EReference) {
+					
 					if (isBlankNode(feature)) {
 						// having values in nodes mean there is values available, but those wont be used
 						// to create Proxies, instead we create and load objects with specific bnode query.
@@ -227,6 +248,7 @@ implements URIConverter.Loadable {
 					} else {
 						loadProxyReference(object, (EReference)feature, nodes, graphURI);
 					}
+					
 				}
 			}
 

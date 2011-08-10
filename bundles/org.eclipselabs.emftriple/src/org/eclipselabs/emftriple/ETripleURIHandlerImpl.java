@@ -13,6 +13,7 @@ package org.eclipselabs.emftriple;
 import static org.eclipselabs.emftriple.internal.util.ETripleEcoreUtil.decodeQueryString;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
@@ -30,7 +31,8 @@ import org.eclipselabs.emftriple.datasources.IDataSource;
  * @author ghillairet
  * @since 0.9.0
  */
-public abstract class ETripleURIHandlerImpl extends URIHandlerImpl {
+public abstract class ETripleURIHandlerImpl 
+	extends URIHandlerImpl {
 	
 	public ETripleURIHandlerImpl() {}
 	
@@ -73,6 +75,11 @@ public abstract class ETripleURIHandlerImpl extends URIHandlerImpl {
 		
 		return true;
 	}
+	
+	/**
+	 * Keep track of already associated Sail object and SailDataSource.
+	 */
+	protected static final Map<Object, IDataSource<?,?>> mapOfDataSources = new HashMap<Object, IDataSource<?,?>>();
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.emf.ecore.resource.impl.URIHandlerImpl#contentDescription(org.eclipse.emf.common.util.URI, java.util.Map)

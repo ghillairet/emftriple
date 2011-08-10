@@ -1,15 +1,19 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: emftriple sail
-Bundle-SymbolicName: com.emftriple.sail
-Bundle-Version: 0.8.0.qualifier
-Bundle-Vendor: eclipselabs
+Bundle-Name: %Bundle-Name
+Bundle-SymbolicName: org.eclipselabs.emftriple.sail
+Bundle-Version: 0.9.0.qualifier
+Bundle-Vendor: %Bundle-Vendor
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: com.emftriple.sail,
- com.emftriple.sail.util
-Require-Bundle: org.eclipse.emf.ecore,
- com.emftriple
+Export-Package: org.eclipselabs.emftriple.sail,
+ org.eclipselabs.emftriple.sail.util
 Import-Package: info.aduna.iteration,
+ org.eclipse.emf.common.util,
+ org.eclipse.emf.ecore,
+ org.eclipselabs.emftriple,
+ org.eclipselabs.emftriple.datasources,
+ org.eclipselabs.emftriple.internal,
+ org.eclipselabs.emftriple.internal.util,
  org.openrdf.model,
  org.openrdf.model.impl,
  org.openrdf.query,
@@ -17,3 +21,4 @@ Import-Package: info.aduna.iteration,
  org.openrdf.query.parser,
  org.openrdf.query.parser.sparql,
  org.openrdf.sail
+Require-Bundle: org.eclipse.emf.ecore;bundle-version="2.7.0"
