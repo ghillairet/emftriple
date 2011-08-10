@@ -1,12 +1,24 @@
-/**
- * 
- */
+/*******************************************************************************
+ * Copyright (c) 2011 Guillaume Hillairet.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Guillaume Hillairet - initial API and implementation
+ *******************************************************************************/
 package org.eclipselabs.emftriple.jena.junit.support;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -14,11 +26,11 @@ import org.eclipselabs.emftriple.ETripleOptions;
 import org.eclipselabs.emftriple.StoreOptionsRegistry;
 import org.eclipselabs.emftriple.jena.file.FileURIHandlerImpl;
 import org.eclipselabs.emftriple.jena.file.FileUtil;
-import org.eclipselabs.emftriple.jena.junit.model.ModelPackage;
-
-import com.hp.hpl.jena.rdf.model.impl.ResourceImpl;
+import org.eclipselabs.emftriple.junit.model.ModelPackage;
+import org.eclipselabs.emftriple.junit.support.TestSupportImpl;
 
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.impl.ResourceImpl;
 
 /**
  * @author ghillairet
@@ -103,4 +115,31 @@ public class FileTestSupport extends TestSupportImpl {
 		return URI.createURI("rdf://"+storeName);
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.eclipselabs.emftriple.jena.junit.support.TestSupportImpl#getObject(org.eclipse.emf.common.util.URI)
+	 */
+	@Override
+	protected EObject getObject(URI key) {
+		Resource resource = resourceSet.createResource(URI.createURI("rdf://"+storeName+"?uri="+key));
+		try {
+			resource.load(null);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		assertFalse(resource.getContents().isEmpty());
+		assertTrue(resource.getContents().size() == 1);
+		
+		return resource.getContents().get(0);
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipselabs.emftriple.jena.junit.support.TestSupportImpl#dataStoreSize()
+	 */
+	@Override
+	public long dataStoreSize() {
+		Model model = FileUtil.getModel(fileLocation, format);
+		
+		return model.size();
+	}
 }

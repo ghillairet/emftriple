@@ -76,10 +76,16 @@ class PrimaryObject {
   @Id(base="http://junit.org/primary/")
   id attr int ~id;
   attr String name;
+  unsettable attr String unsettableAttribute;
+  unsettable attr String unsettableAttributeWithDefault = "foo";
+  
+  unsettable ref TargetObject unsettableReference;
   ref TargetObject singleNonContainmentReference;
   ref TargetObject[*] multipleNonContainmentReference;
+  
   !resolve val TargetObject singleContainmentReferenceNoProxies;
   !resolve val TargetObject[*] multipleContainmentReferenceNoProxies;
+  
   val TargetObject singleContainmentReferenceProxies;
   val TargetObject[*] multipleContainmentReferenceProxies;
 

@@ -97,6 +97,13 @@
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="unsettableAttribute" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        unsettable="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="unsettableAttributeWithDefault"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" defaultValueLiteral="foo"
+        unsettable="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="unsettableReference" eType="#//TargetObject"
+        unsettable="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="singleNonContainmentReference"
         eType="#//TargetObject"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="multipleNonContainmentReference"

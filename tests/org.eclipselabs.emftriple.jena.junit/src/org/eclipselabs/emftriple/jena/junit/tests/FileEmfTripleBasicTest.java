@@ -11,6 +11,7 @@
 package org.eclipselabs.emftriple.jena.junit.tests;
 
 import org.eclipselabs.emftriple.jena.junit.support.FileTestSupport;
+import org.eclipselabs.emftriple.junit.tests.EmfTripleBasicTest;
 
 public class FileEmfTripleBasicTest extends EmfTripleBasicTest {
 	
