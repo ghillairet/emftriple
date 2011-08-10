@@ -32,6 +32,9 @@ public class Sparql implements Query {
 	private List<String> select;
 	private GraphPattern[] where;
 	private Map<String, String> prefixes;
+	private Integer limit;
+	private String orderBy;
+	private int offset;
 	
 	public Sparql() {
 		select = new ArrayList<String>();
@@ -56,21 +59,39 @@ public class Sparql implements Query {
 		return this;
 	}
 	
+	public Sparql limit(int limit) {
+		this.limit = limit;
+		return this;
+	}
+	
 	public String get() {
 		String res = "";
 		for (String p: prefixes.keySet()) {
 			res+="prefix "+p+": <"+prefixes.get(p)+"> ";
 		}
 		res+= "select ";
-		if (select.isEmpty())
+		if (select.isEmpty()) {
 			res+="* ";
-		else
-			for (String s: select)
+		} else {
+			for (String s: select) {
 				res+=getVariable(s)+" ";
+			}
+		}
 		res+="where { ";
-		for (GraphPattern g: where)
+		for (GraphPattern g: where) {
 			res+=g.get();
+		}
 		res+="}";
+		if (orderBy != null) {
+			res+= " order by ?"+orderBy;
+		}
+		if (offset > -1) {
+			res+= " offset "+offset;
+		}
+		if (limit != null) {
+			res+=" limit "+limit;
+		}
+		
 		return res;
 	}
 
@@ -110,8 +131,16 @@ public class Sparql implements Query {
 		return new Filter(expression);
 	}
 
+	public static GraphPattern regex(String expression) {
+		return new RegEx(expression);
+	}
+
 	public static GraphPattern optional(GraphPattern... patterns) {
 		return new OptionalGraphPattern(patterns);
+	}
+	
+	public static GraphPattern union(GraphPattern... patterns) {
+		return new UnionGraphPattern(patterns);
 	}
 
 	private static String getVariable(String var) {
@@ -255,13 +284,33 @@ public class Sparql implements Query {
 		}
 	}
 	
+	public static class UnionGraphPattern implements GraphPattern {
+		private GraphPattern[] patterns;
+
+		UnionGraphPattern(GraphPattern... patterns) {
+			this.patterns = patterns;
+		}
+		
+		@Override
+		public String get() {
+			String res = " { "+patterns[0].get()+" } ";
+			if (patterns.length > 1) {
+				for (int i=1; i<patterns.length;i++) {
+					res+=" union { "+patterns[i].get()+" } ";
+				}
+			}
+			return res;
+		}
+		
+	}
+	
 	/**
 	 * 
 	 * @author guillaume hillairet
 	 * @since 0.8.0
 	 */
 	public static class Filter implements GraphPattern {
-		private String filter;
+		protected String filter;
 
 		Filter(String filter) {
 			this.filter = filter;
@@ -271,6 +320,19 @@ public class Sparql implements Query {
 		public String get() {
 			return "filter ("+filter+")";
 		}
+	}
+	
+	public static class RegEx extends Filter {
+
+		RegEx(String filter) {
+			super(filter);
+		}
+		
+		@Override
+		public String get() {
+			return "filter regex("+filter+")";
+		}
+		
 	}
 	
 	@Override
@@ -283,4 +345,13 @@ public class Sparql implements Query {
 		return uri;
 	}
 
+	public Sparql orderBy(String orderBy) {
+		this.orderBy = orderBy;
+		return this;
+	}
+
+	public Sparql offset(int offset) {
+		this.offset = offset;
+		return this;
+	}
 }

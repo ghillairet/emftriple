@@ -42,7 +42,7 @@ public class HTTPResourceImpl
 				String dir = (String) options.get(ETripleOptions.OPTION_DATASOURCE_LOCATION);
 				return new SesameHTTP(new HTTPRepository(dir));
 			} else if (options.containsKey(ETripleOptions.OPTION_DATASOURCE_OBJECT)) {
-				Repository repository = (Repository) options.get(ETripleOptions.OPTION_DATASOURCE_LOCATION);
+				Repository repository = (Repository) options.get(ETripleOptions.OPTION_DATASOURCE_OBJECT);
 				return new SesameHTTP(repository);
 			}
 		}

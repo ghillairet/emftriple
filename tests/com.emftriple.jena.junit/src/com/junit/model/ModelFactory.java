@@ -129,6 +129,24 @@ public interface ModelFactory extends EFactory {
 	TargetObject createTargetObject();
 
 	/**
+	 * Returns a new object of class '<em>Movie</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Movie</em>'.
+	 * @generated
+	 */
+	Movie createMovie();
+
+	/**
+	 * Returns a new object of class '<em>Actor</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Actor</em>'.
+	 * @generated
+	 */
+	Actor createActor();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

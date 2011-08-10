@@ -161,5 +161,53 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="arrayAttribute" upperBound="-1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Movie">
+    <eAnnotations source="OWLClass">
+      <details key="uri" value="http://data.linkedmdb.org/resource/movie/film"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+      <eAnnotations source="Id">
+        <details key="base" value="http://data.linkedmdb.org/resource/film/"/>
+      </eAnnotations>
+      <eAnnotations source="rdf">
+        <details key="uri" value="http://data.linkedmdb.org/resource/movie/filmid"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="title" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="rdf">
+        <details key="uri" value="http://purl.org/dc/terms/title"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="actors" upperBound="-1"
+        eType="#//Actor" eOpposite="#//Actor/actorOf">
+      <eAnnotations source="rdf">
+        <details key="uri" value="http://data.linkedmdb.org/resource/movie/actor"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Actor">
+    <eAnnotations source="OWLClass">
+      <details key="uri" value="http://data.linkedmdb.org/resource/movie/actor"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+      <eAnnotations source="Id">
+        <details key="base" value="http://data.linkedmdb.org/resource/actor/"/>
+      </eAnnotations>
+      <eAnnotations source="rdf">
+        <details key="uri" value="http://data.linkedmdb.org/resource/movie/actor_actorid"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="rdf">
+        <details key="uri" value="http://data.linkedmdb.org/resource/movie/actor_name"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="actorOf" upperBound="-1"
+        eType="#//Movie" eOpposite="#//Movie/actors">
+      <eAnnotations source="rdf">
+        <details key="uri" value="http://data.linkedmdb.org/resource/movie/actor"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="URI" instanceClassName="org.eclipse.emf.common.util.URI"/>
 </ecore:EPackage>

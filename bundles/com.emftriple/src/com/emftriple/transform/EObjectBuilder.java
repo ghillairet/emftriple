@@ -12,6 +12,7 @@ package com.emftriple.transform;
 
 import static com.emftriple.transform.SparqlQueries.selectBlankNodeObject;
 import static com.emftriple.transform.SparqlQueries.selectObjectByClass;
+import static com.emftriple.util.ETripleEcoreUtil.isBlankNode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -148,7 +149,7 @@ public abstract class EObjectBuilder<N, U extends N, L extends N> {
 				}
 			}
 		}
-		System.out.println(objects.size());
+		
 		if (parentFeature.isMany()) {
 			@SuppressWarnings("unchecked")
 			EList<EObject> values = (EList<EObject>) parent.eGet(parentFeature);
@@ -189,14 +190,6 @@ public abstract class EObjectBuilder<N, U extends N, L extends N> {
 		}
 	}
 	
-	// TODO check if the super type has blank node annotation.
-	private boolean isBlankNode(EStructuralFeature feature) {
-		if (feature.getEAnnotation("BlankNode") != null) {
-			return true;
-		}
-		return feature.getEType().getEAnnotation("BlankNode") != null;
-	}
-
 	protected abstract void setEReferenceValue(EObject object, EReference reference, N node);
 
 	protected abstract void setEAttributeValue(EObject object, EAttribute reference, N node);

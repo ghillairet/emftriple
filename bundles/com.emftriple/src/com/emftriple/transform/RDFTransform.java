@@ -10,6 +10,8 @@
  *******************************************************************************/
 package com.emftriple.transform;
 
+import static com.emftriple.util.ETripleEcoreUtil.isBlankNode;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -20,6 +22,7 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.FeatureMap;
 import org.eclipse.emf.ecore.util.FeatureMapUtil;
 import org.eclipse.emf.ecore.util.InternalEList;
@@ -38,7 +41,7 @@ import com.emftriple.vocabularies.RDF;
  * @param <T> abstract type for RDF Triple (Statement) 
  * @param <G> abstract type for RDF Graph
  */
-public abstract class RDFTransform<U, L, T, G> {
+public abstract class RDFTransform<N, U extends N, L extends N, T, G> {
 	
 	public RDFTransform() {	
 	}
@@ -47,7 +50,7 @@ public abstract class RDFTransform<U, L, T, G> {
 
 	public abstract U createURI(String uri, G graph);
 	
-	public Collection<T> createRdfTypes(EObject object, U subject, G graph) {
+	public Collection<T> createRdfTypes(EObject object, N subject, G graph) {
 		final List<T> triples = new ArrayList<T>();
 		
 		for (String type: Metamodel.INSTANCE.getRdfTypes(object.eClass())) {
@@ -61,7 +64,7 @@ public abstract class RDFTransform<U, L, T, G> {
 	}
 	
 	@SuppressWarnings("rawtypes")
-	public Collection<T> createTriples(EObject object, EReference reference, U subject, G graph) {
+	public Collection<T> createTriples(EObject object, EReference reference, N subject, G graph) {
 		final List<T> triples = new ArrayList<T>();
 		final U predicate = createURI(reference, (ETripleResource) object.eResource(), graph);
 		
@@ -75,29 +78,42 @@ public abstract class RDFTransform<U, L, T, G> {
 				List<EObject> targetObjects = ((InternalEList<EObject>) value).basicList();
 				
 				for (EObject targetObject : targetObjects) {
-					U obj = createURI(targetObject, (ETripleResource) object.eResource(), graph);
-					if (obj != null) {
-						T stmt = createTripleURI(subject, predicate, obj, graph);
-						if (stmt != null) {
-							triples.add(stmt);
-						}
+					T triple = getTripleFromReferenceValue(subject, predicate, targetObject, graph, object.eResource());
+					if (triple != null) {
+						triples.add(triple);
 					}
 				}
 			} else {
-				U obj = createURI((EObject) value, (ETripleResource) object.eResource(), graph);
-				if (obj != null) {
-					T stmt = createTripleURI(subject, predicate, obj, graph);
-					if (stmt != null) {
-						triples.add(stmt);
-					}
+				T triple = getTripleFromReferenceValue(subject, predicate, (EObject) value, graph, object.eResource());
+				if (triple != null) {
+					triples.add(triple);
 				}
 			}
 		}
 		return triples;
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	protected T getTripleFromReferenceValue(N subject, U predicate, EObject value, G graph, Resource container) {
+		N obj;
+		T stmt = null;
+		if (isBlankNode(value)) {
+			obj = createBlankNode(value, (ETripleResource) container, graph);
+			if (obj != null) {
+				stmt = createTripleBlankNode(subject, predicate, obj, graph);
+			}
+		} else {			
+			obj = createURI(value, (ETripleResource) container, graph);
+			if (obj != null) {
+				stmt = createTripleURI(subject, predicate, (U) obj, graph);
+			}
+		}
+		
+		return stmt;
+	}
+	
 	@SuppressWarnings("rawtypes")
-	public Collection<T> createTriples(EObject object, EAttribute attribute, U subject, G graph) {
+	public Collection<T> createTriples(EObject object, EAttribute attribute, N subject, G graph) {
 		final List<T> triples = new ArrayList<T>();
 		final U predicate = createURI(attribute, (ETripleResource) object.eResource(), graph);
 		
@@ -155,14 +171,18 @@ public abstract class RDFTransform<U, L, T, G> {
 		return triples;
 	}
 	
-	public abstract T createTripleURI(U subject, U predicate, U object, G graph);
+	protected abstract T createTripleURI(N subject, U predicate, U object, G graph);
 	
-	public abstract T createTripleLiteral(U subject, U predicate, L object, G graph);
+	protected abstract T createTripleBlankNode(N subject, U predicate, N object, G graph);
 	
-	public abstract U createURI(EObject object, @SuppressWarnings("rawtypes") ETripleResource resource, G graph);
+	protected abstract T createTripleLiteral(N subject, U predicate, L object, G graph);
 	
-	public abstract U createURI(EStructuralFeature feature, @SuppressWarnings("rawtypes") ETripleResource resource, G graph);
+	protected abstract U createURI(EObject object, @SuppressWarnings("rawtypes") ETripleResource resource, G graph);
 	
-	public abstract L createLiteral(EObject object, EAttribute attribute, Object value, G graph);
-
+	protected abstract N createBlankNode(EObject object, @SuppressWarnings("rawtypes") ETripleResource resource, G graph);
+	
+	protected abstract U createURI(EStructuralFeature feature, @SuppressWarnings("rawtypes") ETripleResource resource, G graph);
+	
+	protected abstract L createLiteral(EObject object, EAttribute attribute, Object value, G graph);
+	
 }

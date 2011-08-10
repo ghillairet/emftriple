@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
@@ -29,14 +30,12 @@ import com.emftriple.transform.Metamodel;
 public class ETripleUtil {
 
 	@SuppressWarnings("unchecked")
-	public static <T> List<T> findAll(Class<T> klass, Resource resource) {
+	public static <T> List<T> findAll(Class<T> klass, Collection<EObject> objects) {
 		final EClass eClass = Metamodel.INSTANCE.getEClass(klass);
 		if (eClass == null) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException(klass+" is not part of the model.");
 		}
-		final Collection<Object> col = EcoreUtil.getObjectsByType(resource.getContents(), eClass);
-		
-		return (List<T>) col;
+		return (List<T>) EcoreUtil.getObjectsByType(objects, eClass);
 	}
 	
 }

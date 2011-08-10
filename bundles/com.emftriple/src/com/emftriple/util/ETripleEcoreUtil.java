@@ -72,7 +72,26 @@ public class ETripleEcoreUtil {
 		}
 		return null;
 	}
+
+	public static boolean isBlankNode(EObject object) {
+		if (object.eClass().getEAnnotation("BlankNode") != null) {
+			return true;
+		} else {
+			if (object.eContainer() != null) {
+				return object.eContainer().eClass().getEAnnotation("BlankNode") != null;
+			}
+		}
+		return false;
+	}
 	
+	// TODO check if the super type has blank node annotation.
+	public static boolean isBlankNode(EStructuralFeature feature) {
+		if (feature.getEAnnotation("BlankNode") != null) {
+			return true;
+		}
+		return feature.getEType().getEAnnotation("BlankNode") != null;
+	}
+
 	/**
 	 * Return the namespace of an EObject corresponding to its EPackage nsURI value.
 	 */
@@ -114,9 +133,9 @@ public class ETripleEcoreUtil {
 
 	public static String wellFormedURI(String namespace) {
 		return 
-		!((namespace.endsWith("#") || namespace.endsWith("/"))) ? 
-				namespace + "#" : 
-					namespace;
+				!((namespace.endsWith("#") || namespace.endsWith("/"))) ? 
+						namespace + "#" : 
+							namespace;
 	}
 
 	public static class URIValidator {

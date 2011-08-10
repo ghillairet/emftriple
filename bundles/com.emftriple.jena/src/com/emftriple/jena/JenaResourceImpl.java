@@ -51,7 +51,7 @@ public abstract class JenaResourceImpl
 
 	@Override
 	public EObject load(@SuppressWarnings("rawtypes") IDataSource dataSource, String uri, String graphURI) {
-		EObject object;
+		EObject object = null;
 		
 		if (getPrimaryCache().hasKey(uri)) {
 			object = getPrimaryCache().getObjectByKey(uri);
@@ -64,9 +64,11 @@ public abstract class JenaResourceImpl
 			EClass eClass = Metamodel.INSTANCE.getEClassByRdfType(
 				SparqlQueries.selectAllTypes(dataSource, uri, graphURI));
 			
-			object = EcoreUtil.create(eClass);
-			getPrimaryCache().cache(uri, object);
-			object = new JenaEObjectBuilder(this, dataSource).loadEObject(object, uri, graphURI);
+			if (eClass != null) {
+				object = EcoreUtil.create(eClass);
+				getPrimaryCache().cache(uri, object);
+				object = new JenaEObjectBuilder(this, dataSource).loadEObject(object, uri, graphURI);
+			}
 		}
 		
 		return object;
@@ -92,6 +94,11 @@ public abstract class JenaResourceImpl
 	@Override
 	protected Set<String> loadingContentFromResultSet(IResultSet<RDFNode, Resource, Literal> resultSet) {
 		final Set<String> uris = new HashSet<String>();
+		
+		if (resultSet == null) {
+			System.out.println("no result");
+			return uris;
+		}
 		
 		for (;resultSet.hasNext();) {
 			Solution<RDFNode, Resource, Literal> s = resultSet.next();

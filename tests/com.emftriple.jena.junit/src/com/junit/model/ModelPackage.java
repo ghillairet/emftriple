@@ -751,6 +751,98 @@ public interface ModelPackage extends EPackage {
 	int TARGET_OBJECT_FEATURE_COUNT = 3;
 
 	/**
+	 * The meta object id for the '{@link com.junit.model.impl.MovieImpl <em>Movie</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see com.junit.model.impl.MovieImpl
+	 * @see com.junit.model.impl.ModelPackageImpl#getMovie()
+	 * @generated
+	 */
+	int MOVIE = 11;
+
+	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MOVIE__ID = 0;
+
+	/**
+	 * The feature id for the '<em><b>Title</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MOVIE__TITLE = 1;
+
+	/**
+	 * The feature id for the '<em><b>Actors</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MOVIE__ACTORS = 2;
+
+	/**
+	 * The number of structural features of the '<em>Movie</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MOVIE_FEATURE_COUNT = 3;
+
+	/**
+	 * The meta object id for the '{@link com.junit.model.impl.ActorImpl <em>Actor</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see com.junit.model.impl.ActorImpl
+	 * @see com.junit.model.impl.ModelPackageImpl#getActor()
+	 * @generated
+	 */
+	int ACTOR = 12;
+
+	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTOR__ID = 0;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTOR__NAME = 1;
+
+	/**
+	 * The feature id for the '<em><b>Actor Of</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTOR__ACTOR_OF = 2;
+
+	/**
+	 * The number of structural features of the '<em>Actor</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTOR_FEATURE_COUNT = 3;
+
+	/**
 	 * The meta object id for the '<em>URI</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -758,7 +850,7 @@ public interface ModelPackage extends EPackage {
 	 * @see com.junit.model.impl.ModelPackageImpl#getURI()
 	 * @generated
 	 */
-	int URI = 11;
+	int URI = 13;
 
 
 	/**
@@ -1455,6 +1547,92 @@ public interface ModelPackage extends EPackage {
 	EAttribute getTargetObject_ArrayAttribute();
 
 	/**
+	 * Returns the meta object for class '{@link com.junit.model.Movie <em>Movie</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Movie</em>'.
+	 * @see com.junit.model.Movie
+	 * @generated
+	 */
+	EClass getMovie();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.junit.model.Movie#getId <em>Id</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Id</em>'.
+	 * @see com.junit.model.Movie#getId()
+	 * @see #getMovie()
+	 * @generated
+	 */
+	EAttribute getMovie_Id();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.junit.model.Movie#getTitle <em>Title</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Title</em>'.
+	 * @see com.junit.model.Movie#getTitle()
+	 * @see #getMovie()
+	 * @generated
+	 */
+	EAttribute getMovie_Title();
+
+	/**
+	 * Returns the meta object for the reference list '{@link com.junit.model.Movie#getActors <em>Actors</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Actors</em>'.
+	 * @see com.junit.model.Movie#getActors()
+	 * @see #getMovie()
+	 * @generated
+	 */
+	EReference getMovie_Actors();
+
+	/**
+	 * Returns the meta object for class '{@link com.junit.model.Actor <em>Actor</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Actor</em>'.
+	 * @see com.junit.model.Actor
+	 * @generated
+	 */
+	EClass getActor();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.junit.model.Actor#getId <em>Id</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Id</em>'.
+	 * @see com.junit.model.Actor#getId()
+	 * @see #getActor()
+	 * @generated
+	 */
+	EAttribute getActor_Id();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.junit.model.Actor#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see com.junit.model.Actor#getName()
+	 * @see #getActor()
+	 * @generated
+	 */
+	EAttribute getActor_Name();
+
+	/**
+	 * Returns the meta object for the reference list '{@link com.junit.model.Actor#getActorOf <em>Actor Of</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Actor Of</em>'.
+	 * @see com.junit.model.Actor#getActorOf()
+	 * @see #getActor()
+	 * @generated
+	 */
+	EReference getActor_ActorOf();
+
+	/**
 	 * Returns the meta object for data type '{@link org.eclipse.emf.common.util.URI <em>URI</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2020,6 +2198,74 @@ public interface ModelPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute TARGET_OBJECT__ARRAY_ATTRIBUTE = eINSTANCE.getTargetObject_ArrayAttribute();
+
+		/**
+		 * The meta object literal for the '{@link com.junit.model.impl.MovieImpl <em>Movie</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see com.junit.model.impl.MovieImpl
+		 * @see com.junit.model.impl.ModelPackageImpl#getMovie()
+		 * @generated
+		 */
+		EClass MOVIE = eINSTANCE.getMovie();
+
+		/**
+		 * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute MOVIE__ID = eINSTANCE.getMovie_Id();
+
+		/**
+		 * The meta object literal for the '<em><b>Title</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute MOVIE__TITLE = eINSTANCE.getMovie_Title();
+
+		/**
+		 * The meta object literal for the '<em><b>Actors</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference MOVIE__ACTORS = eINSTANCE.getMovie_Actors();
+
+		/**
+		 * The meta object literal for the '{@link com.junit.model.impl.ActorImpl <em>Actor</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see com.junit.model.impl.ActorImpl
+		 * @see com.junit.model.impl.ModelPackageImpl#getActor()
+		 * @generated
+		 */
+		EClass ACTOR = eINSTANCE.getActor();
+
+		/**
+		 * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ACTOR__ID = eINSTANCE.getActor_Id();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ACTOR__NAME = eINSTANCE.getActor_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Actor Of</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference ACTOR__ACTOR_OF = eINSTANCE.getActor_ActorOf();
 
 		/**
 		 * The meta object literal for the '<em>URI</em>' data type.

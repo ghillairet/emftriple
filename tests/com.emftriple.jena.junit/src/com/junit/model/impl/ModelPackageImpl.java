@@ -10,7 +10,6 @@
  *******************************************************************************/
 package com.junit.model.impl;
 
-import com.junit.model.BNode;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
@@ -18,6 +17,8 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
+import com.junit.model.Actor;
+import com.junit.model.BNode;
 import com.junit.model.Book;
 import com.junit.model.BookBNode;
 import com.junit.model.ETypes;
@@ -26,6 +27,7 @@ import com.junit.model.Location;
 import com.junit.model.MappedLibrary;
 import com.junit.model.ModelFactory;
 import com.junit.model.ModelPackage;
+import com.junit.model.Movie;
 import com.junit.model.Person;
 import com.junit.model.PersonBNode;
 import com.junit.model.PrimaryObject;
@@ -114,6 +116,20 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * @generated
 	 */
 	private EClass targetObjectEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass movieEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass actorEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -764,6 +780,78 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getMovie() {
+		return movieEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getMovie_Id() {
+		return (EAttribute)movieEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getMovie_Title() {
+		return (EAttribute)movieEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getMovie_Actors() {
+		return (EReference)movieEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getActor() {
+		return actorEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getActor_Id() {
+		return (EAttribute)actorEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getActor_Name() {
+		return (EAttribute)actorEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getActor_ActorOf() {
+		return (EReference)actorEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EDataType getURI() {
 		return uriEDataType;
 	}
@@ -870,6 +958,16 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 		createEAttribute(targetObjectEClass, TARGET_OBJECT__ID);
 		createEAttribute(targetObjectEClass, TARGET_OBJECT__SINGLE_ATTRIBUTE);
 		createEAttribute(targetObjectEClass, TARGET_OBJECT__ARRAY_ATTRIBUTE);
+
+		movieEClass = createEClass(MOVIE);
+		createEAttribute(movieEClass, MOVIE__ID);
+		createEAttribute(movieEClass, MOVIE__TITLE);
+		createEReference(movieEClass, MOVIE__ACTORS);
+
+		actorEClass = createEClass(ACTOR);
+		createEAttribute(actorEClass, ACTOR__ID);
+		createEAttribute(actorEClass, ACTOR__NAME);
+		createEReference(actorEClass, ACTOR__ACTOR_OF);
 
 		// Create data types
 		uriEDataType = createEDataType(URI);
@@ -980,6 +1078,16 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 		initEAttribute(getTargetObject_SingleAttribute(), ecorePackage.getEString(), "singleAttribute", null, 0, 1, TargetObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTargetObject_ArrayAttribute(), ecorePackage.getEString(), "arrayAttribute", null, 0, -1, TargetObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		initEClass(movieEClass, Movie.class, "Movie", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getMovie_Id(), ecorePackage.getEInt(), "id", null, 0, 1, Movie.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getMovie_Title(), ecorePackage.getEString(), "title", null, 0, 1, Movie.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getMovie_Actors(), this.getActor(), this.getActor_ActorOf(), "actors", null, 0, -1, Movie.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(actorEClass, Actor.class, "Actor", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getActor_Id(), ecorePackage.getEInt(), "id", null, 0, 1, Actor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getActor_Name(), ecorePackage.getEString(), "name", null, 0, 1, Actor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getActor_ActorOf(), this.getMovie(), this.getMovie_Actors(), "actorOf", null, 0, -1, Actor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
 		// Initialize data types
 		initEDataType(uriEDataType, org.eclipse.emf.common.util.URI.class, "URI", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
@@ -993,6 +1101,10 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 		createExtendedMetaDataAnnotations();
 		// Id
 		createIdAnnotations();
+		// OWLClass
+		createOWLClassAnnotations();
+		// rdf
+		createRdfAnnotations();
 	}
 
 	/**
@@ -1014,7 +1126,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 		   source, 
 		   new String[] {
 			 "foo", "bar"
-		   });											
+		   });																					
 	}
 
 	/**
@@ -1078,7 +1190,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 		   source, 
 		   new String[] {
 			 "kind", "group"
-		   });	
+		   });											
 	}
 
 	/**
@@ -1100,6 +1212,86 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 		   source, 
 		   new String[] {
 			 "base", "http://junit.org/target/"
+		   });			
+		addAnnotation
+		  (getMovie_Id(), 
+		   source, 
+		   new String[] {
+			 "base", "http://data.linkedmdb.org/resource/film/"
+		   });						
+		addAnnotation
+		  (getActor_Id(), 
+		   source, 
+		   new String[] {
+			 "base", "http://data.linkedmdb.org/resource/actor/"
+		   });			
+	}
+
+	/**
+	 * Initializes the annotations for <b>OWLClass</b>.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void createOWLClassAnnotations() {
+		String source = "OWLClass";															
+		addAnnotation
+		  (movieEClass, 
+		   source, 
+		   new String[] {
+			 "uri", "http://data.linkedmdb.org/resource/movie/film"
+		   });						
+		addAnnotation
+		  (actorEClass, 
+		   source, 
+		   new String[] {
+			 "uri", "http://data.linkedmdb.org/resource/movie/actor"
+		   });				
+	}
+
+	/**
+	 * Initializes the annotations for <b>rdf</b>.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void createRdfAnnotations() {
+		String source = "rdf";																	
+		addAnnotation
+		  (getMovie_Id(), 
+		   source, 
+		   new String[] {
+			 "uri", "http://data.linkedmdb.org/resource/movie/filmid"
+		   });		
+		addAnnotation
+		  (getMovie_Title(), 
+		   source, 
+		   new String[] {
+			 "uri", "http://purl.org/dc/terms/title"
+		   });		
+		addAnnotation
+		  (getMovie_Actors(), 
+		   source, 
+		   new String[] {
+			 "uri", "http://data.linkedmdb.org/resource/movie/actor"
+		   });				
+		addAnnotation
+		  (getActor_Id(), 
+		   source, 
+		   new String[] {
+			 "uri", "http://data.linkedmdb.org/resource/movie/actor_actorid"
+		   });		
+		addAnnotation
+		  (getActor_Name(), 
+		   source, 
+		   new String[] {
+			 "uri", "http://data.linkedmdb.org/resource/movie/actor_name"
+		   });		
+		addAnnotation
+		  (getActor_ActorOf(), 
+		   source, 
+		   new String[] {
+			 "uri", "http://data.linkedmdb.org/resource/movie/actor"
 		   });
 	}
 

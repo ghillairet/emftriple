@@ -10,6 +10,8 @@
  *******************************************************************************/
 package com.emftriple.jena;
 
+import static com.emftriple.util.ETripleEcoreUtil.isBlankNode;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -25,27 +27,42 @@ import com.emftriple.resource.ETripleResource;
 import com.emftriple.transform.DatatypeConverter;
 import com.emftriple.transform.Metamodel;
 import com.emftriple.transform.RDFTransform;
+import com.hp.hpl.jena.rdf.model.AnonId;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 
-public class JenaRdfBuilder extends RDFTransform<Resource, Literal, Statement, Model>{
+public class JenaRdfBuilder 
+	extends RDFTransform<RDFNode, Resource, Literal, Statement, Model> {
 	
 	public JenaRdfBuilder() {
 		
 	}
-
+	
 	@Override
-	public Statement createTripleURI(Resource subject, Resource predicate, Resource object, Model graph) {
-		Property p = graph.createProperty(predicate.getURI());
-		return graph.createStatement(subject, p, object);
+	public Statement createTripleURI(RDFNode subject, Resource predicate, Resource object, Model graph) {
+		final Property p = graph.createProperty(predicate.getURI());
+		return graph.createStatement(subject.asResource(), p, object);
 	}
 
 	@Override
-	public Statement createTripleLiteral(Resource subject, Resource predicate, Literal object, Model graph) {
-		return graph.createStatement(subject, (Property) predicate, object);
+	protected Statement createTripleBlankNode(RDFNode subject, Resource predicate, RDFNode object, Model graph) {
+		final Property p = graph.createProperty(predicate.getURI());
+		return graph.createStatement(subject.asResource(), p, object); 
+	}
+	
+	@Override
+	protected RDFNode createBlankNode(EObject object, @SuppressWarnings("rawtypes") ETripleResource resource, Model graph) {
+		
+		return graph.createResource(AnonId.create());
+	}
+	
+	@Override
+	public Statement createTripleLiteral(RDFNode subject, Resource predicate, Literal object, Model graph) {
+		return graph.createStatement(subject.asResource(), (Property) predicate, object);
 	}
 
 	@Override
@@ -67,7 +84,7 @@ public class JenaRdfBuilder extends RDFTransform<Resource, Literal, Statement, M
 
 	@Override
 	public Resource createURI(EStructuralFeature feature, @SuppressWarnings("rawtypes") ETripleResource resource, Model graph) {
-		String uri = Metamodel.INSTANCE.getRdfType(feature);
+		final String uri = Metamodel.INSTANCE.getRdfType(feature);
 		if (uri == null) {
 			throw new IllegalArgumentException("Cannot create URI for feature "+feature);
 		}
@@ -82,7 +99,9 @@ public class JenaRdfBuilder extends RDFTransform<Resource, Literal, Statement, M
 	@Override
 	public Collection<Statement> createTriples(EObject object, String key, Model graph) {
 		final List<Statement> triples = new ArrayList<Statement>();
-		final Resource subject = createURI(key, graph);
+		@SuppressWarnings("rawtypes")
+		final RDFNode subject = isBlankNode(object) ? 
+				createBlankNode(object, (ETripleResource) object.eResource(), graph) : createURI(key, graph);
 		
 		triples.addAll(createRdfTypes(object, subject, graph));
 		

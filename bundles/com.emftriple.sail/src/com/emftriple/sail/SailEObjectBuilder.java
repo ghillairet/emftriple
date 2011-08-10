@@ -31,7 +31,7 @@ import com.emftriple.transform.Metamodel;
 import com.emftriple.transform.SparqlQueries;
 
 public class SailEObjectBuilder 
-	extends EObjectBuilder<Value, URI, Literal>{
+extends EObjectBuilder<Value, URI, Literal>{
 
 	@SuppressWarnings("rawtypes")
 	public SailEObjectBuilder(ETripleResourceImpl resource, IDataSource dataSource) {
@@ -48,25 +48,28 @@ public class SailEObjectBuilder
 		} else {
 			@SuppressWarnings("unchecked")
 			EClass eClass = 
-				Metamodel.INSTANCE.getEClassByRdfType(
-						SparqlQueries.selectAllTypes(dataSource, uri, null));
-
-			value = createProxy(eClass, uri);
+			Metamodel.INSTANCE.getEClassByRdfType(
+					SparqlQueries.selectAllTypes(dataSource, uri, null));
+			if (eClass != null) {
+				value = createProxy(eClass, uri);
+			}
 		}
-
-		if (reference.isMany()) {
-			@SuppressWarnings("unchecked")
-			EList<EObject> values = (EList<EObject>) object.eGet(reference);
-			values.add(value);
-		} else {
-			object.eSet(reference, value);
+		
+		if (value != null) {
+			if (reference.isMany()) {
+				@SuppressWarnings("unchecked")
+				EList<EObject> values = (EList<EObject>) object.eGet(reference);
+				values.add(value);
+			} else {
+				object.eSet(reference, value);
+			}
 		}
 	}
 
 	@Override
 	protected void setEAttributeValue(EObject object, EAttribute attribute, Value node) {
 		final Literal literal = (Literal)node;
-		
+
 		Object value = DatatypeConverter.convert(attribute.getEAttributeType(), literal.getLabel());
 		if (value != null) {
 			object.eSet(attribute, value);

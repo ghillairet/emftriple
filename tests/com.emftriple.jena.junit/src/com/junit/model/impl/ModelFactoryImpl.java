@@ -10,7 +10,6 @@
  *******************************************************************************/
 package com.junit.model.impl;
 
-import com.junit.model.*;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
@@ -19,14 +18,19 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
+import com.junit.model.Actor;
+import com.junit.model.BNode;
 import com.junit.model.Book;
+import com.junit.model.BookBNode;
 import com.junit.model.ETypes;
 import com.junit.model.Library;
 import com.junit.model.Location;
 import com.junit.model.MappedLibrary;
 import com.junit.model.ModelFactory;
 import com.junit.model.ModelPackage;
+import com.junit.model.Movie;
 import com.junit.model.Person;
+import com.junit.model.PersonBNode;
 import com.junit.model.PrimaryObject;
 import com.junit.model.TargetObject;
 
@@ -85,6 +89,8 @@ public class ModelFactoryImpl extends EFactoryImpl implements ModelFactory {
 			case ModelPackage.MAPPED_LIBRARY: return createMappedLibrary();
 			case ModelPackage.PRIMARY_OBJECT: return createPrimaryObject();
 			case ModelPackage.TARGET_OBJECT: return createTargetObject();
+			case ModelPackage.MOVIE: return createMovie();
+			case ModelPackage.ACTOR: return createActor();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -228,6 +234,26 @@ public class ModelFactoryImpl extends EFactoryImpl implements ModelFactory {
 	public TargetObject createTargetObject() {
 		TargetObjectImpl targetObject = new TargetObjectImpl();
 		return targetObject;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Movie createMovie() {
+		MovieImpl movie = new MovieImpl();
+		return movie;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Actor createActor() {
+		ActorImpl actor = new ActorImpl();
+		return actor;
 	}
 
 	/**
