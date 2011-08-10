@@ -4,11 +4,8 @@
  *
  * $Id$
  */
-package com.emftriple.examples.basic.model.impl;
+package org.eclipselabs.emftriple.example.model.impl;
 
-import com.emftriple.examples.basic.model.Child;
-import com.emftriple.examples.basic.model.ModelPackage;
-import com.emftriple.examples.basic.model.Parent;
 
 import java.util.Collection;
 
@@ -22,6 +19,9 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
+import org.eclipselabs.emftriple.example.model.Child;
+import org.eclipselabs.emftriple.example.model.ModelPackage;
+import org.eclipselabs.emftriple.example.model.Parent;
 
 /**
  * <!-- begin-user-doc -->
@@ -30,9 +30,9 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link com.emftriple.examples.basic.model.impl.ParentImpl#getId <em>Id</em>}</li>
- *   <li>{@link com.emftriple.examples.basic.model.impl.ParentImpl#getName <em>Name</em>}</li>
- *   <li>{@link com.emftriple.examples.basic.model.impl.ParentImpl#getChildren <em>Children</em>}</li>
+ *   <li>{@link org.eclipselabs.emftriple.example.model.impl.ParentImpl#getId <em>Id</em>}</li>
+ *   <li>{@link org.eclipselabs.emftriple.example.model.impl.ParentImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipselabs.emftriple.example.model.impl.ParentImpl#getChildren <em>Children</em>}</li>
  * </ul>
  * </p>
  *

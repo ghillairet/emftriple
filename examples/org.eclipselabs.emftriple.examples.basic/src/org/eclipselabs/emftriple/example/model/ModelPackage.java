@@ -4,7 +4,7 @@
  *
  * $Id$
  */
-package com.emftriple.examples.basic.model;
+package org.eclipselabs.emftriple.example.model;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.EReference;
  *   <li>and each data type</li>
  * </ul>
  * <!-- end-user-doc -->
- * @see com.emftriple.examples.basic.model.ModelFactory
+ * @see org.eclipselabs.emftriple.example.model.ModelFactory
  * @model kind="package"
  * @generated
  */
@@ -57,14 +57,14 @@ public interface ModelPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	ModelPackage eINSTANCE = com.emftriple.examples.basic.model.impl.ModelPackageImpl.init();
+	ModelPackage eINSTANCE = org.eclipselabs.emftriple.example.model.impl.ModelPackageImpl.init();
 
 	/**
-	 * The meta object id for the '{@link com.emftriple.examples.basic.model.impl.ParentImpl <em>Parent</em>}' class.
+	 * The meta object id for the '{@link org.eclipselabs.emftriple.example.model.impl.ParentImpl <em>Parent</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see com.emftriple.examples.basic.model.impl.ParentImpl
-	 * @see com.emftriple.examples.basic.model.impl.ModelPackageImpl#getParent()
+	 * @see org.eclipselabs.emftriple.example.model.impl.ParentImpl
+	 * @see org.eclipselabs.emftriple.example.model.impl.ModelPackageImpl#getParent()
 	 * @generated
 	 */
 	int PARENT = 0;
@@ -106,11 +106,11 @@ public interface ModelPackage extends EPackage {
 	int PARENT_FEATURE_COUNT = 3;
 
 	/**
-	 * The meta object id for the '{@link com.emftriple.examples.basic.model.impl.ChildImpl <em>Child</em>}' class.
+	 * The meta object id for the '{@link org.eclipselabs.emftriple.example.model.impl.ChildImpl <em>Child</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see com.emftriple.examples.basic.model.impl.ChildImpl
-	 * @see com.emftriple.examples.basic.model.impl.ModelPackageImpl#getChild()
+	 * @see org.eclipselabs.emftriple.example.model.impl.ChildImpl
+	 * @see org.eclipselabs.emftriple.example.model.impl.ModelPackageImpl#getChild()
 	 * @generated
 	 */
 	int CHILD = 1;
@@ -144,75 +144,75 @@ public interface ModelPackage extends EPackage {
 
 
 	/**
-	 * Returns the meta object for class '{@link com.emftriple.examples.basic.model.Parent <em>Parent</em>}'.
+	 * Returns the meta object for class '{@link org.eclipselabs.emftriple.example.model.Parent <em>Parent</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Parent</em>'.
-	 * @see com.emftriple.examples.basic.model.Parent
+	 * @see org.eclipselabs.emftriple.example.model.Parent
 	 * @generated
 	 */
 	EClass getParent();
 
 	/**
-	 * Returns the meta object for the attribute '{@link com.emftriple.examples.basic.model.Parent#getName <em>Name</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipselabs.emftriple.example.model.Parent#getName <em>Name</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see com.emftriple.examples.basic.model.Parent#getName()
+	 * @see org.eclipselabs.emftriple.example.model.Parent#getName()
 	 * @see #getParent()
 	 * @generated
 	 */
 	EAttribute getParent_Name();
 
 	/**
-	 * Returns the meta object for the reference list '{@link com.emftriple.examples.basic.model.Parent#getChildren <em>Children</em>}'.
+	 * Returns the meta object for the reference list '{@link org.eclipselabs.emftriple.example.model.Parent#getChildren <em>Children</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the reference list '<em>Children</em>'.
-	 * @see com.emftriple.examples.basic.model.Parent#getChildren()
+	 * @see org.eclipselabs.emftriple.example.model.Parent#getChildren()
 	 * @see #getParent()
 	 * @generated
 	 */
 	EReference getParent_Children();
 
 	/**
-	 * Returns the meta object for the attribute '{@link com.emftriple.examples.basic.model.Parent#getId <em>Id</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipselabs.emftriple.example.model.Parent#getId <em>Id</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Id</em>'.
-	 * @see com.emftriple.examples.basic.model.Parent#getId()
+	 * @see org.eclipselabs.emftriple.example.model.Parent#getId()
 	 * @see #getParent()
 	 * @generated
 	 */
 	EAttribute getParent_Id();
 
 	/**
-	 * Returns the meta object for class '{@link com.emftriple.examples.basic.model.Child <em>Child</em>}'.
+	 * Returns the meta object for class '{@link org.eclipselabs.emftriple.example.model.Child <em>Child</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Child</em>'.
-	 * @see com.emftriple.examples.basic.model.Child
+	 * @see org.eclipselabs.emftriple.example.model.Child
 	 * @generated
 	 */
 	EClass getChild();
 
 	/**
-	 * Returns the meta object for the attribute '{@link com.emftriple.examples.basic.model.Child#getName <em>Name</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipselabs.emftriple.example.model.Child#getName <em>Name</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see com.emftriple.examples.basic.model.Child#getName()
+	 * @see org.eclipselabs.emftriple.example.model.Child#getName()
 	 * @see #getChild()
 	 * @generated
 	 */
 	EAttribute getChild_Name();
 
 	/**
-	 * Returns the meta object for the attribute '{@link com.emftriple.examples.basic.model.Child#getId <em>Id</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipselabs.emftriple.example.model.Child#getId <em>Id</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Id</em>'.
-	 * @see com.emftriple.examples.basic.model.Child#getId()
+	 * @see org.eclipselabs.emftriple.example.model.Child#getId()
 	 * @see #getChild()
 	 * @generated
 	 */
@@ -241,11 +241,11 @@ public interface ModelPackage extends EPackage {
 	 */
 	interface Literals {
 		/**
-		 * The meta object literal for the '{@link com.emftriple.examples.basic.model.impl.ParentImpl <em>Parent</em>}' class.
+		 * The meta object literal for the '{@link org.eclipselabs.emftriple.example.model.impl.ParentImpl <em>Parent</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see com.emftriple.examples.basic.model.impl.ParentImpl
-		 * @see com.emftriple.examples.basic.model.impl.ModelPackageImpl#getParent()
+		 * @see org.eclipselabs.emftriple.example.model.impl.ParentImpl
+		 * @see org.eclipselabs.emftriple.example.model.impl.ModelPackageImpl#getParent()
 		 * @generated
 		 */
 		EClass PARENT = eINSTANCE.getParent();
@@ -275,11 +275,11 @@ public interface ModelPackage extends EPackage {
 		EAttribute PARENT__ID = eINSTANCE.getParent_Id();
 
 		/**
-		 * The meta object literal for the '{@link com.emftriple.examples.basic.model.impl.ChildImpl <em>Child</em>}' class.
+		 * The meta object literal for the '{@link org.eclipselabs.emftriple.example.model.impl.ChildImpl <em>Child</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see com.emftriple.examples.basic.model.impl.ChildImpl
-		 * @see com.emftriple.examples.basic.model.impl.ModelPackageImpl#getChild()
+		 * @see org.eclipselabs.emftriple.example.model.impl.ChildImpl
+		 * @see org.eclipselabs.emftriple.example.model.impl.ModelPackageImpl#getChild()
 		 * @generated
 		 */
 		EClass CHILD = eINSTANCE.getChild();

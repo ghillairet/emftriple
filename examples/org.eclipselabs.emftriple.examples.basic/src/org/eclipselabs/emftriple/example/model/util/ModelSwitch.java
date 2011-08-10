@@ -4,15 +4,15 @@
  *
  * $Id$
  */
-package com.emftriple.examples.basic.model.util;
+package org.eclipselabs.emftriple.example.model.util;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
+import org.eclipselabs.emftriple.example.model.Child;
+import org.eclipselabs.emftriple.example.model.ModelPackage;
+import org.eclipselabs.emftriple.example.model.Parent;
 
-import com.emftriple.examples.basic.model.Child;
-import com.emftriple.examples.basic.model.ModelPackage;
-import com.emftriple.examples.basic.model.Parent;
 
 /**
  * <!-- begin-user-doc -->
@@ -24,7 +24,7 @@ import com.emftriple.examples.basic.model.Parent;
  * until a non-null result is returned,
  * which is the result of the switch.
  * <!-- end-user-doc -->
- * @see com.emftriple.examples.basic.model.ModelPackage
+ * @see org.eclipselabs.emftriple.example.model.ModelPackage
  * @generated
  */
 public class ModelSwitch<T> extends Switch<T> {

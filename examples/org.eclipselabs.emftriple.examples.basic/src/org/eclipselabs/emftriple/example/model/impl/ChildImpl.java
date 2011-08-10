@@ -4,10 +4,8 @@
  *
  * $Id$
  */
-package com.emftriple.examples.basic.model.impl;
+package org.eclipselabs.emftriple.example.model.impl;
 
-import com.emftriple.examples.basic.model.Child;
-import com.emftriple.examples.basic.model.ModelPackage;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -15,6 +13,8 @@ import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
+import org.eclipselabs.emftriple.example.model.Child;
+import org.eclipselabs.emftriple.example.model.ModelPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -23,8 +23,8 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link com.emftriple.examples.basic.model.impl.ChildImpl#getName <em>Name</em>}</li>
- *   <li>{@link com.emftriple.examples.basic.model.impl.ChildImpl#getId <em>Id</em>}</li>
+ *   <li>{@link org.eclipselabs.emftriple.example.model.impl.ChildImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipselabs.emftriple.example.model.impl.ChildImpl#getId <em>Id</em>}</li>
  * </ul>
  * </p>
  *

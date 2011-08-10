@@ -13,7 +13,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <package
             uri="http://eclipselabs.org/emftriple/model"
-            class="com.emftriple.examples.basic.model.ModelPackage"
+            class="org.eclipselabs.emftriple.example.model.ModelPackage"
             genModel="model/model.genmodel"/>
    </extension>
 

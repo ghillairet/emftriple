@@ -4,12 +4,8 @@
  *
  * $Id$
  */
-package com.emftriple.examples.basic.model.impl;
+package org.eclipselabs.emftriple.example.model.impl;
 
-import com.emftriple.examples.basic.model.Child;
-import com.emftriple.examples.basic.model.ModelFactory;
-import com.emftriple.examples.basic.model.ModelPackage;
-import com.emftriple.examples.basic.model.Parent;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -17,6 +13,10 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
+import org.eclipselabs.emftriple.example.model.Child;
+import org.eclipselabs.emftriple.example.model.ModelFactory;
+import org.eclipselabs.emftriple.example.model.ModelPackage;
+import org.eclipselabs.emftriple.example.model.Parent;
 
 /**
  * <!-- begin-user-doc -->
@@ -50,7 +50,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.emf.ecore.EPackage.Registry
-	 * @see com.emftriple.examples.basic.model.ModelPackage#eNS_URI
+	 * @see org.eclipselabs.emftriple.example.model.ModelPackage#eNS_URI
 	 * @see #init()
 	 * @generated
 	 */

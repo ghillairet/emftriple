@@ -11,3 +11,9 @@ Import-Package: org.eclipse.emf.common.util,
  org.eclipselabs.emftriple.junit.support,
  org.eclipselabs.emftriple.junit.tests,
  org.openrdf.repository
+Require-Bundle: org.eclipselabs.emftriple.sesame,
+ org.openrdf,
+ org.eclipselabs.emftriple.junit,
+ org.junit,
+ org.eclipse.emf.ecore,
+ org.eclipselabs.emftriple

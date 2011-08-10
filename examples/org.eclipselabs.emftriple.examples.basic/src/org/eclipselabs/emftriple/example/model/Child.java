@@ -4,7 +4,7 @@
  *
  * $Id$
  */
-package com.emftriple.examples.basic.model;
+package org.eclipselabs.emftriple.example.model;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -16,12 +16,12 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link com.emftriple.examples.basic.model.Child#getName <em>Name</em>}</li>
- *   <li>{@link com.emftriple.examples.basic.model.Child#getId <em>Id</em>}</li>
+ *   <li>{@link org.eclipselabs.emftriple.example.model.Child#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipselabs.emftriple.example.model.Child#getId <em>Id</em>}</li>
  * </ul>
  * </p>
  *
- * @see com.emftriple.examples.basic.model.ModelPackage#getChild()
+ * @see org.eclipselabs.emftriple.example.model.ModelPackage#getChild()
  * @model
  * @generated
  */
@@ -36,14 +36,14 @@ public interface Child extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see com.emftriple.examples.basic.model.ModelPackage#getChild_Name()
+	 * @see org.eclipselabs.emftriple.example.model.ModelPackage#getChild_Name()
 	 * @model
 	 * @generated
 	 */
 	String getName();
 
 	/**
-	 * Sets the value of the '{@link com.emftriple.examples.basic.model.Child#getName <em>Name</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipselabs.emftriple.example.model.Child#getName <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Name</em>' attribute.
@@ -62,14 +62,14 @@ public interface Child extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Id</em>' attribute.
 	 * @see #setId(String)
-	 * @see com.emftriple.examples.basic.model.ModelPackage#getChild_Id()
+	 * @see org.eclipselabs.emftriple.example.model.ModelPackage#getChild_Id()
 	 * @model id="true"
 	 * @generated
 	 */
 	String getId();
 
 	/**
-	 * Sets the value of the '{@link com.emftriple.examples.basic.model.Child#getId <em>Id</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipselabs.emftriple.example.model.Child#getId <em>Id</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Id</em>' attribute.

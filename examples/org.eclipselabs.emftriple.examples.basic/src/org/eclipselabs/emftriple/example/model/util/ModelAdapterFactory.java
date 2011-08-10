@@ -4,9 +4,8 @@
  *
  * $Id$
  */
-package com.emftriple.examples.basic.model.util;
+package org.eclipselabs.emftriple.example.model.util;
 
-import com.emftriple.examples.basic.model.*;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
@@ -14,13 +13,14 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipselabs.emftriple.example.model.*;
 
 /**
  * <!-- begin-user-doc -->
  * The <b>Adapter Factory</b> for the model.
  * It provides an adapter <code>createXXX</code> method for each class of the model.
  * <!-- end-user-doc -->
- * @see com.emftriple.examples.basic.model.ModelPackage
+ * @see org.eclipselabs.emftriple.example.model.ModelPackage
  * @generated
  */
 public class ModelAdapterFactory extends AdapterFactoryImpl {
@@ -100,13 +100,13 @@ public class ModelAdapterFactory extends AdapterFactoryImpl {
 
 
 	/**
-	 * Creates a new adapter for an object of class '{@link com.emftriple.examples.basic.model.Parent <em>Parent</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.eclipselabs.emftriple.example.model.Parent <em>Parent</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see com.emftriple.examples.basic.model.Parent
+	 * @see org.eclipselabs.emftriple.example.model.Parent
 	 * @generated
 	 */
 	public Adapter createParentAdapter() {
@@ -114,13 +114,13 @@ public class ModelAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link com.emftriple.examples.basic.model.Child <em>Child</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.eclipselabs.emftriple.example.model.Child <em>Child</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see com.emftriple.examples.basic.model.Child
+	 * @see org.eclipselabs.emftriple.example.model.Child
 	 * @generated
 	 */
 	public Adapter createChildAdapter() {

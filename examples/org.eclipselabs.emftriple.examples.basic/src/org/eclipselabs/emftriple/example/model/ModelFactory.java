@@ -4,7 +4,7 @@
  *
  * $Id$
  */
-package com.emftriple.examples.basic.model;
+package org.eclipselabs.emftriple.example.model;
 
 import org.eclipse.emf.ecore.EFactory;
 
@@ -13,7 +13,7 @@ import org.eclipse.emf.ecore.EFactory;
  * The <b>Factory</b> for the model.
  * It provides a create method for each non-abstract class of the model.
  * <!-- end-user-doc -->
- * @see com.emftriple.examples.basic.model.ModelPackage
+ * @see org.eclipselabs.emftriple.example.model.ModelPackage
  * @generated
  */
 public interface ModelFactory extends EFactory {
@@ -23,7 +23,7 @@ public interface ModelFactory extends EFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	ModelFactory eINSTANCE = com.emftriple.examples.basic.model.impl.ModelFactoryImpl.init();
+	ModelFactory eINSTANCE = org.eclipselabs.emftriple.example.model.impl.ModelFactoryImpl.init();
 
 	/**
 	 * Returns a new object of class '<em>Parent</em>'.
