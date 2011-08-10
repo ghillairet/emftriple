@@ -1,0 +1,32 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: emftriple junit
+Bundle-SymbolicName: org.eclipselabs.emftriple.junit;singleton:=true
+Bundle-Version: 0.9.0.qualifier
+Bundle-Vendor: Eclipse Labs
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: org.eclipse.emf.common.notify,
+ org.eclipse.emf.common.notify.impl,
+ org.eclipse.emf.common.util,
+ org.eclipse.emf.ecore,
+ org.eclipse.emf.ecore.impl,
+ org.eclipse.emf.ecore.plugin,
+ org.eclipse.emf.ecore.resource,
+ org.eclipse.emf.ecore.resource.impl,
+ org.eclipse.emf.ecore.util,
+ org.eclipse.emf.ecore.xmi,
+ org.eclipse.emf.ecore.xmi.impl,
+ org.eclipse.emf.ecore.xmi.util,
+ org.eclipselabs.emftriple,
+ org.eclipselabs.emftriple.datasources,
+ org.eclipselabs.emftriple.internal,
+ org.eclipselabs.emftriple.internal.util,
+ org.eclipselabs.emftriple.query,
+ org.eclipselabs.emftriple.query.result,
+ org.eclipselabs.emftriple.vocabularies,
+ org.junit;version="4.8.2"
+Export-Package: org.eclipselabs.emftriple.junit.model,
+ org.eclipselabs.emftriple.junit.model.impl,
+ org.eclipselabs.emftriple.junit.model.util,
+ org.eclipselabs.emftriple.junit.support,
+ org.eclipselabs.emftriple.junit.tests

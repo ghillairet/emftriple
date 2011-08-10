@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.eclipselabs.emftriple.junit/src"
+    modelPluginID="org.eclipselabs.emftriple.junit" modelName="Model" importerID="org.eclipse.emf.importer.ecore"
+    bundleManifest="false" complianceLevel="6.0" copyrightFields="false">
+  <foreignModel>model.ecore</foreignModel>
+  <genPackages prefix="Model" basePackage="org.eclipselabs.emftriple.junit" resource="XML"
+      disposableProviderFactory="true" ecorePackage="model.ecore#/">
+    <genDataTypes ecoreDataType="model.ecore#//URI"/>
+    <genClasses ecoreClass="model.ecore#//Person">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//Person/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//Person/books"/>
+    </genClasses>
+    <genClasses ecoreClass="model.ecore#//Book">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//Book/title"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//Book/authors"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//Book/tags"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//Book/data"/>
+    </genClasses>
+    <genClasses ecoreClass="model.ecore#//PersonBNode">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//PersonBNode/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference model.ecore#//PersonBNode/books"/>
+    </genClasses>
+    <genClasses ecoreClass="model.ecore#//BookBNode">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//BookBNode/title"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//BookBNode/authors"/>
+    </genClasses>
+    <genClasses ecoreClass="model.ecore#//BNode">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//BNode/id"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference model.ecore#//BNode/child"/>
+    </genClasses>
+    <genClasses ecoreClass="model.ecore#//Library">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference model.ecore#//Library/books"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference model.ecore#//Library/location"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//Library/latestBook"/>
+    </genClasses>
+    <genClasses ecoreClass="model.ecore#//Location">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//Location/address"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//Location/featuredBook"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//Location/id"/>
+    </genClasses>
+    <genClasses ecoreClass="model.ecore#//ETypes">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//ETypes/eBigDecimal"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//ETypes/eBigInteger"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//ETypes/eBoolean"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//ETypes/eByte"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//ETypes/eByteArray"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//ETypes/eChar"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//ETypes/eDate"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//ETypes/eDouble"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//ETypes/eFloat"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//ETypes/eInt"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//ETypes/eLong"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//ETypes/eShort"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//ETypes/eString"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//ETypes/uris"/>
+    </genClasses>
+    <genClasses ecoreClass="model.ecore#//MappedLibrary">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference model.ecore#//MappedLibrary/location"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference model.ecore#//MappedLibrary/rareBooks"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference model.ecore#//MappedLibrary/regularBooks"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute model.ecore#//MappedLibrary/books"/>
+    </genClasses>
+    <genClasses ecoreClass="model.ecore#//PrimaryObject">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//PrimaryObject/id"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//PrimaryObject/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//PrimaryObject/unsettableAttribute"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//PrimaryObject/unsettableAttributeWithDefault"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//PrimaryObject/unsettableReference"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//PrimaryObject/singleNonContainmentReference"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//PrimaryObject/multipleNonContainmentReference"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference model.ecore#//PrimaryObject/singleContainmentReferenceNoProxies"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference model.ecore#//PrimaryObject/multipleContainmentReferenceNoProxies"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference model.ecore#//PrimaryObject/singleContainmentReferenceProxies"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference model.ecore#//PrimaryObject/multipleContainmentReferenceProxies"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference model.ecore#//PrimaryObject/featureMapReferenceType2"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference model.ecore#//PrimaryObject/featureMapReferenceType1"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute model.ecore#//PrimaryObject/featureMapReferenceCollection"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//PrimaryObject/featureMapAttributeType1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//PrimaryObject/featureMapAttributeType2"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute model.ecore#//PrimaryObject/featureMapAttributeCollection"/>
+    </genClasses>
+    <genClasses ecoreClass="model.ecore#//TargetObject">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//TargetObject/id"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//TargetObject/singleAttribute"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//TargetObject/arrayAttribute"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
