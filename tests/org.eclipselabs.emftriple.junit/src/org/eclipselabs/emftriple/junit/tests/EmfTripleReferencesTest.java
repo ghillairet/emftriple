@@ -104,7 +104,54 @@ public class EmfTripleReferencesTest {
 	}
 	
 	@Test
-	public void testPrimaryObjectWithSingleContainmentReferenceProxies() {
+	public void testPrimaryObjectWithSingleNoContainmentReference() {
+		PrimaryObject primary = ModelFactory.eINSTANCE.createPrimaryObject();
+		primary.setId(1);
+		primary.setName("foo");
 		
+		TargetObject t1 = ModelFactory.eINSTANCE.createTargetObject();
+		t1.setId(1);
+		t1.setSingleAttribute("bar");
+		
+		primary.setSingleNonContainmentReference(t1);
+		
+		support.saveObject(primary);
+		support.saveObject(t1);
+		
+		support.checkObject(primary);
+	}
+	
+	@Test
+	public void testPrimaryObjectWithManyNoContainmentReference() {
+		PrimaryObject primary = ModelFactory.eINSTANCE.createPrimaryObject();
+		primary.setId(1);
+		primary.setName("foo");
+		
+		TargetObject t1 = ModelFactory.eINSTANCE.createTargetObject();
+		t1.setId(1);
+		t1.setSingleAttribute("bar");
+		
+		TargetObject t2 = ModelFactory.eINSTANCE.createTargetObject();
+		t2.setId(2);
+		t2.setSingleAttribute("barbar");
+		
+		primary.getMultipleNonContainmentReference().add(t1);
+		primary.getMultipleNonContainmentReference().add(t2);
+		
+		support.saveObject(primary);
+		support.saveObject(t1);
+		support.saveObject(t2);
+		
+		support.checkObject(primary);
+	}
+	
+	@Test
+	public void testPrimaryObjectWithSingleContainmentReferenceProxies() {
+//		ResourceSet resourceSet = support.getResourceSet();
+	}
+	
+	@Test
+	public void testPrimaryObjectWithManyContainmentReferenceProxies() {
+//		ResourceSet resourceSet = support.getResourceSet();
 	}
 }
