@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
    <feature url="features/org.eclipselabs.emftriple.feature_0.9.0.qualifier.jar" id="org.eclipselabs.emftriple.feature" version="0.9.0.qualifier">
-      <category name="emftriple"/>
+      <category name="org.eclipselabs.emftriple"/>
    </feature>
    <feature url="features/org.eclipselabs.emftriple.jena.feature_0.9.0.qualifier.jar" id="org.eclipselabs.emftriple.jena.feature" version="0.9.0.qualifier">
-      <category name="emftriple"/>
+      <category name="org.eclipselabs.emftriple"/>
    </feature>
    <feature url="features/org.eclipselabs.emftriple.sesame.feature_0.9.0.qualifier.jar" id="org.eclipselabs.emftriple.sesame.feature" version="0.9.0.qualifier">
-      <category name="emftriple"/>
+      <category name="org.eclipselabs.emftriple"/>
    </feature>
    <feature url="features/org.eclipselabs.emftriple.sail.feature_0.9.0.qualifier.jar" id="org.eclipselabs.emftriple.sail.feature" version="0.9.0.qualifier">
-      <category name="emftriple"/>
+      <category name="org.eclipselabs.emftriple"/>
    </feature>
-   <category-def name="emftriple" label="emftriple">
+   <category-def name="org.eclipselabs.emftriple" label="EMF Triple">
       <description>
          EMF binding for RDF.
       </description>
    </category-def>
-   <category-def name="emftriple-source" label="emftriple source"/>
+   <category-def name="org.eclipselabs.emftriple.sdk" label="EMF Triple SDK">
+      <description>
+         EMF Binding for RDF
+      </description>
+   </category-def>
 </site>

@@ -35,7 +35,9 @@ public class Activator implements BundleActivator {
 
 		System.out.println("Start ...");
 		long startTime = System.currentTimeMillis();
-
+		
+//		Sail sail = new SailGraph(new TinkerGraph("data"));
+		
 		Map<String, Object> options = new HashMap<String, Object>();
 		options.put(ETripleOptions.OPTION_DATASOURCE_LOCATION, "data");
 
@@ -43,7 +45,7 @@ public class Activator implements BundleActivator {
 
 		ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.getURIConverter().getURIHandlers().add(0, new SesameNativeURIHandlerImpl());
-
+		
 		Resource resource = resourceSet.createResource(URI.createURI("native://example"));
 
 		for (int i = 0; i < PARENT_COUNT; i++)

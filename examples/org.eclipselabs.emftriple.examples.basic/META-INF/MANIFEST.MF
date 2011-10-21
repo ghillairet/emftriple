@@ -18,5 +18,7 @@ Import-Package: org.eclipse.emf.common.notify,
  org.eclipse.emf.ecore.resource.impl,
  org.eclipse.emf.ecore.util,
  org.eclipselabs.emftriple,
+ org.eclipselabs.emftriple.sail,
  org.eclipselabs.emftriple.sesame.nat,
+ org.openrdf.sail,
  org.osgi.framework;version="1.6.0"

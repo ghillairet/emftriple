@@ -13,7 +13,8 @@ Export-Package:
  org.eclipselabs.emftriple.jena.util
 Bundle-ClassPath: .
 Bundle-Vendor: %Bundle-Vendor
-Import-Package: com.hp.hpl.jena.query,
+Import-Package: com.hp.hpl.jena,
+ com.hp.hpl.jena.query,
  com.hp.hpl.jena.rdf.model,
  com.hp.hpl.jena.sdb,
  com.hp.hpl.jena.shared,

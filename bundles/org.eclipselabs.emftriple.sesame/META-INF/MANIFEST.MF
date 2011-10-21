@@ -22,3 +22,4 @@ Import-Package: org.eclipse.emf.common.util,
  org.openrdf.repository.http,
  org.openrdf.repository.sail,
  org.openrdf.sail.nativerdf
+Require-Bundle: org.eclipse.emf.ecore;bundle-version="2.7.0"

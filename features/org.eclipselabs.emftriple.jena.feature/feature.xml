@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.eclipselabs.emftriple.jena.feature"
-      label="%Bundle-Name"
+      label="EMF Triple for Jena"
       version="0.9.0.qualifier"
-      provider-name="%Bundle-Vendor">
+      provider-name="Eclipse Labs">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
