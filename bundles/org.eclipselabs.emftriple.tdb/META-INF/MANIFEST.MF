@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: TDB Adapter for emftriple
+Bundle-SymbolicName: org.eclipselabs.emftriple.tdb
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: EclipseLabs
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.eclipse.xtend.lib,
+ com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.apache.jena;bundle-version="2.7.0",
+ org.apache.jena.tdb;bundle-version="0.9.0",
+ org.eclipselabs.emftriple;bundle-version="1.0.0",
+ org.eclipselabs.emftriple.jena;bundle-version="1.0.0"
+Export-Package: org.eclipselabs.emftriple.tdb.handlers,
+ org.eclipselabs.emftriple.tdb.streams
+

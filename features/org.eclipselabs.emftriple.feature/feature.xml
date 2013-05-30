@@ -2,7 +2,7 @@
 <feature
       id="org.eclipselabs.emftriple.feature"
       label="EMF Triple"
-      version="0.9.0.qualifier"
+      version="1.0.0.qualifier"
       provider-name="Eclipse Labs">
 
    <description url="http://www.example.com/description">
@@ -25,6 +25,13 @@
 
    <plugin
          id="org.eclipselabs.emftriple"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipselabs.emftriple.query"
          download-size="0"
          install-size="0"
          version="0.0.0"

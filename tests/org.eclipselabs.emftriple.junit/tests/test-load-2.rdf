@@ -1,0 +1,16 @@
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:j.0="http://www.eclipselabs.org/emf/junit#//"
+    xmlns:j.2="http://www.eclipselabs.org/emf/junit#//Book/"
+    xmlns:j.1="http://www.eclipselabs.org/emf/junit#//Library/" > 
+  <rdf:Description rdf:about="http://m.rdf#//@books.0">
+    <rdf:type rdf:resource="http://www.eclipselabs.org/emf/junit#//Book"/>
+    <j.2:tags>Fantasy</j.2:tags>
+    <j.2:tags>SciFI</j.2:tags>
+    <j.2:title>The Book</j.2:title>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://m.rdf#/">
+    <rdf:type rdf:resource="http://www.eclipselabs.org/emf/junit#//Library"/>
+    <j.1:books rdf:resource="http://m.rdf#//@books.0"/>
+  </rdf:Description>
+</rdf:RDF>

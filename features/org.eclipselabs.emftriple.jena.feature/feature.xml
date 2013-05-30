@@ -2,7 +2,7 @@
 <feature
       id="org.eclipselabs.emftriple.jena.feature"
       label="EMF Triple for Jena"
-      version="0.9.0.qualifier"
+      version="1.0.0.qualifier"
       provider-name="Eclipse Labs">
 
    <description url="http://www.example.com/description">
@@ -18,7 +18,6 @@
    </license>
 
    <requires>
-      <import plugin="org.openjena"/>
       <import plugin="org.eclipse.emf.ecore"/>
       <import plugin="org.eclipse.emf.common"/>
       <import plugin="org.eclipselabs.emftriple"/>
@@ -26,6 +25,13 @@
 
    <plugin
          id="org.eclipselabs.emftriple.jena"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipselabs.emftriple.tdb"
          download-size="0"
          install-size="0"
          version="0.0.0"

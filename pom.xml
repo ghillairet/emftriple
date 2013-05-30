@@ -2,51 +2,60 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.eclipselabs.emftriple</groupId>
-	<artifactId>build</artifactId>
-	<version>0.9.0-SNAPSHOT</version>
+	<groupId>org.eclipselabs</groupId>
+	<artifactId>emftriple</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<modules>
 		<module>bundles/org.eclipselabs.emftriple</module>
+		<module>bundles/org.eclipselabs.emftriple.query</module>
 		<module>features/org.eclipselabs.emftriple.feature</module>
-		
+		<module>tests/org.eclipselabs.emftriple.junit</module>
+
 		<module>bundles/org.eclipselabs.emftriple.jena</module>
+		<module>bundles/org.eclipselabs.emftriple.tdb</module>
 		<module>features/org.eclipselabs.emftriple.jena.feature</module>
-		
-		<module>bundles/org.eclipselabs.emftriple.sail</module>
-		<module>features/org.eclipselabs.emftriple.sail.feature</module>
-		
+		<module>tests/org.eclipselabs.emftriple.jena.junit</module>
+
 		<module>bundles/org.eclipselabs.emftriple.sesame</module>
 		<module>features/org.eclipselabs.emftriple.sesame.feature</module>
-		
+		<module>tests/org.eclipselabs.emftriple.sesame.junit</module>
+
+		<module>features/org.eclipselabs.emftriple.source.feature</module>
+
 		<module>build/repository</module>
 	</modules>
 
 	<properties>
-		<tycho-version>0.12.0</tycho-version>
+		<tycho-version>0.18.0</tycho-version>
 		<targets>build/repository/target/</targets>
 	</properties>
 
 	<repositories>
 		<repository>
-			<id>dependencies</id>
+			<id>jena</id>
 			<layout>p2</layout>
-			<url>http://svn.codespot.com/a/eclipselabs.org/emf4sw/dependencies/</url>
+			<url>http://ghillairet.github.com/p2/jena/update-site/releases</url>
 		</repository>
 		<repository>
-			<id>helios</id>
-			<layout>p2</layout>
-			<url>http://download.eclipse.org/releases/indigo</url>
-		</repository>
-        <repository>
 			<id>sesame</id>
-			<url>http://repo.aduna-software.org/maven2</url>
+			<layout>p2</layout>
+			<url>http://ghillairet.github.com/p2/sesame/update-site/releases/2.7.1</url>
+		</repository>
+		<repository>
+			<id>tdb</id>
+			<layout>p2</layout>
+			<url>http://ghillairet.github.com/p2/tdb/update-site/releases</url>
+		</repository>
+		<repository>
+			<id>kepler</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/releases/kepler</url>
 		</repository>
 	</repositories>
 
 	<build>
-		<sourceDirectory>src</sourceDirectory>
 		<plugins>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
@@ -54,82 +63,102 @@
 				<version>${tycho-version}</version>
 				<extensions>true</extensions>
 			</plugin>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-compiler-plugin</artifactId>
-				<version>${tycho-version}</version>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-source-plugin</artifactId>
-				<version>${tycho-version}</version>
-				<executions>
-					<execution>
-						<id>attach-source</id>
-						<phase>process-classes</phase>
-						<goals>
-							<goal>plugin-source</goal>
-						</goals>
-					</execution> 
-				</executions>
-			</plugin>
 
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>target-platform-configuration</artifactId>
 				<version>${tycho-version}</version>
 				<configuration>
-					<!-- recommended: use p2-based target platform resolver -->
 					<resolver>p2</resolver>
-					<pomDependenciesConsider>true</pomDependenciesConsider>
-					<!-- configure the p2 target environments for multi-platform build -->
+					<pomDependencies>consider</pomDependencies>
 					<environments>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86</arch>
+						</environment>
 						<environment>
 							<os>linux</os>
 							<ws>gtk</ws>
 							<arch>x86_64</arch>
 						</environment>
 						<environment>
-							<os>linux</os>
-							<ws>gtk</ws>
+							<os>win32</os>
+							<ws>win32</ws>
 							<arch>x86</arch>
 						</environment>
 						<environment>
 							<os>win32</os>
 							<ws>win32</ws>
-							<arch>x86</arch>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>macosx</os>
+							<ws>cocoa</ws>
+							<arch>x86_64</arch>
 						</environment>
 					</environments>
 				</configuration>
 			</plugin>
 
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<argLine>-Xmx512M</argLine>
+					<includes>
+						<include>**/junit/suite/TestSuite.java</include>
+					</includes>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-p2-repository-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<includeAllDependencies>false</includeAllDependencies>
+					<createArtifactRepository>true</createArtifactRepository>
+					<compress>true</compress>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-p2-publisher-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<publishArtifacts>true</publishArtifacts>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-source-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<executions>
+					<execution>
+						<id>plugin-source</id>
+						<goals>
+							<goal>plugin-source</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.0-beta-9</version>
+			</plugin>
+
 		</plugins>
 	</build>
 
-	<profiles>
-		<profile>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.eclipse.tycho</groupId>
-						<artifactId>target-platform-configuration</artifactId>
-						<version>${tycho-version}</version>
-						<configuration>
-							<environments combine.children="append">
-								<environment>
-									<os>win32</os>
-									<ws>win32</ws>
-									<arch>x86</arch>
-								</environment>
-							</environments>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
+	<scm>
+		<url>scm:git:git@github.com:ghillairet/emftriple.git</url>
+		<connection>scm:git:git@github.com:ghillairet/emftriple.git</connection>
+		<developerConnection>scm:git:git@github.com:ghillairet/emftriple.git</developerConnection>
+	</scm>
 </project>
