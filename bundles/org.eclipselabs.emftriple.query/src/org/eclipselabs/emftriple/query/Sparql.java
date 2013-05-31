@@ -18,35 +18,34 @@ import java.util.Map;
 import org.eclipse.emf.common.util.URI;
 
 /**
- * The class Sparql provides easy to use API to create SPARQL queries. 
+ * Sparql, fluent API to create SPARQL queries. 
  * 
- * @author guillaume hillairet
  * @since 0.8.0
  */
 public class Sparql implements Query {
-	
+
 	private List<String> select;
 	private GraphPattern[] where;
 	private Map<String, String> prefixes;
 	private Integer limit;
 	private String orderBy;
 	private int offset;
-	
+
 	public Sparql() {
 		select = new ArrayList<String>();
 		prefixes = new HashMap<String, String>();
 	}
-	
+
 	public Sparql prefix(String prefix, String uri) {
 		prefixes.put(prefix, uri);
 		return this;
 	}
-	
+
 	public Sparql select(String select) {
 		this.select.add(select);
 		return this;
 	}
-	
+
 	public Sparql where(GraphPattern... patterns) {
 		if (this.where != null) {
 			throw new IllegalArgumentException();
@@ -54,12 +53,12 @@ public class Sparql implements Query {
 		this.where = patterns;
 		return this;
 	}
-	
+
 	public Sparql limit(int limit) {
 		this.limit = limit;
 		return this;
 	}
-	
+
 	public String get() {
 		String res = "";
 		for (String p: prefixes.keySet()) {
@@ -87,22 +86,22 @@ public class Sparql implements Query {
 		if (limit != null) {
 			res+=" limit "+limit;
 		}
-		
+
 		return res;
 	}
 
-//	public static GraphPattern triple(Node s, EStructuralFeature feature, Node o) {
-//		final String rdf = MetamodelImpl.INSTANCE.getRdfType(feature);
-//		
-//		return new TripleGraphPattern(s.get(), iri(rdf).get(), o.get());
-//	}
-//	
-//	public static GraphPattern triple(Node s, Node p, EClass eClass) {
-//		final String rdf = MetamodelImpl.INSTANCE.getRdfTypes(eClass).get(0);
-//		
-//		return new TripleGraphPattern(s.get(), p.get(), iri(rdf).get());
-//	}
-	
+	//	public static GraphPattern triple(Node s, EStructuralFeature feature, Node o) {
+	//		final String rdf = MetamodelImpl.INSTANCE.getRdfType(feature);
+	//		
+	//		return new TripleGraphPattern(s.get(), iri(rdf).get(), o.get());
+	//	}
+	//	
+	//	public static GraphPattern triple(Node s, Node p, EClass eClass) {
+	//		final String rdf = MetamodelImpl.INSTANCE.getRdfTypes(eClass).get(0);
+	//		
+	//		return new TripleGraphPattern(s.get(), p.get(), iri(rdf).get());
+	//	}
+
 	public static GraphPattern triple(Node s, Node p, Node o) {
 		return new TripleGraphPattern(s.get(), p.get(), o.get());
 	}
@@ -110,7 +109,7 @@ public class Sparql implements Query {
 	public static IRI iri(String iri) {
 		return new IRI(getIRI(iri));
 	}
-	
+
 	public static Literal literal(String lit) {
 		return new Literal(lit, null, null);
 	}
@@ -118,11 +117,11 @@ public class Sparql implements Query {
 	public static Literal literal(String lit, String type) {
 		return new Literal(lit, null, type);
 	}
-	
+
 	public static Var var(String var) {
 		return new Var(getVariable(var));
 	}
-	
+
 	public static Filter filter(String expression) {
 		return new Filter(expression);
 	}
@@ -134,7 +133,7 @@ public class Sparql implements Query {
 	public static GraphPattern optional(GraphPattern... patterns) {
 		return new OptionalGraphPattern(patterns);
 	}
-	
+
 	public static GraphPattern union(GraphPattern... patterns) {
 		return new UnionGraphPattern(patterns);
 	}
@@ -142,11 +141,11 @@ public class Sparql implements Query {
 	private static String getVariable(String var) {
 		return var.startsWith("?") ? var : "?"+var;	
 	}
-	
+
 	private static String getIRI(String iri) {
 		return iri.startsWith("<") ? iri : "<"+iri+">";
 	}
-	
+
 	/**
 	 * SPARQL Graph Pattern.
 	 * 
@@ -156,7 +155,7 @@ public class Sparql implements Query {
 	public interface GraphPattern {
 		String get();
 	}
-	
+
 	/**
 	 * SPARQL Node.
 	 * 
@@ -166,7 +165,7 @@ public class Sparql implements Query {
 	public interface Node {
 		String get();
 	}
-	
+
 	/**
 	 * 
 	 * @author guillaume hillairet
@@ -178,14 +177,14 @@ public class Sparql implements Query {
 		IRI(String node) {
 			this.node = node;
 		}
-		
+
 		@Override
 		public String get() {
 			return node;
 		}
-		
+
 	}
-	
+
 	/**
 	 * 
 	 * @author guillaume hillairet
@@ -193,18 +192,18 @@ public class Sparql implements Query {
 	 */
 	public static class Var implements Node {
 		private String node;
-		
+
 		Var(String node) {
 			this.node = node;
 		}
-		
+
 		@Override
 		public String get() {
 			return node;
 		}
-		
+
 	}
-	
+
 	/**
 	 * 
 	 * @author guillaume hillairet
@@ -216,28 +215,28 @@ public class Sparql implements Query {
 		private String lang;
 		@SuppressWarnings("unused")
 		private String type;
-		
+
 		Literal(String node, String lang, String type) {
 			this.node = node;
 			this.lang = lang;
 			this.type = type;
 		}
-		
+
 		@Override
 		public String get() {
 			String var = "?"+node;
 			String literal = var + " . filter (str("+var+") = \""+node+"\")";
-//			if (type != null) {
-//				literal += "^^"+type;
-//			}
-//			if (lang != null) {
-//				literal += "@@"+lang;
-//			}
+			//			if (type != null) {
+			//				literal += "^^"+type;
+			//			}
+			//			if (lang != null) {
+			//				literal += "@@"+lang;
+			//			}
 			return literal;
 		}
-		
+
 	}
-	
+
 	/**
 	 * 
 	 * @author guillaume hillairet
@@ -253,12 +252,12 @@ public class Sparql implements Query {
 			this.p = p;
 			this.o = o;
 		}
-		
+
 		public String get() {
 			return s+" "+p+" "+o+" . ";
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @author guillaume hillairet
@@ -270,23 +269,23 @@ public class Sparql implements Query {
 		OptionalGraphPattern(GraphPattern... patterns) {
 			this.patterns = patterns;
 		}
-		
+
 		public String get() {
 			String res = "optional { ";
-				for (GraphPattern p: patterns)
-					res+=p.get();
+			for (GraphPattern p: patterns)
+				res+=p.get();
 			res+=" } ";
 			return res;
 		}
 	}
-	
+
 	public static class UnionGraphPattern implements GraphPattern {
 		private GraphPattern[] patterns;
 
 		UnionGraphPattern(GraphPattern... patterns) {
 			this.patterns = patterns;
 		}
-		
+
 		@Override
 		public String get() {
 			String res = " { "+patterns[0].get()+" } ";
@@ -297,14 +296,9 @@ public class Sparql implements Query {
 			}
 			return res;
 		}
-		
+
 	}
-	
-	/**
-	 * 
-	 * @author guillaume hillairet
-	 * @since 0.8.0
-	 */
+
 	public static class Filter implements GraphPattern {
 		protected String filter;
 
@@ -317,28 +311,28 @@ public class Sparql implements Query {
 			return "filter ("+filter+")";
 		}
 	}
-	
+
 	public static class RegEx extends Filter {
 
 		RegEx(String filter) {
 			super(filter);
 		}
-		
+
 		@Override
 		public String get() {
 			return "filter regex("+filter+")";
 		}
-		
+
 	}
-	
+
 	@Override
 	public URI toURI(URI resourceURI) {
 		final String query = get().replaceAll(" ", "%20").replaceAll("#", "%23");
 		final URI uri = resourceURI.hasQuery() ?
-		 URI.createURI(resourceURI+"&query="+query) :
-			 URI.createURI(resourceURI+"?query="+query);
-		 
-		return uri;
+				URI.createURI(resourceURI+"&query="+query) :
+					URI.createURI(resourceURI+"?query="+query);
+
+				return uri;
 	}
 
 	public Sparql orderBy(String orderBy) {

@@ -6,6 +6,8 @@ import java.io.OutputStream
 import java.util.Collections
 import java.util.Map
 import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.ecore.resource.URIConverter$Loadable
+import org.eclipse.emf.ecore.resource.URIConverter$Saveable
 import org.eclipselabs.emftriple.resource.RDFResource
 import org.eclipselabs.emftriple.sesame.map.EObjectMapper
 
@@ -19,21 +21,29 @@ class SesameResource extends RDFResource {
 	}
 
 	override protected doLoad(InputStream inputStream, Map<? extends Object,? extends Object> options) throws IOException {
-		val mapper = new EObjectMapper
-		mapper.from(
-			inputStream, 
-			this, 
-			if (options == null) Collections::emptyMap else options
-		)
+		if (inputStream instanceof Loadable) {
+			(inputStream as Loadable).loadResource(this)
+		} else {
+			val mapper = new EObjectMapper
+			mapper.from(
+				inputStream,
+				this,
+				if (options == null) Collections::emptyMap else options
+			)
+		}
 	}
 
 	override protected doSave(OutputStream outputStream, Map<? extends Object,? extends Object> options) throws IOException {
-		val mapper = new EObjectMapper
-		mapper.write(
-			outputStream, 
-			this, 
-			if (options == null) Collections::emptyMap else options
-		)
+		if (outputStream instanceof Saveable) {
+			(outputStream as Saveable).saveResource(this)
+		} else {
+			val mapper = new EObjectMapper
+			mapper.write(
+				outputStream, 
+				this, 
+				if (options == null) Collections::emptyMap else options
+			)
+		}
 	}
 
 }

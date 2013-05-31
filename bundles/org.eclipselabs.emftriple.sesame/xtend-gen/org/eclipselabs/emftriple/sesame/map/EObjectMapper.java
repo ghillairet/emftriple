@@ -10,7 +10,6 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Exceptions;
-import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipselabs.emftriple.resource.RDFResource;
@@ -20,9 +19,7 @@ import org.eclipselabs.emftriple.sesame.map.Serializer;
 import org.openrdf.model.Graph;
 import org.openrdf.model.Model;
 import org.openrdf.model.Statement;
-import org.openrdf.model.impl.GraphImpl;
 import org.openrdf.model.impl.LinkedHashModel;
-import org.openrdf.model.impl.ValueFactoryImpl;
 import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.RDFHandlerException;
 import org.openrdf.rio.RDFParseException;
@@ -34,7 +31,7 @@ import org.openrdf.rio.helpers.StatementCollector;
 @SuppressWarnings("all")
 public class EObjectMapper {
   public void write(final OutputStream stream, final RDFResource resource, final Map<? extends Object,? extends Object> options) {
-    Graph _to = this.to(resource, options);
+    Model _to = this.to(resource, options);
     this.write(stream, _to);
   }
   
@@ -63,21 +60,20 @@ public class EObjectMapper {
     }
   }
   
-  public Graph to(final Resource resource, final Map<? extends Object,? extends Object> options) {
-    ValueFactoryImpl _instance = ValueFactoryImpl.getInstance();
+  public Model to(final Resource resource, final Map<? extends Object,? extends Object> options) {
     ArrayList<Statement> _newArrayList = CollectionLiterals.<Statement>newArrayList();
-    GraphImpl _graphImpl = new GraphImpl(_instance, _newArrayList);
-    Graph _to = this.to(_graphImpl, resource, options);
+    LinkedHashModel _linkedHashModel = new LinkedHashModel(_newArrayList);
+    Model _to = this.to(_linkedHashModel, resource, options);
     return _to;
   }
   
-  public Graph to(final Graph graph, final Resource resource, final Map<? extends Object,? extends Object> options) {
-    Graph _to = this.to(graph, resource, options, false);
+  public Model to(final Model graph, final Resource resource, final Map<? extends Object,? extends Object> options) {
+    Model _to = this.to(graph, resource, options, false);
     return _to;
   }
   
-  public Graph to(final Graph graph, final Resource resource, final Map<? extends Object,? extends Object> options, final boolean named) {
-    Graph _xblockexpression = null;
+  public Model to(final Model graph, final Resource resource, final Map<? extends Object,? extends Object> options, final boolean named) {
+    Model _xblockexpression = null;
     {
       Serializer _switchResult = null;
       boolean _matched = false;
@@ -93,18 +89,16 @@ public class EObjectMapper {
         _switchResult = _serializer;
       }
       final Serializer serializer = _switchResult;
-      InputOutput.<Serializer>println(serializer);
-      Graph _xifexpression = null;
+      Model _xifexpression = null;
       boolean _equals = Objects.equal(graph, null);
       if (_equals) {
-        ValueFactoryImpl _instance = ValueFactoryImpl.getInstance();
         ArrayList<Statement> _newArrayList = CollectionLiterals.<Statement>newArrayList();
-        GraphImpl _graphImpl = new GraphImpl(_instance, _newArrayList);
-        _xifexpression = _graphImpl;
+        LinkedHashModel _linkedHashModel = new LinkedHashModel(_newArrayList);
+        _xifexpression = _linkedHashModel;
       } else {
         _xifexpression = graph;
       }
-      Graph _to = serializer.to(resource, _xifexpression);
+      Model _to = serializer.to(resource, _xifexpression);
       _xblockexpression = (_to);
     }
     return _xblockexpression;

@@ -8,9 +8,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipselabs.emftriple.resource.RDFResource
 import org.openrdf.model.Graph
 import org.openrdf.model.Model
-import org.openrdf.model.impl.GraphImpl
 import org.openrdf.model.impl.LinkedHashModel
-import org.openrdf.model.impl.ValueFactoryImpl
 import org.openrdf.rio.RDFFormat
 import org.openrdf.rio.RDFHandlerException
 import org.openrdf.rio.RDFParseException
@@ -35,24 +33,23 @@ class EObjectMapper {
 	}
 
 	def to(Resource resource, Map<? extends Object,? extends Object> options) {
-		to(new GraphImpl(ValueFactoryImpl::instance, newArrayList), resource, options)
+		to(new LinkedHashModel(newArrayList), resource, options)
 	}
 	
-	def to(Graph graph, Resource resource, Map<? extends Object,? extends Object> options) {
+	def to(Model graph, Resource resource, Map<? extends Object,? extends Object> options) {
 		to(graph, resource, options, false)
 	}
 	
-	def to(Graph graph, Resource resource, Map<? extends Object,? extends Object> options, boolean named) {
+	def to(Model graph, Resource resource, Map<? extends Object,? extends Object> options, boolean named) {
 		val serializer = switch named {
 			case true: new NamedGraphSerializer
 			default: new Serializer
 		}
-		println(serializer)
 		serializer.to(resource,
-			if (graph == null) new GraphImpl(ValueFactoryImpl::instance, newArrayList) else graph
+			if (graph == null) new LinkedHashModel(newArrayList) else graph
 		)
 	}
-	
+
 	def from(InputStream stream, Resource resource, Map<? extends Object,? extends Object> options) {
 		val parser = Rio::createParser(RDFFormat::RDFXML)
 		val graph = new LinkedHashModel
@@ -70,9 +67,10 @@ class EObjectMapper {
 			throw e
 		}
 	}
-	
+
 	def from(Model graph, Resource resource, Map<? extends Object,? extends Object> options) {
 		val deserializer = new Deserializer
 		deserializer.from(graph, resource)		
 	}
+
 }

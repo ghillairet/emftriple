@@ -23,16 +23,20 @@ class RepositoryHandler extends URIHandlerImpl {
 	
 	override createOutputStream(URI uri, Map<?, ?> options) throws IOException {
 		if (repository == null) {
-			throw new IOException("Dataset must be defined")
+			throw new IOException("Repository must be defined")
 		}
-		new RepositoryOutputStream(repository, uri, if (options == null) Collections::emptyMap else options)
+		new RepositoryOutputStream(repository, uri, 
+			if (options == null) Collections::emptyMap else options
+		)
 	}
 	
 	override createInputStream(URI uri, Map<?, ?> options) throws IOException {
 		if (repository == null) {
-			throw new IOException("Dataset must be defined")
+			throw new IOException("Repository must be defined")
 		}
-		new RepositoryInputStream(repository, uri, if (options == null) Collections::emptyMap else options)
+		new RepositoryInputStream(repository, uri, 
+			if (options == null) Collections::emptyMap else options
+		)
 	}
 
 }

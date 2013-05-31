@@ -7,15 +7,15 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipselabs.emftriple.sesame.map.Serializer;
-import org.openrdf.model.Graph;
 import org.openrdf.model.Literal;
+import org.openrdf.model.Model;
 import org.openrdf.model.ValueFactory;
 import org.openrdf.model.impl.URIImpl;
 import org.openrdf.model.vocabulary.RDF;
 
 @SuppressWarnings("all")
 public class NamedGraphSerializer extends Serializer {
-  public boolean createTypeStatement(final EObject eObject, final Graph graph, final ValueFactory factory) {
+  public boolean createTypeStatement(final EObject eObject, final Model graph, final ValueFactory factory) {
     URIImpl _uRI = this.toURI(eObject);
     EClass _eClass = eObject.eClass();
     URIImpl _uRI_1 = this.toURI(_eClass);
@@ -27,7 +27,7 @@ public class NamedGraphSerializer extends Serializer {
     return _add;
   }
   
-  public boolean add(final Graph graph, final EObject eObject, final EAttribute feature, final Object value, final ValueFactory factory) {
+  public boolean add(final Model graph, final EObject eObject, final EAttribute feature, final Object value, final ValueFactory factory) {
     URIImpl _uRI = this.toURI(eObject);
     URIImpl _uRI_1 = this.toURI(feature);
     Literal _literal = this.toLiteral(value, feature, factory);
@@ -38,7 +38,7 @@ public class NamedGraphSerializer extends Serializer {
     return _add;
   }
   
-  public boolean add(final Graph graph, final EObject eObject, final EReference feature, final EObject value) {
+  public boolean add(final Model graph, final EObject eObject, final EReference feature, final EObject value) {
     URIImpl _uRI = this.toURI(eObject);
     URIImpl _uRI_1 = this.toURI(feature);
     URIImpl _uRI_2 = this.toURI(value);

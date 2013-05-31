@@ -10,21 +10,20 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipselabs.emftriple.map.ISerializer;
-import org.openrdf.model.Graph;
 import org.openrdf.model.Literal;
+import org.openrdf.model.Model;
 import org.openrdf.model.ValueFactory;
 import org.openrdf.model.impl.URIImpl;
 import org.openrdf.model.impl.ValueFactoryImpl;
 import org.openrdf.model.vocabulary.RDF;
 
 @SuppressWarnings("all")
-public class Serializer implements ISerializer<Graph> {
-  public Graph to(final Resource resource, final Graph graph) {
-    Graph _xblockexpression = null;
+public class Serializer implements ISerializer<Model> {
+  public Model to(final Resource resource, final Model graph) {
+    Model _xblockexpression = null;
     {
       EList<EObject> _contents = resource.getContents();
       final Procedure1<EObject> _function = new Procedure1<EObject>() {
@@ -62,7 +61,7 @@ public class Serializer implements ISerializer<Graph> {
     return _xblockexpression;
   }
   
-  public boolean add(final Graph graph, final EObject eObject, final EAttribute feature, final Object value, final ValueFactory factory) {
+  public boolean add(final Model graph, final EObject eObject, final EAttribute feature, final Object value, final ValueFactory factory) {
     URIImpl _uRI = this.toURI(eObject);
     URIImpl _uRI_1 = this.toURI(feature);
     Literal _literal = this.toLiteral(value, feature, factory);
@@ -70,7 +69,7 @@ public class Serializer implements ISerializer<Graph> {
     return _add;
   }
   
-  public boolean add(final Graph graph, final EObject eObject, final EReference feature, final EObject value) {
+  public boolean add(final Model graph, final EObject eObject, final EReference feature, final EObject value) {
     URIImpl _uRI = this.toURI(eObject);
     URIImpl _uRI_1 = this.toURI(feature);
     URIImpl _uRI_2 = this.toURI(value);
@@ -78,8 +77,8 @@ public class Serializer implements ISerializer<Graph> {
     return _add;
   }
   
-  public Graph to(final EObject eObject, final Graph graph, final ValueFactory factory) {
-    Graph _xblockexpression = null;
+  public Model to(final EObject eObject, final Model graph, final ValueFactory factory) {
+    Model _xblockexpression = null;
     {
       this.createTypeStatement(eObject, graph, factory);
       EClass _eClass = eObject.eClass();
@@ -103,7 +102,7 @@ public class Serializer implements ISerializer<Graph> {
     return _xblockexpression;
   }
   
-  protected boolean createTypeStatement(final EObject eObject, final Graph graph, final ValueFactory factory) {
+  protected boolean createTypeStatement(final EObject eObject, final Model graph, final ValueFactory factory) {
     boolean _xblockexpression = false;
     {
       final URIImpl subject = this.toURI(eObject);
@@ -116,7 +115,7 @@ public class Serializer implements ISerializer<Graph> {
     return _xblockexpression;
   }
   
-  private Boolean serialize(final EAttribute attribute, final EObject eObject, final Graph graph, final ValueFactory factory) {
+  private Boolean serialize(final EAttribute attribute, final EObject eObject, final Model graph, final ValueFactory factory) {
     boolean _xblockexpression = false;
     {
       boolean _or = false;
@@ -157,7 +156,7 @@ public class Serializer implements ISerializer<Graph> {
     return _xblockexpression;
   }
   
-  private Boolean serialize(final EReference reference, final EObject eObject, final Graph graph, final ValueFactory factory) {
+  private Boolean serialize(final EReference reference, final EObject eObject, final Model graph, final ValueFactory factory) {
     boolean _xblockexpression = false;
     {
       boolean _or = false;
@@ -180,7 +179,6 @@ public class Serializer implements ISerializer<Graph> {
         return null;
       }
       final Object value = eObject.eGet(reference);
-      InputOutput.<Object>println(value);
       boolean _xifexpression = false;
       boolean _isMany = reference.isMany();
       if (_isMany) {
@@ -199,10 +197,9 @@ public class Serializer implements ISerializer<Graph> {
     return _xblockexpression;
   }
   
-  private boolean serializeOne(final EObject subject, final EReference reference, final EObject value, final Graph graph, final ValueFactory factory) {
+  private boolean serializeOne(final EObject subject, final EReference reference, final EObject value, final Model graph, final ValueFactory factory) {
     boolean _xblockexpression = false;
     {
-      InputOutput.<EObject>println(subject);
       boolean _isContainment = reference.isContainment();
       if (_isContainment) {
         this.to(value, graph, factory);

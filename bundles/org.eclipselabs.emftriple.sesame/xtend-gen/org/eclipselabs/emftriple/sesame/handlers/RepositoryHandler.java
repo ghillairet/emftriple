@@ -29,7 +29,7 @@ public class RepositoryHandler extends URIHandlerImpl {
     {
       boolean _equals = Objects.equal(this.repository, null);
       if (_equals) {
-        IOException _iOException = new IOException("Dataset must be defined");
+        IOException _iOException = new IOException("Repository must be defined");
         throw _iOException;
       }
       Map<? extends Object,? extends Object> _xifexpression = null;
@@ -51,7 +51,7 @@ public class RepositoryHandler extends URIHandlerImpl {
     {
       boolean _equals = Objects.equal(this.repository, null);
       if (_equals) {
-        IOException _iOException = new IOException("Dataset must be defined");
+        IOException _iOException = new IOException("Repository must be defined");
         throw _iOException;
       }
       Map<? extends Object,? extends Object> _xifexpression = null;

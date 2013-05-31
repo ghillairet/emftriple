@@ -1,12 +1,21 @@
 package org.eclipselabs.emftriple.sesame.streams;
 
+import info.aduna.iteration.Iterations;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.URIConverter.Loadable;
+import org.eclipse.xtext.xbase.lib.Exceptions;
+import org.eclipselabs.emftriple.sesame.map.EObjectMapper;
+import org.openrdf.model.Statement;
+import org.openrdf.model.impl.LinkedHashModel;
+import org.openrdf.model.impl.URIImpl;
 import org.openrdf.repository.Repository;
+import org.openrdf.repository.RepositoryConnection;
+import org.openrdf.repository.RepositoryException;
+import org.openrdf.repository.RepositoryResult;
 
 @SuppressWarnings("all")
 public class RepositoryInputStream extends InputStream implements Loadable {
@@ -27,7 +36,23 @@ public class RepositoryInputStream extends InputStream implements Loadable {
   }
   
   public void loadResource(final Resource resource) throws IOException {
-    UnsupportedOperationException _unsupportedOperationException = new UnsupportedOperationException("TODO: auto-generated method stub");
-    throw _unsupportedOperationException;
+    try {
+      final String namedGraphURI = this.uri.toString();
+      EObjectMapper _eObjectMapper = new EObjectMapper();
+      final EObjectMapper mapper = _eObjectMapper;
+      final RepositoryConnection connection = this.repository.getConnection();
+      try {
+        URIImpl _uRIImpl = new URIImpl(namedGraphURI);
+        final RepositoryResult<Statement> stmts = connection.getStatements(null, null, null, true, _uRIImpl);
+        LinkedHashModel _linkedHashModel = new LinkedHashModel();
+        final LinkedHashModel graph = Iterations.<Statement, RepositoryException, LinkedHashModel>addAll(stmts, _linkedHashModel);
+        mapper.from(graph, resource, this.options);
+        stmts.close();
+      } finally {
+        connection.close();
+      }
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
   }
 }

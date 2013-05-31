@@ -8,7 +8,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.URIConverter.Saveable;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipselabs.emftriple.sesame.map.EObjectMapper;
-import org.openrdf.model.impl.GraphImpl;
+import org.openrdf.model.impl.LinkedHashModel;
 import org.openrdf.model.impl.URIImpl;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
@@ -32,13 +32,15 @@ public class RepositoryOutputStream extends ByteArrayOutputStream implements Sav
       final String namedGraphURI = this.uri.toString();
       EObjectMapper _eObjectMapper = new EObjectMapper();
       final EObjectMapper mapper = _eObjectMapper;
-      GraphImpl _graphImpl = new GraphImpl();
-      final GraphImpl graph = _graphImpl;
-      mapper.to(graph, resource, this.options, true);
+      LinkedHashModel _linkedHashModel = new LinkedHashModel();
+      final LinkedHashModel graph = _linkedHashModel;
+      mapper.to(graph, resource, this.options, false);
       final RepositoryConnection connection = this.repository.getConnection();
+      connection.begin();
       try {
         URIImpl _uRIImpl = new URIImpl(namedGraphURI);
         connection.add(graph, _uRIImpl);
+        connection.commit();
       } finally {
         connection.close();
       }

@@ -29,10 +29,10 @@ public class BasicTest {
 		b.getTags().add("Fantasy");
 		
 		r.getContents().add(b);
-		
+
 		r.save(System.out, null);
 	}
-	
+
 	@Test
 	public void testSaveOneContainment() throws IOException {
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("*", new SesameResourceFactory());
