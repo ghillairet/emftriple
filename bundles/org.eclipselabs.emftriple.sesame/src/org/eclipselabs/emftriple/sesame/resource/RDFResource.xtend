@@ -6,14 +6,15 @@ import java.io.OutputStream
 import java.util.Collections
 import java.util.Map
 import org.eclipse.emf.common.util.URI
-import org.eclipse.emf.ecore.resource.URIConverter$Loadable
-import org.eclipse.emf.ecore.resource.URIConverter$Saveable
+import org.eclipse.emf.ecore.resource.URIConverter.Loadable
+import org.eclipse.emf.ecore.resource.URIConverter.Saveable
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl
-import org.eclipselabs.emftriple.sesame.map.EObjectMapper
 import org.eclipselabs.emftriple.sesame.io.RDFReader
 import org.eclipselabs.emftriple.sesame.io.RDFWriter
+import org.eclipselabs.emftriple.sesame.map.EObjectMapper
+import org.openrdf.model.Model
 
-class SesameResource extends ResourceImpl {
+class RDFResource extends ResourceImpl {
 
 	new() {
 	}
@@ -40,11 +41,15 @@ class SesameResource extends ResourceImpl {
 			(outputStream as Saveable).saveResource(this)
 		} else {
 			val mapper = new EObjectMapper
-			RDFWriter::write(outputStream, mapper.to(
+			write(outputStream, mapper.to(
 				this,
 				if (options == null) Collections::emptyMap else options
-			), null)
+			))
 		}
+	}
+	
+	protected def write(OutputStream stream, Model graph) {
+		RDFWriter::write(stream, graph, null)
 	}
 
 }

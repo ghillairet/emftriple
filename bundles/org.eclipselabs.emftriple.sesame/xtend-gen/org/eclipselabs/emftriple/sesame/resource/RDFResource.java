@@ -16,11 +16,11 @@ import org.eclipselabs.emftriple.sesame.map.EObjectMapper;
 import org.openrdf.model.Model;
 
 @SuppressWarnings("all")
-public class SesameResource extends ResourceImpl {
-  public SesameResource() {
+public class RDFResource extends ResourceImpl {
+  public RDFResource() {
   }
   
-  public SesameResource(final URI uri) {
+  public RDFResource(final URI uri) {
     super(uri);
   }
   
@@ -59,7 +59,11 @@ public class SesameResource extends ResourceImpl {
         _xifexpression = options;
       }
       Model _to = mapper.to(this, _xifexpression);
-      RDFWriter.write(outputStream, _to, null);
+      this.write(outputStream, _to);
     }
+  }
+  
+  protected void write(final OutputStream stream, final Model graph) {
+    RDFWriter.write(stream, graph, null);
   }
 }
