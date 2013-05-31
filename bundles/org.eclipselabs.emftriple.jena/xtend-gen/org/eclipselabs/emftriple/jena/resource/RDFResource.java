@@ -58,7 +58,12 @@ public class RDFResource extends ResourceImpl {
         _xifexpression = options;
       }
       Model _to = mapper.to(this, _xifexpression);
-      XMLWriter.write(outputStream, _to, null);
+      this.write(outputStream, _to);
     }
+  }
+  
+  protected Model write(final OutputStream stream, final Model graph) {
+    Model _write = XMLWriter.write(stream, graph, null);
+    return _write;
   }
 }

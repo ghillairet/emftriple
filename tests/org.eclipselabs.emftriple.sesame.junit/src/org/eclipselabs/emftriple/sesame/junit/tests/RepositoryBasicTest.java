@@ -15,7 +15,7 @@ import org.eclipselabs.emftriple.junit.model.Book;
 import org.eclipselabs.emftriple.junit.model.ModelFactory;
 import org.eclipselabs.emftriple.junit.model.ModelPackage;
 import org.eclipselabs.emftriple.sesame.handlers.RepositoryHandler;
-import org.eclipselabs.emftriple.sesame.resource.SesameResourceFactory;
+import org.eclipselabs.emftriple.sesame.resource.RDFResourceFactory;
 import org.junit.Test;
 import org.openrdf.model.Model;
 import org.openrdf.model.Statement;
@@ -63,7 +63,7 @@ public class RepositoryBasicTest {
 		Repository repo = new SailRepository(new MemoryStore());
 		repo.initialize();
 
-		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("*", new SesameResourceFactory());
+		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("*", new RDFResourceFactory());
 		ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.getURIConverter().getURIHandlers().add(0, new RepositoryHandler(repo));
 

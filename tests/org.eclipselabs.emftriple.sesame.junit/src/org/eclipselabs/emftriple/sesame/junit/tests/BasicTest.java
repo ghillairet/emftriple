@@ -12,14 +12,14 @@ import org.eclipselabs.emftriple.junit.model.Book;
 import org.eclipselabs.emftriple.junit.model.Library;
 import org.eclipselabs.emftriple.junit.model.ModelFactory;
 import org.eclipselabs.emftriple.junit.model.ModelPackage;
-import org.eclipselabs.emftriple.sesame.resource.SesameResourceFactory;
+import org.eclipselabs.emftriple.sesame.resource.RDFResourceFactory;
 import org.junit.Test;
 
 public class BasicTest {
 
 	@Test
 	public void testSaveOne() throws IOException {
-		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("*", new SesameResourceFactory());
+		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("*", new RDFResourceFactory());
 		ResourceSet resourceSet = new ResourceSetImpl();
 		Resource r = resourceSet.createResource(URI.createURI("http://m.rdf"));
 		
@@ -35,7 +35,7 @@ public class BasicTest {
 
 	@Test
 	public void testSaveOneContainment() throws IOException {
-		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("*", new SesameResourceFactory());
+		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("*", new RDFResourceFactory());
 		ResourceSet resourceSet = new ResourceSetImpl();
 		Resource r = resourceSet.createResource(URI.createURI("http://m.rdf"));
 		
@@ -52,7 +52,7 @@ public class BasicTest {
 	
 	@Test
 	public void testSaveManyContainment() throws IOException {
-		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("*", new SesameResourceFactory());
+		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("*", new RDFResourceFactory());
 		ResourceSet resourceSet = new ResourceSetImpl();
 		Resource r = resourceSet.createResource(URI.createURI("http://m.rdf"));
 		
@@ -79,7 +79,7 @@ public class BasicTest {
 	
 	@Test
 	public void testLoadOne() throws IOException {
-		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("*", new SesameResourceFactory());
+		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("*", new RDFResourceFactory());
 		ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.getURIConverter().getURIMap().put(
 				URI.createURI("http://m.rdf"), 
@@ -100,7 +100,7 @@ public class BasicTest {
 
 	@Test
 	public void testLoadOneContainment() throws IOException {
-		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("*", new SesameResourceFactory());
+		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("*", new RDFResourceFactory());
 		ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.getURIConverter().getURIMap().put(
 				URI.createURI("http://m.rdf"), 
@@ -124,7 +124,7 @@ public class BasicTest {
 	
 	@Test
 	public void testLoadManyContainment() throws IOException {
-		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("*", new SesameResourceFactory());
+		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("*", new RDFResourceFactory());
 		ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.getURIConverter().getURIMap().put(
 				URI.createURI("http://m.rdf"), 

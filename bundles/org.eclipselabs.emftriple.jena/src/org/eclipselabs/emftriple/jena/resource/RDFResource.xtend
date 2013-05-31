@@ -1,5 +1,6 @@
 package org.eclipselabs.emftriple.jena.resource
 
+import com.hp.hpl.jena.rdf.model.Model
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
@@ -38,10 +39,14 @@ class RDFResource extends ResourceImpl {
 			(outputStream as Saveable).saveResource(this)
 		} else {
 			val mapper = new EObjectMapper
-			XMLWriter::write(outputStream, mapper.to(this, 
+			write(outputStream, mapper.to(this, 
 				if (options == null) Collections::emptyMap else options
-			), null)
+			))
 		}
+	}
+	
+	protected def write(OutputStream stream, Model graph) {
+		XMLWriter::write(stream, graph, null)
 	}
 
 }
