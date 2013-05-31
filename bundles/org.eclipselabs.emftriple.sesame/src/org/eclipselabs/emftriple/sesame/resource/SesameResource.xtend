@@ -8,10 +8,12 @@ import java.util.Map
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.URIConverter$Loadable
 import org.eclipse.emf.ecore.resource.URIConverter$Saveable
-import org.eclipselabs.emftriple.resource.RDFResource
+import org.eclipse.emf.ecore.resource.impl.ResourceImpl
 import org.eclipselabs.emftriple.sesame.map.EObjectMapper
+import org.eclipselabs.emftriple.sesame.io.RDFReader
+import org.eclipselabs.emftriple.sesame.io.RDFWriter
 
-class SesameResource extends RDFResource {
+class SesameResource extends ResourceImpl {
 
 	new() {
 	}
@@ -26,7 +28,7 @@ class SesameResource extends RDFResource {
 		} else {
 			val mapper = new EObjectMapper
 			mapper.from(
-				inputStream,
+				RDFReader::read(inputStream, null, this.URI),
 				this,
 				if (options == null) Collections::emptyMap else options
 			)
@@ -38,11 +40,10 @@ class SesameResource extends RDFResource {
 			(outputStream as Saveable).saveResource(this)
 		} else {
 			val mapper = new EObjectMapper
-			mapper.write(
-				outputStream, 
-				this, 
+			RDFWriter::write(outputStream, mapper.to(
+				this,
 				if (options == null) Collections::emptyMap else options
-			)
+			), null)
 		}
 	}
 

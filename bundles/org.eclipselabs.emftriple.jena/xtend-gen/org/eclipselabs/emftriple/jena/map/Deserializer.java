@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
@@ -23,15 +22,26 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
+import org.eclipse.xtext.xbase.lib.Extension;
+import org.eclipse.xtext.xbase.lib.Functions.Function0;
 import org.eclipse.xtext.xbase.lib.Functions.Function2;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
+import org.eclipselabs.emftriple.jena.map.Extensions;
 import org.eclipselabs.emftriple.map.IDeserializer;
 import org.eclipselabs.emftriple.vocabularies.RDF;
 
 @SuppressWarnings("all")
 public class Deserializer implements IDeserializer<Model> {
+  @Extension
+  private Extensions _extensions = new Function0<Extensions>() {
+    public Extensions apply() {
+      Extensions _extensions = new Extensions();
+      return _extensions;
+    }
+  }.apply();
+  
   public void from(final Model graph, final Resource resource) {
     final ResourceSet resourceSet = resource.getResourceSet();
     final EList<EObject> contents = resource.getContents();
@@ -116,41 +126,36 @@ public class Deserializer implements IDeserializer<Model> {
   }
   
   protected EObject createEObject(final Statement stmt, final com.hp.hpl.jena.rdf.model.Resource res, final Map<com.hp.hpl.jena.rdf.model.Resource,EObject> mapOfObjects, final ResourceSet resourceSet) {
-    EObject _xblockexpression = null;
-    {
-      RDFNode _object = stmt.getObject();
-      final com.hp.hpl.jena.rdf.model.Resource eClassNode = _object.asResource();
-      String _uRI = eClassNode.getURI();
-      final URI eClassURI = URI.createURI(_uRI);
-      final EObject eClass = resourceSet.getEObject(eClassURI, true);
-      EObject _switchResult = null;
-      boolean _matched = false;
-      if (!_matched) {
-        if (eClass instanceof EClass) {
-          final EClass _eClass = (EClass)eClass;
-          _matched=true;
-          EObject _xblockexpression_1 = null;
-          {
-            final EObject eObject = EcoreUtil.create(_eClass);
-            EList<EAttribute> _eAllAttributes = _eClass.getEAllAttributes();
-            final Procedure1<EAttribute> _function = new Procedure1<EAttribute>() {
-                public void apply(final EAttribute it) {
-                  Deserializer.this.deSerialize(it, res, eObject);
-                }
-              };
-            IterableExtensions.<EAttribute>forEach(_eAllAttributes, _function);
-            mapOfObjects.put(res, eObject);
-            _xblockexpression_1 = (eObject);
-          }
-          _switchResult = _xblockexpression_1;
+    EObject _switchResult = null;
+    RDFNode _object = stmt.getObject();
+    com.hp.hpl.jena.rdf.model.Resource _asResource = _object.asResource();
+    EObject _eObject = this._extensions.getEObject(resourceSet, _asResource);
+    final EObject eClass = _eObject;
+    boolean _matched = false;
+    if (!_matched) {
+      if (eClass instanceof EClass) {
+        final EClass _eClass = (EClass)eClass;
+        _matched=true;
+        EObject _xblockexpression = null;
+        {
+          final EObject eObject = this._extensions.create(_eClass);
+          EList<EAttribute> _eAllAttributes = _eClass.getEAllAttributes();
+          final Procedure1<EAttribute> _function = new Procedure1<EAttribute>() {
+              public void apply(final EAttribute it) {
+                Deserializer.this.deSerialize(it, res, eObject);
+              }
+            };
+          IterableExtensions.<EAttribute>forEach(_eAllAttributes, _function);
+          mapOfObjects.put(res, eObject);
+          _xblockexpression = (eObject);
         }
+        _switchResult = _xblockexpression;
       }
-      if (!_matched) {
-        _switchResult = null;
-      }
-      _xblockexpression = (_switchResult);
     }
-    return _xblockexpression;
+    if (!_matched) {
+      _switchResult = null;
+    }
+    return _switchResult;
   }
   
   public Object deSerialize(final EAttribute attribute, final com.hp.hpl.jena.rdf.model.Resource resource, final EObject eObject) {
@@ -165,10 +170,8 @@ public class Deserializer implements IDeserializer<Model> {
     if (_or) {
       return null;
     }
-    final URI propertyURI = EcoreUtil.getURI(attribute);
     Model _model = resource.getModel();
-    String _string = propertyURI.toString();
-    Property _property = _model.getProperty(_string);
+    Property _property = this._extensions.getProperty(attribute, _model);
     final StmtIterator stmts = resource.listProperties(_property);
     boolean _isMany = attribute.isMany();
     if (_isMany) {
@@ -215,10 +218,8 @@ public class Deserializer implements IDeserializer<Model> {
     if (_or) {
       return null;
     }
-    final URI propertyURI = EcoreUtil.getURI(reference);
     Model _model = resource.getModel();
-    String _string = propertyURI.toString();
-    Property _property = _model.getProperty(_string);
+    Property _property = this._extensions.getProperty(reference, _model);
     final StmtIterator stmts = resource.listProperties(_property);
     boolean _isMany = reference.isMany();
     if (_isMany) {

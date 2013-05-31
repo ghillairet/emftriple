@@ -11,12 +11,12 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter.Loadable;
 import org.eclipse.emf.ecore.resource.URIConverter.Saveable;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
+import org.eclipselabs.emftriple.jena.io.RDFReader;
+import org.eclipselabs.emftriple.jena.io.XMLWriter;
 import org.eclipselabs.emftriple.jena.map.EObjectMapper;
 
 @SuppressWarnings("all")
 public class RDFResource extends ResourceImpl {
-  private Model model;
-  
   public RDFResource() {
   }
   
@@ -30,6 +30,7 @@ public class RDFResource extends ResourceImpl {
     } else {
       EObjectMapper _eObjectMapper = new EObjectMapper();
       final EObjectMapper mapper = _eObjectMapper;
+      Model _read = RDFReader.read(inputStream, null);
       Map<? extends Object,? extends Object> _xifexpression = null;
       boolean _equals = Objects.equal(options, null);
       if (_equals) {
@@ -38,7 +39,7 @@ public class RDFResource extends ResourceImpl {
       } else {
         _xifexpression = options;
       }
-      mapper.from(inputStream, this, _xifexpression);
+      mapper.from(_read, this, _xifexpression);
     }
   }
   
@@ -56,16 +57,8 @@ public class RDFResource extends ResourceImpl {
       } else {
         _xifexpression = options;
       }
-      mapper.write(outputStream, this, _xifexpression);
+      Model _to = mapper.to(this, _xifexpression);
+      XMLWriter.write(outputStream, _to, null);
     }
-  }
-  
-  public Model setModel(final Model model) {
-    Model _model = this.model = model;
-    return _model;
-  }
-  
-  public Model getModel() {
-    return this.model;
   }
 }

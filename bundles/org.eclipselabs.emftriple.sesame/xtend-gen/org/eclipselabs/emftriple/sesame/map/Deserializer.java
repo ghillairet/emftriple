@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
@@ -16,10 +15,13 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
+import org.eclipse.xtext.xbase.lib.Extension;
+import org.eclipse.xtext.xbase.lib.Functions.Function0;
 import org.eclipse.xtext.xbase.lib.Functions.Function2;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipselabs.emftriple.map.IDeserializer;
+import org.eclipselabs.emftriple.sesame.map.Extensions;
 import org.openrdf.model.Model;
 import org.openrdf.model.Statement;
 import org.openrdf.model.Value;
@@ -28,6 +30,14 @@ import org.openrdf.model.vocabulary.RDF;
 
 @SuppressWarnings("all")
 public class Deserializer implements IDeserializer<Model> {
+  @Extension
+  private Extensions extensions = new Function0<Extensions>() {
+    public Extensions apply() {
+      Extensions _extensions = new Extensions();
+      return _extensions;
+    }
+  }.apply();
+  
   public void from(final Model graph, final Resource resource) {
     final ResourceSet resourceSet = resource.getResourceSet();
     final EList<EObject> contents = resource.getContents();
@@ -36,7 +46,7 @@ public class Deserializer implements IDeserializer<Model> {
     final Function2<List<EObject>,Statement,List<EObject>> _function = new Function2<List<EObject>,Statement,List<EObject>>() {
         public List<EObject> apply(final List<EObject> list, final Statement it) {
           EObject _deSerialize = Deserializer.this.deSerialize(it, graph, mapOfObjects, resourceSet);
-          List<EObject> _appendTo = Deserializer.this.appendTo(_deSerialize, list);
+          List<EObject> _appendTo = Deserializer.this.extensions.appendTo(_deSerialize, list);
           return _appendTo;
         }
       };
@@ -70,18 +80,6 @@ public class Deserializer implements IDeserializer<Model> {
     IterableExtensions.<EObject>forEach(_values, _function_2);
   }
   
-  protected List<EObject> appendTo(final EObject object, final List<EObject> objects) {
-    List<EObject> _xblockexpression = null;
-    {
-      boolean _notEquals = (!Objects.equal(object, null));
-      if (_notEquals) {
-        objects.add(object);
-      }
-      _xblockexpression = (objects);
-    }
-    return _xblockexpression;
-  }
-  
   public EObject deSerialize(final Statement statement, final Model graph, final Map<org.openrdf.model.Resource,EObject> mapOfObjects, final ResourceSet resourceSet) {
     EObject _xblockexpression = null;
     {
@@ -91,12 +89,11 @@ public class Deserializer implements IDeserializer<Model> {
       if (_not) {
         final Model subModel = graph.filter(sbj, null, null);
         final Model types = subModel.filter(sbj, RDF.TYPE, null);
+        EObject _switchResult = null;
         Statement _head = IterableExtensions.<Statement>head(types);
         Value _object = _head.getObject();
-        final String type = _object.stringValue();
-        final URI uri = URI.createURI(type);
-        final EObject eClass = resourceSet.getEObject(uri, true);
-        EObject _switchResult = null;
+        EObject _eObject = this.extensions.getEObject(resourceSet, _object);
+        final EObject eClass = _eObject;
         boolean _matched = false;
         if (!_matched) {
           if (eClass instanceof EClass) {
@@ -145,10 +142,8 @@ public class Deserializer implements IDeserializer<Model> {
     if (_or) {
       return null;
     }
-    URI _uRI = EcoreUtil.getURI(attribute);
-    final String propertyURI = _uRI.toString();
-    URIImpl _uRIImpl = new URIImpl(propertyURI);
-    final Model subModel = model.filter(sbj, _uRIImpl, null);
+    URIImpl _uRI = this.extensions.toURI(attribute);
+    final Model subModel = model.filter(sbj, _uRI, null);
     boolean _isMany = attribute.isMany();
     if (_isMany) {
       Object _eGet = eObject.eGet(attribute);
@@ -189,10 +184,8 @@ public class Deserializer implements IDeserializer<Model> {
     if (_or) {
       return null;
     }
-    URI _uRI = EcoreUtil.getURI(reference);
-    final String propertyURI = _uRI.toString();
-    URIImpl _uRIImpl = new URIImpl(propertyURI);
-    final Model subModel = model.filter(sbj, _uRIImpl, null);
+    URIImpl _uRI = this.extensions.toURI(reference);
+    final Model subModel = model.filter(sbj, _uRI, null);
     boolean _isMany = reference.isMany();
     if (_isMany) {
       Object _eGet = eObject.eGet(reference);

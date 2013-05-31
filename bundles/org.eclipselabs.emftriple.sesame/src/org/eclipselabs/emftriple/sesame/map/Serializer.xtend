@@ -1,45 +1,23 @@
 package org.eclipselabs.emftriple.sesame.map
 
 import java.util.Collection
-import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.resource.Resource
-import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipselabs.emftriple.map.ISerializer
 import org.openrdf.model.Model
 import org.openrdf.model.ValueFactory
-import org.openrdf.model.impl.URIImpl
 import org.openrdf.model.impl.ValueFactoryImpl
 import org.openrdf.model.vocabulary.RDF
 
 class Serializer implements ISerializer<Model> {
-	
+
+	extension Extensions extensions = new Extensions
+
 	override to(Resource resource, Model graph) {
 		resource.contents.forEach[to(it, graph, ValueFactoryImpl::instance)]
 		graph
-	}
-	
-	def toURI(EObject eObject) {
-		EcoreUtil::getURI(eObject).toURI
-	}
-	
-	def toURI(URI uri) {
-		new URIImpl(uri.toString)
-	}
-	
-	def toLiteral(Object value, EAttribute attribute, ValueFactory factory) {
-		val stringValue = EcoreUtil::convertToString(attribute.EAttributeType, value)
-		factory.createLiteral(stringValue)
-	}
-
-	def add(Model graph, EObject eObject, EAttribute feature, Object value, ValueFactory factory) {
-		graph.add(eObject.toURI, feature.toURI, value.toLiteral(feature, factory))
-	}
-	
-	def add(Model graph, EObject eObject, EReference feature, EObject value) {
-		graph.add(eObject.toURI, feature.toURI, value.toURI)
 	}
 
 	def Model to(EObject eObject, Model graph, ValueFactory factory) {

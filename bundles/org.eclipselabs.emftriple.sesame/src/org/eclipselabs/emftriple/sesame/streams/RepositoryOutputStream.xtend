@@ -28,7 +28,7 @@ class RepositoryOutputStream extends ByteArrayOutputStream implements Saveable {
 		val mapper = new EObjectMapper
 		val graph = new LinkedHashModel
 
-		mapper.to(graph, resource, options, false)
+		mapper.to(graph, resource, options)
 		val connection = repository.connection
 		connection.begin
 		try {

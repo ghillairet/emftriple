@@ -6,7 +6,6 @@ import com.hp.hpl.jena.rdf.model.Statement
 import java.util.Collection
 import java.util.List
 import java.util.Map
-import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EObject
@@ -17,6 +16,8 @@ import org.eclipselabs.emftriple.map.IDeserializer
 import org.eclipselabs.emftriple.vocabularies.RDF
 
 class Deserializer implements IDeserializer<Model> {
+
+	extension Extensions = new Extensions
 
 	override from(Model graph, org.eclipse.emf.ecore.resource.Resource resource) {
 		val resourceSet = resource.resourceSet
@@ -57,12 +58,9 @@ class Deserializer implements IDeserializer<Model> {
 	}
 
 	protected def createEObject(Statement stmt, Resource res, Map<Resource, EObject> mapOfObjects, ResourceSet resourceSet) {
-		val eClassNode = stmt.object.asResource
-		val eClassURI = URI::createURI(eClassNode.URI)
-		val eClass = resourceSet.getEObject(eClassURI, true)
-		switch eClass {
+		switch eClass: resourceSet.getEObject(stmt.object.asResource) {
 			EClass: {
-				val eObject = EcoreUtil::create(eClass)
+				val eObject = eClass.create
 				eClass.EAllAttributes.forEach[
 					deSerialize(it, res, eObject)
 				]
@@ -76,8 +74,7 @@ class Deserializer implements IDeserializer<Model> {
 	def deSerialize(EAttribute attribute, Resource resource, EObject eObject) {
 		if (attribute.derived || attribute.transient) return null;
 
-		val propertyURI = EcoreUtil::getURI(attribute)
-		val stmts = resource.listProperties(resource.model.getProperty(propertyURI.toString))
+		val stmts = resource.listProperties(attribute.getProperty(resource.model))
 
 		if (attribute.many) {
 			val values = eObject.eGet(attribute) as Collection<Object>
@@ -94,8 +91,7 @@ class Deserializer implements IDeserializer<Model> {
 	def deSerialize(EReference reference, Resource resource, EObject eObject, Map<Resource, EObject> mapOfObjects, ResourceSet resourceSet) {
 		if (reference.derived || reference.transient) return null;
 
-		val propertyURI = EcoreUtil::getURI(reference)
-		val stmts = resource.listProperties(resource.model.getProperty(propertyURI.toString))
+		val stmts = resource.listProperties(reference.getProperty(resource.model))
 
 		if (reference.many) {
 			val values = eObject.eGet(reference) as Collection<Object>

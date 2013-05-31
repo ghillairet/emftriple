@@ -8,6 +8,7 @@ Bundle-Vendor: %Bundle-Vendor
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.eclipselabs.emftriple.sesame.handlers,
+ org.eclipselabs.emftriple.sesame.io,
  org.eclipselabs.emftriple.sesame.map,
  org.eclipselabs.emftriple.sesame.resource,
  org.eclipselabs.emftriple.sesame.streams

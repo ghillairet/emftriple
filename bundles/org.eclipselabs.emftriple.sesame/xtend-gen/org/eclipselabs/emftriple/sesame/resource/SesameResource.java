@@ -9,11 +9,14 @@ import java.util.Map;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter.Loadable;
 import org.eclipse.emf.ecore.resource.URIConverter.Saveable;
-import org.eclipselabs.emftriple.resource.RDFResource;
+import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
+import org.eclipselabs.emftriple.sesame.io.RDFReader;
+import org.eclipselabs.emftriple.sesame.io.RDFWriter;
 import org.eclipselabs.emftriple.sesame.map.EObjectMapper;
+import org.openrdf.model.Model;
 
 @SuppressWarnings("all")
-public class SesameResource extends RDFResource {
+public class SesameResource extends ResourceImpl {
   public SesameResource() {
   }
   
@@ -27,6 +30,8 @@ public class SesameResource extends RDFResource {
     } else {
       EObjectMapper _eObjectMapper = new EObjectMapper();
       final EObjectMapper mapper = _eObjectMapper;
+      URI _uRI = this.getURI();
+      Model _read = RDFReader.read(inputStream, null, _uRI);
       Map<? extends Object,? extends Object> _xifexpression = null;
       boolean _equals = Objects.equal(options, null);
       if (_equals) {
@@ -35,7 +40,7 @@ public class SesameResource extends RDFResource {
       } else {
         _xifexpression = options;
       }
-      mapper.from(inputStream, this, _xifexpression);
+      mapper.from(_read, this, _xifexpression);
     }
   }
   
@@ -53,7 +58,8 @@ public class SesameResource extends RDFResource {
       } else {
         _xifexpression = options;
       }
-      mapper.write(outputStream, this, _xifexpression);
+      Model _to = mapper.to(this, _xifexpression);
+      RDFWriter.write(outputStream, _to, null);
     }
   }
 }

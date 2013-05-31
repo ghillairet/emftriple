@@ -34,7 +34,7 @@ public class RepositoryOutputStream extends ByteArrayOutputStream implements Sav
       final EObjectMapper mapper = _eObjectMapper;
       LinkedHashModel _linkedHashModel = new LinkedHashModel();
       final LinkedHashModel graph = _linkedHashModel;
-      mapper.to(graph, resource, this.options, false);
+      mapper.to(graph, resource, this.options);
       final RepositoryConnection connection = this.repository.getConnection();
       connection.begin();
       try {

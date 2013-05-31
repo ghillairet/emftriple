@@ -8,6 +8,7 @@ Bundle-ClassPath: .
 Bundle-Vendor: %Bundle-Vendor
 Require-Bundle: org.eclipselabs.emftriple;bundle-version="1.0.0",
  org.apache.jena;bundle-version="2.7.0"
-Export-Package: org.eclipselabs.emftriple.jena.map,
+Export-Package: org.eclipselabs.emftriple.jena.io,
+ org.eclipselabs.emftriple.jena.map,
  org.eclipselabs.emftriple.jena.resource,
  org.eclipselabs.emftriple.jena.streams

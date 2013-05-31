@@ -2,19 +2,19 @@ package org.eclipselabs.emftriple.sesame.map;
 
 import java.util.Collection;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.xtext.xbase.lib.Extension;
+import org.eclipse.xtext.xbase.lib.Functions.Function0;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipselabs.emftriple.map.ISerializer;
-import org.openrdf.model.Literal;
+import org.eclipselabs.emftriple.sesame.map.Extensions;
 import org.openrdf.model.Model;
+import org.openrdf.model.URI;
 import org.openrdf.model.ValueFactory;
 import org.openrdf.model.impl.URIImpl;
 import org.openrdf.model.impl.ValueFactoryImpl;
@@ -22,6 +22,14 @@ import org.openrdf.model.vocabulary.RDF;
 
 @SuppressWarnings("all")
 public class Serializer implements ISerializer<Model> {
+  @Extension
+  private Extensions extensions = new Function0<Extensions>() {
+    public Extensions apply() {
+      Extensions _extensions = new Extensions();
+      return _extensions;
+    }
+  }.apply();
+  
   public Model to(final Resource resource, final Model graph) {
     Model _xblockexpression = null;
     {
@@ -36,45 +44,6 @@ public class Serializer implements ISerializer<Model> {
       _xblockexpression = (graph);
     }
     return _xblockexpression;
-  }
-  
-  public URIImpl toURI(final EObject eObject) {
-    URI _uRI = EcoreUtil.getURI(eObject);
-    URIImpl _uRI_1 = this.toURI(_uRI);
-    return _uRI_1;
-  }
-  
-  public URIImpl toURI(final URI uri) {
-    String _string = uri.toString();
-    URIImpl _uRIImpl = new URIImpl(_string);
-    return _uRIImpl;
-  }
-  
-  public Literal toLiteral(final Object value, final EAttribute attribute, final ValueFactory factory) {
-    Literal _xblockexpression = null;
-    {
-      EDataType _eAttributeType = attribute.getEAttributeType();
-      final String stringValue = EcoreUtil.convertToString(_eAttributeType, value);
-      Literal _createLiteral = factory.createLiteral(stringValue);
-      _xblockexpression = (_createLiteral);
-    }
-    return _xblockexpression;
-  }
-  
-  public boolean add(final Model graph, final EObject eObject, final EAttribute feature, final Object value, final ValueFactory factory) {
-    URIImpl _uRI = this.toURI(eObject);
-    URIImpl _uRI_1 = this.toURI(feature);
-    Literal _literal = this.toLiteral(value, feature, factory);
-    boolean _add = graph.add(_uRI, _uRI_1, _literal);
-    return _add;
-  }
-  
-  public boolean add(final Model graph, final EObject eObject, final EReference feature, final EObject value) {
-    URIImpl _uRI = this.toURI(eObject);
-    URIImpl _uRI_1 = this.toURI(feature);
-    URIImpl _uRI_2 = this.toURI(value);
-    boolean _add = graph.add(_uRI, _uRI_1, _uRI_2);
-    return _add;
   }
   
   public Model to(final EObject eObject, final Model graph, final ValueFactory factory) {
@@ -105,10 +74,10 @@ public class Serializer implements ISerializer<Model> {
   protected boolean createTypeStatement(final EObject eObject, final Model graph, final ValueFactory factory) {
     boolean _xblockexpression = false;
     {
-      final URIImpl subject = this.toURI(eObject);
-      final org.openrdf.model.URI predicate = RDF.TYPE;
+      final URIImpl subject = this.extensions.toURI(eObject);
+      final URI predicate = RDF.TYPE;
       EClass _eClass = eObject.eClass();
-      final URIImpl object = this.toURI(_eClass);
+      final URIImpl object = this.extensions.toURI(_eClass);
       boolean _add = graph.add(subject, predicate, object);
       _xblockexpression = (_add);
     }
@@ -143,12 +112,12 @@ public class Serializer implements ISerializer<Model> {
       if (_isMany) {
         final Procedure1<Object> _function = new Procedure1<Object>() {
             public void apply(final Object it) {
-              Serializer.this.add(graph, eObject, attribute, it, factory);
+              Serializer.this.extensions.add(graph, eObject, attribute, it, factory);
             }
           };
         IterableExtensions.<Object>forEach(((Collection<Object>) value), _function);
       } else {
-        boolean _add = this.add(graph, eObject, attribute, value, factory);
+        boolean _add = this.extensions.add(graph, eObject, attribute, value, factory);
         _xifexpression = _add;
       }
       _xblockexpression = (_xifexpression);
@@ -204,7 +173,7 @@ public class Serializer implements ISerializer<Model> {
       if (_isContainment) {
         this.to(value, graph, factory);
       }
-      boolean _add = this.add(graph, subject, reference, value);
+      boolean _add = this.extensions.add(graph, subject, reference, value);
       _xblockexpression = (_add);
     }
     return _xblockexpression;

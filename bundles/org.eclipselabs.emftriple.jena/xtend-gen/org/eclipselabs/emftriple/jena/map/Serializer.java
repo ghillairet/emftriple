@@ -1,24 +1,33 @@
 package org.eclipselabs.emftriple.jena.map;
 
+import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
 import java.util.Collection;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.xtext.xbase.lib.Extension;
+import org.eclipse.xtext.xbase.lib.Functions.Function0;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
+import org.eclipselabs.emftriple.jena.map.Extensions;
 import org.eclipselabs.emftriple.map.ISerializer;
 import org.eclipselabs.emftriple.vocabularies.RDF;
 
 @SuppressWarnings("all")
 public class Serializer implements ISerializer<Model> {
+  @Extension
+  private Extensions _extensions = new Function0<Extensions>() {
+    public Extensions apply() {
+      Extensions _extensions = new Extensions();
+      return _extensions;
+    }
+  }.apply();
+  
   public Model to(final Resource resource, final Model graph) {
     Model _xblockexpression = null;
     {
@@ -37,22 +46,18 @@ public class Serializer implements ISerializer<Model> {
   public Model to(final EObject eObject, final Model graph) {
     Model _xblockexpression = null;
     {
-      final URI uri = EcoreUtil.getURI(eObject);
+      final com.hp.hpl.jena.rdf.model.Resource subject = this._extensions.getResource(eObject, graph);
+      this.createTypeStatement(eObject, graph);
       EClass _eClass = eObject.eClass();
-      final URI eClassURI = EcoreUtil.getURI(_eClass);
-      String _string = uri.toString();
-      final com.hp.hpl.jena.rdf.model.Resource subject = graph.getResource(_string);
-      this.createTypeStatement(subject, eClassURI, graph);
-      EClass _eClass_1 = eObject.eClass();
-      EList<EAttribute> _eAllAttributes = _eClass_1.getEAllAttributes();
+      EList<EAttribute> _eAllAttributes = _eClass.getEAllAttributes();
       final Procedure1<EAttribute> _function = new Procedure1<EAttribute>() {
           public void apply(final EAttribute it) {
             Serializer.this.serialize(it, eObject, subject, graph);
           }
         };
       IterableExtensions.<EAttribute>forEach(_eAllAttributes, _function);
-      EClass _eClass_2 = eObject.eClass();
-      EList<EReference> _eAllReferences = _eClass_2.getEAllReferences();
+      EClass _eClass_1 = eObject.eClass();
+      EList<EReference> _eAllReferences = _eClass_1.getEAllReferences();
       final Procedure1<EReference> _function_1 = new Procedure1<EReference>() {
           public void apply(final EReference it) {
             Serializer.this.serialize(it, eObject, subject, graph);
@@ -64,13 +69,14 @@ public class Serializer implements ISerializer<Model> {
     return _xblockexpression;
   }
   
-  private Model createTypeStatement(final com.hp.hpl.jena.rdf.model.Resource subject, final URI eClass, final Model graph) {
+  private Model createTypeStatement(final EObject eObject, final Model graph) {
     Model _xblockexpression = null;
     {
       final Property predicate = graph.getProperty(RDF.type);
-      String _string = eClass.toString();
-      final com.hp.hpl.jena.rdf.model.Resource object = graph.getResource(_string);
-      Model _add = graph.add(subject, predicate, object);
+      EClass _eClass = eObject.eClass();
+      final com.hp.hpl.jena.rdf.model.Resource object = this._extensions.getResource(_eClass, graph);
+      com.hp.hpl.jena.rdf.model.Resource _resource = this._extensions.getResource(eObject, graph);
+      Model _add = graph.add(_resource, predicate, object);
       _xblockexpression = (_add);
     }
     return _xblockexpression;
@@ -118,17 +124,10 @@ public class Serializer implements ISerializer<Model> {
   }
   
   private Model serializeOne(final Object value, final EAttribute attribute, final com.hp.hpl.jena.rdf.model.Resource resource, final Model graph) {
-    Model _xblockexpression = null;
-    {
-      EDataType _eAttributeType = attribute.getEAttributeType();
-      final String stringValue = EcoreUtil.convertToString(_eAttributeType, value);
-      final URI propertyURI = EcoreUtil.getURI(attribute);
-      String _string = propertyURI.toString();
-      Property _property = graph.getProperty(_string);
-      Model _add = graph.add(resource, _property, stringValue);
-      _xblockexpression = (_add);
-    }
-    return _xblockexpression;
+    Property _property = this._extensions.getProperty(attribute, graph);
+    Literal _literal = this._extensions.getLiteral(value, attribute, graph);
+    Model _add = graph.add(resource, _property, _literal);
+    return _add;
   }
   
   private Model serialize(final EReference reference, final EObject eObject, final com.hp.hpl.jena.rdf.model.Resource resource, final Model graph) {
@@ -159,12 +158,12 @@ public class Serializer implements ISerializer<Model> {
       if (_isMany) {
         final Procedure1<Object> _function = new Procedure1<Object>() {
             public void apply(final Object it) {
-              Serializer.this.serializeOne(it, reference, resource, graph);
+              Serializer.this.serializeOne(((EObject) it), reference, resource, graph);
             }
           };
         IterableExtensions.<Object>forEach(((Collection<Object>) value), _function);
       } else {
-        Model _serializeOne = this.serializeOne(value, reference, resource, graph);
+        Model _serializeOne = this.serializeOne(((EObject) value), reference, resource, graph);
         _xifexpression = _serializeOne;
       }
       _xblockexpression = (_xifexpression);
@@ -172,20 +171,15 @@ public class Serializer implements ISerializer<Model> {
     return _xblockexpression;
   }
   
-  private Model serializeOne(final Object value, final EReference reference, final com.hp.hpl.jena.rdf.model.Resource resource, final Model graph) {
+  private Model serializeOne(final EObject value, final EReference reference, final com.hp.hpl.jena.rdf.model.Resource resource, final Model graph) {
     Model _xblockexpression = null;
     {
-      final EObject eObject = ((EObject) value);
-      final URI uri = EcoreUtil.getURI(eObject);
-      final URI propertyURI = EcoreUtil.getURI(reference);
       boolean _isContainment = reference.isContainment();
       if (_isContainment) {
-        this.to(eObject, graph);
+        this.to(value, graph);
       }
-      String _string = propertyURI.toString();
-      Property _property = graph.getProperty(_string);
-      String _string_1 = uri.toString();
-      com.hp.hpl.jena.rdf.model.Resource _resource = graph.getResource(_string_1);
+      Property _property = this._extensions.getProperty(reference, graph);
+      com.hp.hpl.jena.rdf.model.Resource _resource = this._extensions.getResource(value, graph);
       Model _add = graph.add(resource, _property, _resource);
       _xblockexpression = (_add);
     }

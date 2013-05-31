@@ -2,7 +2,6 @@ package org.eclipselabs.emftriple.sesame.map
 
 import java.util.List
 import java.util.Map
-import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EObject
@@ -13,11 +12,12 @@ import org.eclipselabs.emftriple.map.IDeserializer
 import org.openrdf.model.Model
 import org.openrdf.model.Resource
 import org.openrdf.model.Statement
-import org.openrdf.model.impl.URIImpl
 import org.openrdf.model.vocabulary.RDF
 
 class Deserializer implements IDeserializer<Model> {
 	
+	extension Extensions extensions = new Extensions
+
 	override from(Model graph, org.eclipse.emf.ecore.resource.Resource resource) {
 		val resourceSet = resource.resourceSet
 		val contents = resource.contents
@@ -43,21 +43,13 @@ class Deserializer implements IDeserializer<Model> {
 		]
 	}
 
-	protected def appendTo(EObject object, List<EObject> objects) {
-		if (object != null) objects.add(object)
-		objects
-	}
-
 	def deSerialize(Statement statement, Model graph, Map<Resource, EObject> mapOfObjects, ResourceSet resourceSet) {
 		val sbj = statement.subject
 		if (!mapOfObjects.containsKey(sbj)) {
 			val subModel = graph.filter(sbj, null, null)
 			val types = subModel.filter(sbj, RDF::TYPE, null)
-			val type = types.head.object.stringValue
-			val uri = URI::createURI(type)
-			val eClass = resourceSet.getEObject(uri, true)
 
-			return switch eClass {
+			return switch eClass: resourceSet.getEObject(types.head.object) {
 				EClass: createEObject(eClass, sbj, subModel, mapOfObjects) 
 				default: null
 			}
@@ -78,8 +70,7 @@ class Deserializer implements IDeserializer<Model> {
 	def deSerialize(EAttribute attribute, Resource sbj, EObject eObject, Model model) {
 		if (attribute.derived || attribute.transient) return null
 
-		val propertyURI = EcoreUtil::getURI(attribute).toString
-		val subModel = model.filter(sbj, new URIImpl(propertyURI), null)
+		val subModel = model.filter(sbj, attribute.toURI, null)
 		 
 		if (attribute.many) {
 			val value = eObject.eGet(attribute) as List<Object>
@@ -102,8 +93,7 @@ class Deserializer implements IDeserializer<Model> {
 	def deSerialize(EReference reference, Resource sbj, EObject eObject, Model model, Map<Resource, EObject> mapOfObjects, ResourceSet resourceSet) {
 		if (reference.derived || reference.transient) return null;
 
-		val propertyURI = EcoreUtil::getURI(reference).toString
-		val subModel = model.filter(sbj, new URIImpl(propertyURI), null)
+		val subModel = model.filter(sbj, reference.toURI, null)
 
 		if (reference.many) {
 			val values = eObject.eGet(reference) as List<Object>
@@ -120,3 +110,4 @@ class Deserializer implements IDeserializer<Model> {
 	}
 
 }
+

@@ -1,65 +1,18 @@
 package org.eclipselabs.emftriple.sesame.map;
 
 import com.google.common.base.Objects;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Map;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
-import org.eclipse.xtext.xbase.lib.Exceptions;
-import org.eclipse.xtext.xbase.lib.IterableExtensions;
-import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
-import org.eclipselabs.emftriple.resource.RDFResource;
 import org.eclipselabs.emftriple.sesame.map.Deserializer;
-import org.eclipselabs.emftriple.sesame.map.NamedGraphSerializer;
 import org.eclipselabs.emftriple.sesame.map.Serializer;
-import org.openrdf.model.Graph;
 import org.openrdf.model.Model;
 import org.openrdf.model.Statement;
 import org.openrdf.model.impl.LinkedHashModel;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFHandlerException;
-import org.openrdf.rio.RDFParseException;
-import org.openrdf.rio.RDFParser;
-import org.openrdf.rio.RDFWriter;
-import org.openrdf.rio.Rio;
-import org.openrdf.rio.helpers.StatementCollector;
 
 @SuppressWarnings("all")
 public class EObjectMapper {
-  public void write(final OutputStream stream, final RDFResource resource, final Map<? extends Object,? extends Object> options) {
-    Model _to = this.to(resource, options);
-    this.write(stream, _to);
-  }
-  
-  public void write(final OutputStream stream, final Graph graph) {
-    final RDFWriter writer = Rio.createWriter(RDFFormat.RDFXML, stream);
-    try {
-      writer.startRDF();
-      final Procedure1<Statement> _function = new Procedure1<Statement>() {
-          public void apply(final Statement it) {
-            try {
-              writer.handleStatement(it);
-            } catch (Throwable _e) {
-              throw Exceptions.sneakyThrow(_e);
-            }
-          }
-        };
-      IterableExtensions.<Statement>forEach(graph, _function);
-      writer.endRDF();
-    } catch (final Throwable _t) {
-      if (_t instanceof RDFHandlerException) {
-        final RDFHandlerException e = (RDFHandlerException)_t;
-        e.printStackTrace();
-      } else {
-        throw Exceptions.sneakyThrow(_t);
-      }
-    }
-  }
-  
   public Model to(final Resource resource, final Map<? extends Object,? extends Object> options) {
     ArrayList<Statement> _newArrayList = CollectionLiterals.<Statement>newArrayList();
     LinkedHashModel _linkedHashModel = new LinkedHashModel(_newArrayList);
@@ -68,27 +21,10 @@ public class EObjectMapper {
   }
   
   public Model to(final Model graph, final Resource resource, final Map<? extends Object,? extends Object> options) {
-    Model _to = this.to(graph, resource, options, false);
-    return _to;
-  }
-  
-  public Model to(final Model graph, final Resource resource, final Map<? extends Object,? extends Object> options, final boolean named) {
     Model _xblockexpression = null;
     {
-      Serializer _switchResult = null;
-      boolean _matched = false;
-      if (!_matched) {
-        if (true) {
-          _matched=true;
-          NamedGraphSerializer _namedGraphSerializer = new NamedGraphSerializer();
-          _switchResult = _namedGraphSerializer;
-        }
-      }
-      if (!_matched) {
-        Serializer _serializer = new Serializer();
-        _switchResult = _serializer;
-      }
-      final Serializer serializer = _switchResult;
+      Serializer _serializer = new Serializer();
+      final Serializer serializer = _serializer;
       Model _xifexpression = null;
       boolean _equals = Objects.equal(graph, null);
       if (_equals) {
@@ -102,38 +38,6 @@ public class EObjectMapper {
       _xblockexpression = (_to);
     }
     return _xblockexpression;
-  }
-  
-  public void from(final InputStream stream, final Resource resource, final Map<? extends Object,? extends Object> options) {
-    try {
-      final RDFParser parser = Rio.createParser(RDFFormat.RDFXML);
-      LinkedHashModel _linkedHashModel = new LinkedHashModel();
-      final LinkedHashModel graph = _linkedHashModel;
-      StatementCollector _statementCollector = new StatementCollector(graph);
-      final StatementCollector collector = _statementCollector;
-      parser.setRDFHandler(collector);
-      try {
-        URI _uRI = resource.getURI();
-        String _string = _uRI.toString();
-        parser.parse(stream, _string);
-        this.from(graph, resource, options);
-      } catch (final Throwable _t) {
-        if (_t instanceof IOException) {
-          final IOException e = (IOException)_t;
-          throw e;
-        } else if (_t instanceof RDFParseException) {
-          final RDFParseException e_1 = (RDFParseException)_t;
-          throw e_1;
-        } else if (_t instanceof RDFHandlerException) {
-          final RDFHandlerException e_2 = (RDFHandlerException)_t;
-          throw e_2;
-        } else {
-          throw Exceptions.sneakyThrow(_t);
-        }
-      }
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
   }
   
   public void from(final Model graph, final Resource resource, final Map<? extends Object,? extends Object> options) {
