@@ -81,7 +81,7 @@ class Deserializer implements IDeserializer<Model> {
 				))
 			]
 		}
-		else { 
+		else if (subModel.size > 0){
 			val value = EcoreUtil::createFromString(
 				attribute.EAttributeType, 
 				subModel.head.object.stringValue
@@ -102,7 +102,7 @@ class Deserializer implements IDeserializer<Model> {
 				val o = mapOfObjects.get(v)
 				if (o != null) values.add(0, o)
 			]
-		} else if (subModel.head != null) {
+		} else if (subModel.size > 0) {
 			val v = subModel.head.object
 			val o = mapOfObjects.get(v)
 			if (o != null) eObject.eSet(reference, o)

@@ -21,10 +21,12 @@ class RDFReader {
 
 	private static def readNTriples(InputStream stream, Model graph) {
 		graph.getReader("N-TRIPLES").read(graph, stream, null)
+		graph
 	}
 
 	private static def readTurtle(InputStream stream, Model graph) {
 		graph.getReader("TURTLE").read(graph, stream, null)
+		graph
 	}
 
 	private static def readXML(InputStream stream, Model graph) {

@@ -30,7 +30,7 @@ public class RDFResource extends ResourceImpl {
     } else {
       EObjectMapper _eObjectMapper = new EObjectMapper();
       final EObjectMapper mapper = _eObjectMapper;
-      Model _read = RDFReader.read(inputStream, null);
+      Model _read = this.read(inputStream);
       Map<? extends Object,? extends Object> _xifexpression = null;
       boolean _equals = Objects.equal(options, null);
       if (_equals) {
@@ -60,6 +60,11 @@ public class RDFResource extends ResourceImpl {
       Model _to = mapper.to(this, _xifexpression);
       this.write(outputStream, _to);
     }
+  }
+  
+  protected Model read(final InputStream stream) {
+    Model _read = RDFReader.read(stream, null);
+    return _read;
   }
   
   protected Model write(final OutputStream stream, final Model graph) {

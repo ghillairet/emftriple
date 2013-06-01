@@ -82,8 +82,10 @@ class Deserializer implements IDeserializer<Model> {
 				val v = EcoreUtil::createFromString(attribute.EAttributeType, it.object.asLiteral.lexicalForm)
 				if (v != null) values.add(v)
 			]
-		} else {
-			val v = EcoreUtil::createFromString(attribute.EAttributeType, stmts.head.object.asLiteral.lexicalForm)
+		} else if (stmts.hasNext) {
+			val v = EcoreUtil::createFromString(attribute.EAttributeType, 
+				stmts.head.object.asLiteral.lexicalForm
+			)
 			if (v != null) eObject.eSet(attribute, v)
 		}
 	}
@@ -100,7 +102,7 @@ class Deserializer implements IDeserializer<Model> {
 				val o = mapOfObjects.get(v)
 				if (o != null) values.add(o)
 			]
-		} else if (stmts.head != null) {
+		} else if (stmts.hasNext) {
 			val v = stmts.head.object.asResource
 			val o = mapOfObjects.get(v)
 			if (o != null) eObject.eSet(reference, o)

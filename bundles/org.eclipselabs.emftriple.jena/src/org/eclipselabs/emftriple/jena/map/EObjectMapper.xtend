@@ -18,7 +18,7 @@ class EObjectMapper {
 
 	def from(Model graph, Resource resource, Map<? extends Object,? extends Object> options) {
 		val deserializer = new Deserializer
-		deserializer.from(graph, resource)		
+		deserializer.from(graph, resource)
 	}
 
 }

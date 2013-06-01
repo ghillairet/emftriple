@@ -28,7 +28,7 @@ class RDFResource extends ResourceImpl {
 			(inputStream as Loadable).loadResource(this)
 		} else {
 			val mapper = new EObjectMapper
-			mapper.from(RDFReader::read(inputStream, null), this, 
+			mapper.from(read(inputStream), this, 
 				if (options == null) Collections::emptyMap else options
 			)
 		}
@@ -45,6 +45,10 @@ class RDFResource extends ResourceImpl {
 		}
 	}
 	
+	protected def read(InputStream stream) {
+		RDFReader::read(stream, null)
+	}
+
 	protected def write(OutputStream stream, Model graph) {
 		XMLWriter::write(stream, graph, null)
 	}

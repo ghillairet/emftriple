@@ -20,6 +20,7 @@ import org.junit.Test;
 import org.openrdf.model.Model;
 import org.openrdf.model.Statement;
 import org.openrdf.model.impl.LinkedHashModel;
+import org.openrdf.model.impl.LiteralImpl;
 import org.openrdf.model.impl.URIImpl;
 import org.openrdf.model.vocabulary.RDF;
 import org.openrdf.repository.Repository;
@@ -111,6 +112,41 @@ public class RepositoryBasicTest {
 		}
 
 		repo.shutDown();
+	}
+	
+	@Test
+	public void testLoadOneInMemStore() throws RepositoryException, IOException {
+		Repository repo = new SailRepository(new MemoryStore());
+		repo.initialize();
+		
+		RepositoryConnection con = repo.getConnection();
+		Model model = new LinkedHashModel();
+		model.add(
+				new URIImpl("http://m.rdf#/"), 
+				RDF.TYPE,
+				new URIImpl("http://www.eclipselabs.org/emf/junit#//Book"));
+		model.add(
+				new URIImpl("http://m.rdf#/"), 
+				new URIImpl("http://www.eclipselabs.org/emf/junit#//Book/title"),
+				new LiteralImpl("The Book"));
+		try {
+			con.add(model, new URIImpl("http://m.rdf"));
+		} finally {
+			con.close();
+		}
+
+		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("*", new RDFResourceFactory());
+		ResourceSet resourceSet = new ResourceSetImpl();
+		resourceSet.getURIConverter().getURIHandlers().add(0, new RepositoryHandler(repo));
+
+		Resource r = resourceSet.createResource(URI.createURI("http://m.rdf"));
+		r.load(null);
+		
+		assertEquals(1, r.getContents().size());
+		assertEquals(ModelPackage.Literals.BOOK, r.getContents().get(0).eClass());
+		
+		Book b = (Book) r.getContents().get(0);
+		assertEquals("The Book", b.getTitle());
 	}
 
 }

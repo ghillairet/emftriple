@@ -20,13 +20,15 @@ public class RDFReader {
     if (!_matched) {
       if (Objects.equal(format,RDFFormat.TURTLE)) {
         _matched=true;
-        RDFReader.readTurtle(stream, graph);
+        Model _readTurtle = RDFReader.readTurtle(stream, graph);
+        _switchResult = _readTurtle;
       }
     }
     if (!_matched) {
       if (Objects.equal(format,RDFFormat.NTRIPLES)) {
         _matched=true;
-        RDFReader.readNTriples(stream, graph);
+        Model _readNTriples = RDFReader.readNTriples(stream, graph);
+        _switchResult = _readNTriples;
       }
     }
     if (!_matched) {
@@ -36,14 +38,24 @@ public class RDFReader {
     return _switchResult;
   }
   
-  private static void readNTriples(final InputStream stream, final Model graph) {
-    com.hp.hpl.jena.rdf.model.RDFReader _reader = graph.getReader("N-TRIPLES");
-    _reader.read(graph, stream, null);
+  private static Model readNTriples(final InputStream stream, final Model graph) {
+    Model _xblockexpression = null;
+    {
+      com.hp.hpl.jena.rdf.model.RDFReader _reader = graph.getReader("N-TRIPLES");
+      _reader.read(graph, stream, null);
+      _xblockexpression = (graph);
+    }
+    return _xblockexpression;
   }
   
-  private static void readTurtle(final InputStream stream, final Model graph) {
-    com.hp.hpl.jena.rdf.model.RDFReader _reader = graph.getReader("TURTLE");
-    _reader.read(graph, stream, null);
+  private static Model readTurtle(final InputStream stream, final Model graph) {
+    Model _xblockexpression = null;
+    {
+      com.hp.hpl.jena.rdf.model.RDFReader _reader = graph.getReader("TURTLE");
+      _reader.read(graph, stream, null);
+      _xblockexpression = (graph);
+    }
+    return _xblockexpression;
   }
   
   private static Model readXML(final InputStream stream, final Model graph) {

@@ -12,6 +12,7 @@ package org.eclipselabs.emftriple.jena.junit.suite;
 
 import org.eclipselabs.emftriple.jena.junit.tests.BasicTest;
 import org.eclipselabs.emftriple.jena.junit.tests.TDBBasicTest;
+import org.eclipselabs.emftriple.jena.junit.tests.TTLBasicTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -23,6 +24,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({
 	BasicTest.class,
-	TDBBasicTest.class
+	TDBBasicTest.class,
+	TTLBasicTest.class
 })
 public class TestSuite {}

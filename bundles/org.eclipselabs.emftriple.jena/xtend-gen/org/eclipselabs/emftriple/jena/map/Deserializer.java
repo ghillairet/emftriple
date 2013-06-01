@@ -192,15 +192,18 @@ public class Deserializer implements IDeserializer<Model> {
         };
       IteratorExtensions.<Statement>forEach(stmts, _function);
     } else {
-      EDataType _eAttributeType = attribute.getEAttributeType();
-      Statement _head = IteratorExtensions.<Statement>head(stmts);
-      RDFNode _object = _head.getObject();
-      Literal _asLiteral = _object.asLiteral();
-      String _lexicalForm = _asLiteral.getLexicalForm();
-      final Object v = EcoreUtil.createFromString(_eAttributeType, _lexicalForm);
-      boolean _notEquals = (!Objects.equal(v, null));
-      if (_notEquals) {
-        eObject.eSet(attribute, v);
+      boolean _hasNext = stmts.hasNext();
+      if (_hasNext) {
+        EDataType _eAttributeType = attribute.getEAttributeType();
+        Statement _head = IteratorExtensions.<Statement>head(stmts);
+        RDFNode _object = _head.getObject();
+        Literal _asLiteral = _object.asLiteral();
+        String _lexicalForm = _asLiteral.getLexicalForm();
+        final Object v = EcoreUtil.createFromString(_eAttributeType, _lexicalForm);
+        boolean _notEquals = (!Objects.equal(v, null));
+        if (_notEquals) {
+          eObject.eSet(attribute, v);
+        }
       }
     }
     return null;
@@ -238,15 +241,14 @@ public class Deserializer implements IDeserializer<Model> {
         };
       IteratorExtensions.<Statement>forEach(stmts, _function);
     } else {
-      Statement _head = IteratorExtensions.<Statement>head(stmts);
-      boolean _notEquals = (!Objects.equal(_head, null));
-      if (_notEquals) {
-        Statement _head_1 = IteratorExtensions.<Statement>head(stmts);
-        RDFNode _object = _head_1.getObject();
+      boolean _hasNext = stmts.hasNext();
+      if (_hasNext) {
+        Statement _head = IteratorExtensions.<Statement>head(stmts);
+        RDFNode _object = _head.getObject();
         final com.hp.hpl.jena.rdf.model.Resource v = _object.asResource();
         final EObject o = mapOfObjects.get(v);
-        boolean _notEquals_1 = (!Objects.equal(o, null));
-        if (_notEquals_1) {
+        boolean _notEquals = (!Objects.equal(o, null));
+        if (_notEquals) {
           eObject.eSet(reference, o);
         }
       }

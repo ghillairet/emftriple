@@ -1,6 +1,0 @@
-<http://junit.org/target/4>
-      a       <http://www.eclipselabs.org/emf/junit#TargetObject> ;
-      <http://www.eclipselabs.org/emf/junit#arrayAttribute>
-              "foo"^^<http://www.w3.org/2001/XMLSchema#string> , "foobar"^^<http://www.w3.org/2001/XMLSchema#string> , "bar"^^<http://www.w3.org/2001/XMLSchema#string> ;
-      <http://www.eclipselabs.org/emf/junit#id>
-              "4"^^<http://www.w3.org/2001/XMLSchema#int> .

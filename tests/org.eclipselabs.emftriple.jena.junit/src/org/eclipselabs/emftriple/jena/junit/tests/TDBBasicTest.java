@@ -77,4 +77,35 @@ public class TDBBasicTest {
 		assertEquals("Fantasy", tag2.getLexicalForm());
 	}
 
+	protected Model createModel() {
+		Model model = com.hp.hpl.jena.rdf.model.ModelFactory.createDefaultModel();
+		model.add(model.getResource("http://m.rdf#/"), 
+				com.hp.hpl.jena.vocabulary.RDF.type, 
+				model.getResource("http://www.eclipselabs.org/emf/junit#//Book"));
+		model.add(model.getResource("http://m.rdf#/"), 
+				model.getProperty("http://www.eclipselabs.org/emf/junit#//Book/title"), 
+				model.createLiteral("The Book"));
+		return model;
+	}
+
+	@Test
+	public void testLoadOne() throws Exception {
+		Dataset dataset = TDBFactory.createDataset();
+		String namedGraphURI = "http://m.rdf";
+		dataset.addNamedModel(namedGraphURI, createModel());
+		
+		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("*", new RDFResourceFactory());
+		ResourceSet resourceSet = new ResourceSetImpl();
+		resourceSet.getURIConverter().getURIHandlers().add(0, new TDBHandler(dataset));
+
+		Resource r = resourceSet.createResource(URI.createURI(namedGraphURI));
+		r.load(null);
+		
+		assertEquals(1, r.getContents().size());
+		assertEquals(ModelPackage.Literals.BOOK, r.getContents().get(0).eClass());
+		
+		Book root = (Book) r.getContents().get(0);
+		assertEquals("The Book", root.getTitle());
+	}
+	
 }
