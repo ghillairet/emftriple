@@ -6,5 +6,7 @@ public enum RDFFormat {
   
   TURTLE,
   
-  NTRIPLES;
+  NTRIPLES,
+  
+  RDFJSON;
 }

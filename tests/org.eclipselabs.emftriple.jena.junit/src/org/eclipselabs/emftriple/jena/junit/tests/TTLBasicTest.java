@@ -22,7 +22,7 @@ public class TTLBasicTest {
 
 	@Test
 	public void testSaveOne() throws IOException {
-		String expected = "<http://m.rdf#/>\n      a       <http://www.eclipselabs.org/emf/junit#//Book> .\n";
+		String expected = "<http://m.rdf#/>a<http://www.eclipselabs.org/emf/junit#//Book>.";
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("*", new TTLResourceFactory());
 		ResourceSet resourceSet = new ResourceSetImpl();
 		Resource r = resourceSet.createResource(URI.createURI("http://m.rdf"));
@@ -33,7 +33,7 @@ public class TTLBasicTest {
 		
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		r.save(out, null);
-		assertEquals(expected, new String(out.toByteArray()));
+		assertEquals(expected, new String(out.toByteArray()).trim().replaceAll("\\n|\\s", ""));
 	}
 
 	@Test
@@ -74,4 +74,5 @@ public class TTLBasicTest {
 		assertEquals(2, root2.getId());
 		assertEquals("Bar", root2.getName());
 	}
+
 }

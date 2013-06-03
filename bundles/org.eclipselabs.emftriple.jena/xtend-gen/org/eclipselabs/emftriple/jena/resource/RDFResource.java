@@ -12,7 +12,7 @@ import org.eclipse.emf.ecore.resource.URIConverter.Loadable;
 import org.eclipse.emf.ecore.resource.URIConverter.Saveable;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipselabs.emftriple.jena.io.RDFReader;
-import org.eclipselabs.emftriple.jena.io.XMLWriter;
+import org.eclipselabs.emftriple.jena.io.RDFWriter;
 import org.eclipselabs.emftriple.jena.map.EObjectMapper;
 
 @SuppressWarnings("all")
@@ -68,7 +68,7 @@ public class RDFResource extends ResourceImpl {
   }
   
   protected Model write(final OutputStream stream, final Model graph) {
-    Model _write = XMLWriter.write(stream, graph, null);
+    Model _write = RDFWriter.write(stream, graph, null);
     return _write;
   }
 }

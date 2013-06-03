@@ -11,8 +11,8 @@ import org.eclipse.emf.ecore.resource.URIConverter.Loadable
 import org.eclipse.emf.ecore.resource.URIConverter.Saveable
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl
 import org.eclipselabs.emftriple.jena.io.RDFReader
-import org.eclipselabs.emftriple.jena.io.XMLWriter
 import org.eclipselabs.emftriple.jena.map.EObjectMapper
+import org.eclipselabs.emftriple.jena.io.RDFWriter
 
 class RDFResource extends ResourceImpl {
 
@@ -50,7 +50,7 @@ class RDFResource extends ResourceImpl {
 	}
 
 	protected def write(OutputStream stream, Model graph) {
-		XMLWriter::write(stream, graph, null)
+		RDFWriter::write(stream, graph, null)
 	}
 
 }

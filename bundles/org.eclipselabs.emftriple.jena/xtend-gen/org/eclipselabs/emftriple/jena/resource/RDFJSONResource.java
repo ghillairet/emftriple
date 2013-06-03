@@ -10,22 +10,22 @@ import org.eclipselabs.emftriple.jena.io.RDFWriter;
 import org.eclipselabs.emftriple.jena.resource.RDFResource;
 
 @SuppressWarnings("all")
-public class TTLResource extends RDFResource {
-  public TTLResource() {
+public class RDFJSONResource extends RDFResource {
+  public RDFJSONResource() {
     super();
   }
   
-  public TTLResource(final URI uri) {
+  public RDFJSONResource(final URI uri) {
     super(uri);
   }
   
   protected Model write(final OutputStream stream, final Model graph) {
-    Model _write = RDFWriter.write(stream, graph, RDFFormat.TURTLE);
+    Model _write = RDFWriter.write(stream, graph, RDFFormat.RDFJSON);
     return _write;
   }
   
   protected Model read(final InputStream stream) {
-    Model _read = RDFReader.read(stream, RDFFormat.TURTLE);
+    Model _read = RDFReader.read(stream, RDFFormat.RDFJSON);
     return _read;
   }
 }

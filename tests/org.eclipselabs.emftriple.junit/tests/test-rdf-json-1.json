@@ -1,0 +1,11 @@
+{
+	"http://m.rdf#/":{
+		"http://www.eclipselabs.org/emf/junit#//Book/title":[{
+			"type":"literal","value":"The Book"
+		}],
+		"http://www.w3.org/1999/02/22-rdf-syntax-ns#type":[{
+			"type":"uri",
+			"value":"http://www.eclipselabs.org/emf/junit#//Book"
+		}]
+	}
+}

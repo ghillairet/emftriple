@@ -5,6 +5,7 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import java.io.InputStream;
 import org.eclipselabs.emftriple.RDFFormat;
+import org.openjena.riot.RIOT;
 
 @SuppressWarnings("all")
 public class RDFReader {
@@ -32,6 +33,13 @@ public class RDFReader {
       }
     }
     if (!_matched) {
+      if (Objects.equal(format,RDFFormat.RDFJSON)) {
+        _matched=true;
+        Model _readJson = RDFReader.readJson(stream, graph);
+        _switchResult = _readJson;
+      }
+    }
+    if (!_matched) {
       Model _readXML = RDFReader.readXML(stream, graph);
       _switchResult = _readXML;
     }
@@ -52,6 +60,17 @@ public class RDFReader {
     Model _xblockexpression = null;
     {
       com.hp.hpl.jena.rdf.model.RDFReader _reader = graph.getReader("TURTLE");
+      _reader.read(graph, stream, null);
+      _xblockexpression = (graph);
+    }
+    return _xblockexpression;
+  }
+  
+  private static Model readJson(final InputStream stream, final Model graph) {
+    Model _xblockexpression = null;
+    {
+      RIOT.init();
+      com.hp.hpl.jena.rdf.model.RDFReader _reader = graph.getReader("RDF/JSON");
       _reader.read(graph, stream, null);
       _xblockexpression = (graph);
     }
