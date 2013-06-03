@@ -4,7 +4,7 @@ package model;
 class Parent {
   id attr String ~id;
   attr String name;
-  ref Child[*] children;
+  val Child[*] children;
 }
 
 class Child {

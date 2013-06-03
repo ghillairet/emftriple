@@ -88,7 +88,7 @@ public interface ModelPackage extends EPackage {
 	int PARENT__NAME = 1;
 
 	/**
-	 * The feature id for the '<em><b>Children</b></em>' reference list.
+	 * The feature id for the '<em><b>Children</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -165,10 +165,10 @@ public interface ModelPackage extends EPackage {
 	EAttribute getParent_Name();
 
 	/**
-	 * Returns the meta object for the reference list '{@link org.eclipselabs.emftriple.example.model.Parent#getChildren <em>Children</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.eclipselabs.emftriple.example.model.Parent#getChildren <em>Children</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference list '<em>Children</em>'.
+	 * @return the meta object for the containment reference list '<em>Children</em>'.
 	 * @see org.eclipselabs.emftriple.example.model.Parent#getChildren()
 	 * @see #getParent()
 	 * @generated
@@ -259,7 +259,7 @@ public interface ModelPackage extends EPackage {
 		EAttribute PARENT__NAME = eINSTANCE.getParent_Name();
 
 		/**
-		 * The meta object literal for the '<em><b>Children</b></em>' reference list feature.
+		 * The meta object literal for the '<em><b>Children</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated

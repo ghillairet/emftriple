@@ -10,15 +10,14 @@ package org.eclipselabs.emftriple.example.model.impl;
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
-
+import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
-
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
-
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipselabs.emftriple.example.model.Child;
 import org.eclipselabs.emftriple.example.model.ModelPackage;
 import org.eclipselabs.emftriple.example.model.Parent;
@@ -80,7 +79,7 @@ public class ParentImpl extends EObjectImpl implements Parent {
 	protected String name = NAME_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getChildren() <em>Children</em>}' reference list.
+	 * The cached value of the '{@link #getChildren() <em>Children</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getChildren()
@@ -136,9 +135,23 @@ public class ParentImpl extends EObjectImpl implements Parent {
 	 */
 	public EList<Child> getChildren() {
 		if (children == null) {
-			children = new EObjectResolvingEList<Child>(Child.class, this, ModelPackage.PARENT__CHILDREN);
+			children = new EObjectContainmentEList<Child>(Child.class, this, ModelPackage.PARENT__CHILDREN);
 		}
 		return children;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case ModelPackage.PARENT__CHILDREN:
+				return ((InternalEList<?>)getChildren()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
 
 	/**

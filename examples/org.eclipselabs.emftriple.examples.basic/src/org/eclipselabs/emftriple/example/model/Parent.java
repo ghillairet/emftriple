@@ -7,7 +7,6 @@
 package org.eclipselabs.emftriple.example.model;
 
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -56,7 +55,7 @@ public interface Parent extends EObject {
 	void setName(String value);
 
 	/**
-	 * Returns the value of the '<em><b>Children</b></em>' reference list.
+	 * Returns the value of the '<em><b>Children</b></em>' containment reference list.
 	 * The list contents are of type {@link org.eclipselabs.emftriple.example.model.Child}.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -64,9 +63,9 @@ public interface Parent extends EObject {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Children</em>' reference list.
+	 * @return the value of the '<em>Children</em>' containment reference list.
 	 * @see org.eclipselabs.emftriple.example.model.ModelPackage#getParent_Children()
-	 * @model
+	 * @model containment="true"
 	 * @generated
 	 */
 	EList<Child> getChildren();

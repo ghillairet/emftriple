@@ -10,11 +10,12 @@ package org.eclipselabs.emftriple.example.model.impl;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
-
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
-import org.eclipselabs.emftriple.example.model.*;
+import org.eclipselabs.emftriple.example.model.Child;
+import org.eclipselabs.emftriple.example.model.ModelFactory;
+import org.eclipselabs.emftriple.example.model.ModelPackage;
+import org.eclipselabs.emftriple.example.model.Parent;
 
 /**
  * <!-- begin-user-doc -->
@@ -31,7 +32,7 @@ public class ModelFactoryImpl extends EFactoryImpl implements ModelFactory {
 	 */
 	public static ModelFactory init() {
 		try {
-			ModelFactory theModelFactory = (ModelFactory)EPackage.Registry.INSTANCE.getEFactory("http://eclipselabs.org/emftriple/model"); 
+			ModelFactory theModelFactory = (ModelFactory)EPackage.Registry.INSTANCE.getEFactory(ModelPackage.eNS_URI);
 			if (theModelFactory != null) {
 				return theModelFactory;
 			}
