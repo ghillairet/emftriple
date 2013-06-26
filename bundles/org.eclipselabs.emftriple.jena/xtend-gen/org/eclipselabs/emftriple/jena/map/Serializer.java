@@ -15,11 +15,10 @@ import org.eclipse.xtext.xbase.lib.Functions.Function0;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipselabs.emftriple.jena.map.Extensions;
-import org.eclipselabs.emftriple.map.ISerializer;
 import org.eclipselabs.emftriple.vocabularies.RDF;
 
 @SuppressWarnings("all")
-public class Serializer implements ISerializer<Model> {
+public class Serializer {
   @Extension
   private Extensions _extensions = new Function0<Extensions>() {
     public Extensions apply() {

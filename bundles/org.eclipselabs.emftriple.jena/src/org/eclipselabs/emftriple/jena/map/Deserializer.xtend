@@ -12,14 +12,13 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.util.EcoreUtil
-import org.eclipselabs.emftriple.map.IDeserializer
 import org.eclipselabs.emftriple.vocabularies.RDF
 
-class Deserializer implements IDeserializer<Model> {
+class Deserializer {
 
 	extension Extensions = new Extensions
 
-	override from(Model graph, org.eclipse.emf.ecore.resource.Resource resource) {
+	def from(Model graph, org.eclipse.emf.ecore.resource.Resource resource) {
 		val resourceSet = resource.resourceSet
 		val contents = resource.contents
 		val Map<Resource, EObject> mapOfObjects = newHashMap()

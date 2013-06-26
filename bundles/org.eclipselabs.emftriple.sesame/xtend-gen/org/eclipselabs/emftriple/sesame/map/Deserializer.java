@@ -20,7 +20,6 @@ import org.eclipse.xtext.xbase.lib.Functions.Function0;
 import org.eclipse.xtext.xbase.lib.Functions.Function2;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
-import org.eclipselabs.emftriple.map.IDeserializer;
 import org.eclipselabs.emftriple.sesame.map.Extensions;
 import org.openrdf.model.Model;
 import org.openrdf.model.Statement;
@@ -29,7 +28,7 @@ import org.openrdf.model.impl.URIImpl;
 import org.openrdf.model.vocabulary.RDF;
 
 @SuppressWarnings("all")
-public class Deserializer implements IDeserializer<Model> {
+public class Deserializer {
   @Extension
   private Extensions extensions = new Function0<Extensions>() {
     public Extensions apply() {

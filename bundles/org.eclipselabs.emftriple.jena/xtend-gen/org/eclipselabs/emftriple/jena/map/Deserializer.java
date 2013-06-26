@@ -29,11 +29,10 @@ import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipselabs.emftriple.jena.map.Extensions;
-import org.eclipselabs.emftriple.map.IDeserializer;
 import org.eclipselabs.emftriple.vocabularies.RDF;
 
 @SuppressWarnings("all")
-public class Deserializer implements IDeserializer<Model> {
+public class Deserializer {
   @Extension
   private Extensions _extensions = new Function0<Extensions>() {
     public Extensions apply() {

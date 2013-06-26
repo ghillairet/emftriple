@@ -6,14 +6,13 @@ import java.util.Collection
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
-import org.eclipselabs.emftriple.map.ISerializer
 import org.eclipselabs.emftriple.vocabularies.RDF
 
-class Serializer implements ISerializer<Model> {
+class Serializer {
 
 	extension Extensions = new Extensions
 
-	override Model to(org.eclipse.emf.ecore.resource.Resource resource, Model graph) {
+	def Model to(org.eclipse.emf.ecore.resource.Resource resource, Model graph) {
 		resource.contents.forEach[to(it, graph)]
 		graph
 	}

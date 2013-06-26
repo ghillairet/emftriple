@@ -5,17 +5,16 @@ import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.resource.Resource
-import org.eclipselabs.emftriple.map.ISerializer
 import org.openrdf.model.Model
 import org.openrdf.model.ValueFactory
 import org.openrdf.model.impl.ValueFactoryImpl
 import org.openrdf.model.vocabulary.RDF
 
-class Serializer implements ISerializer<Model> {
+class Serializer {
 
 	extension Extensions extensions = new Extensions
 
-	override to(Resource resource, Model graph) {
+	def to(Resource resource, Model graph) {
 		resource.contents.forEach[to(it, graph, ValueFactoryImpl::instance)]
 		graph
 	}
