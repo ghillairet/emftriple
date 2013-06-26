@@ -1,14 +1,38 @@
 RDF Binding for EMF
 ---
 
+## About
+
+EMFTriple is an RDF binding for EMF that will help you persist your EMF models in RDF instead of XMI. EMFTriple can work on 
+regular RDF files and RDF data stores such as the various Sesame implementations (SailRepository) and Jena TDB. 
+
+EMFTriple comes with two independent implementation, the first makes use of Jena, the second of Sesame. Both 
+implementations provide basic support for reading and writing RDF files in different formats (RDF/XML, Turtle, N-Triples). 
+The Sesame implementation can also work over any SailRepository implementations, while the Jena one 
+can also work over the TDB store. 
+
 ## Installation
 
+Releases:
+
+ - Update Site: http://ghillairet.github.com/p2 (Composite site with Jena and Sesame OSGI Bunbles) 
+
+Snapshots
+
+ - Update Site: http://ghillairet.github.com/p2/emftriple/snapshots
 
 ## Getting Started
 
+Register the desired Resource.Factory, this one is for RDF/XML files. Registering a Resource.Factory is the only 
+thing you have to do to work with RDF.
+
 ```java
 Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("*", new RDFResourceFactory());
+```
 
+Create your resources and fill it with some objects.
+
+```java
 ResourceSet resourceSet = new ResourceSetImpl();
 Resource r = resourceSet.createResource(URI.createURI("my.rdf"));
 
@@ -18,9 +42,14 @@ b.getTags().add("SciFI");
 b.getTags().add("Fantasy");
 
 r.getContents().add(b);
+```
 
+Save it.
+
+```java
 r.save(null);
 ```
+
 Resulting RDF/XML document:
 
 ```xml
@@ -39,4 +68,16 @@ Resulting RDF/XML document:
 
 ## Development
 
+Get the source code:
 
+```
+git clone https://github.com/ghillairet/emftriple.git
+```
+
+Import the root project in eclipse using Import Maven Projects.
+
+Compile and generate update site:
+
+```
+mvn clean install
+```
