@@ -1,8 +1,6 @@
 RDF Binding for EMF
 ---
 
-## About
-
 EMFTriple is an RDF binding for EMF that will help you persist your EMF models in RDF instead of XMI. EMFTriple can work on 
 regular RDF files and RDF data stores such as the various Sesame implementations (SailRepository) and Jena TDB. 
 
