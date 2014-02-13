@@ -1,10 +1,5 @@
-
-bin/
-*/*/target/
-*.settings
-*/bin
-*.jpa
-/*/*/data/*
-/*/*/idtest/*
-/tests/*/*-test/*
-tests/*/*.ttl
+target/
+.settings/
+.classpath
+.project
+xtend-gen/
