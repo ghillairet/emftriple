@@ -19,7 +19,7 @@ class TDBInputStream extends RDFInputStream {
 	}
 
 	override loadResource(Resource resource) throws IOException {
-		val namedGraphURI = uri.toString
+		val namedGraphURI = uri.trimQuery.toString
 
 		dataset.begin(ReadWrite::READ)
 		try {

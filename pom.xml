@@ -9,26 +9,24 @@
 
 	<modules>
 		<module>bundles/org.eclipselabs.emftriple</module>
-		<module>bundles/org.eclipselabs.emftriple.query</module>
-		<module>features/org.eclipselabs.emftriple.feature</module>
-		<module>tests/org.eclipselabs.emftriple.junit</module>
-
 		<module>bundles/org.eclipselabs.emftriple.jena</module>
 		<module>bundles/org.eclipselabs.emftriple.tdb</module>
-		<module>features/org.eclipselabs.emftriple.jena.feature</module>
-		<module>tests/org.eclipselabs.emftriple.jena.junit</module>
-
 		<module>bundles/org.eclipselabs.emftriple.sesame</module>
-		<module>features/org.eclipselabs.emftriple.sesame.feature</module>
-		<module>tests/org.eclipselabs.emftriple.sesame.junit</module>
 
+		<module>features/org.eclipselabs.emftriple.jena.feature</module>
+		<module>features/org.eclipselabs.emftriple.sesame.feature</module>
 		<module>features/org.eclipselabs.emftriple.source.feature</module>
+		<module>features/org.eclipselabs.emftriple.feature</module>
+
+		<module>tests/org.eclipselabs.emftriple.junit</module>
+		<module>tests/org.eclipselabs.emftriple.sesame.junit</module>
+		<module>tests/org.eclipselabs.emftriple.jena.junit</module>
 
 		<module>build/repository</module>
 	</modules>
 
 	<properties>
-		<tycho-version>0.18.0</tycho-version>
+		<tycho-version>0.19.0</tycho-version>
 		<targets>build/repository/target/</targets>
 	</properties>
 
@@ -65,41 +63,32 @@
 			</plugin>
 
 			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>target-platform-configuration</artifactId>
-				<version>${tycho-version}</version>
-				<configuration>
-					<resolver>p2</resolver>
-					<pomDependencies>consider</pomDependencies>
-					<environments>
-						<environment>
-							<os>linux</os>
-							<ws>gtk</ws>
-							<arch>x86</arch>
-						</environment>
-						<environment>
-							<os>linux</os>
-							<ws>gtk</ws>
-							<arch>x86_64</arch>
-						</environment>
-						<environment>
-							<os>win32</os>
-							<ws>win32</ws>
-							<arch>x86</arch>
-						</environment>
-						<environment>
-							<os>win32</os>
-							<ws>win32</ws>
-							<arch>x86_64</arch>
-						</environment>
-						<environment>
-							<os>macosx</os>
-							<ws>cocoa</ws>
-							<arch>x86_64</arch>
-						</environment>
-					</environments>
-				</configuration>
+				<groupId>org.eclipse.xtend</groupId>
+				<artifactId>xtend-maven-plugin</artifactId>
+				<version>2.5.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+						<!-- By default the plugin will look for eclipse settings, and if non were found will generate to -->
+						<!-- ${basedir}/src/main/generated-sources/xtend -->
+						<!-- You can optionally configure a different target folder like so  : -->
+						<configuration>
+							<outputDirectory>${basedir}/src/main/xtend-gen</outputDirectory>
+							<testOutputDirectory>${basedir}/src/test/xtend-gen</testOutputDirectory>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
+
+			<!-- 
+			<plugin> 
+				<groupId>org.eclipse.tycho</groupId> 
+				<artifactId>target-platform-configuration</artifactId> 
+				<version>${tycho-version}</version> 
+			</plugin> 
+			-->
 
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
@@ -161,4 +150,5 @@
 		<connection>scm:git:git@github.com:ghillairet/emftriple.git</connection>
 		<developerConnection>scm:git:git@github.com:ghillairet/emftriple.git</developerConnection>
 	</scm>
+
 </project>

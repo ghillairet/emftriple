@@ -7,7 +7,6 @@ Bundle-ClassPath: .
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: 
  org.eclipselabs.emftriple,
- org.eclipselabs.emftriple.map,
  org.eclipselabs.emftriple.vocabularies
 Bundle-Vendor: %Bundle-Vendor
 Require-Bundle: org.eclipse.xtend.lib;visibility:=reexport,

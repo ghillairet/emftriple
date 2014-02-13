@@ -55,7 +55,8 @@
 								<phase>install</phase>
 								<configuration>
 									<tasks>
-										<unzip src="target/com.emftriple.repository.zip" dest="../../repository/${build-type}" />
+										<unzip src="target/org.eclipselabs.emftriple.repository-${project.version}.zip" 
+										dest="../../repository/${build-type}" />
 									</tasks>
 								</configuration>
 								<goals>
