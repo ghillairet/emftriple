@@ -1,16 +1,22 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: emftriple jena junit
+Bundle-Name: EMF Triple Jena Tests
 Bundle-SymbolicName: org.eclipselabs.emftriple.jena.junit
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: Eclipse Labs
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: org.eclipselabs.emftriple;bundle-version="1.0.0",
+Require-Bundle: org.eclipselabs.emftriple,
  org.eclipselabs.emftriple.jena,
- org.apache.jena;bundle-version="2.7.0",
- org.apache.jena.tdb;bundle-version="0.9.0",
- org.junit;bundle-version="4.10.0",
- org.eclipselabs.emftriple.junit;bundle-version="1.0.0",
- org.eclipselabs.emftriple.tdb;bundle-version="1.0.0"
+ org.eclipselabs.emftriple.junit,
+ org.eclipselabs.emftriple.tdb,
+ org.apache.jena;bundle-version="2.11.1",
+ org.apache.jena.tdb;bundle-version="1.0.1"
 Export-Package: org.eclipselabs.emftriple.jena.junit.suite,
  org.eclipselabs.emftriple.jena.junit.tests
+Import-Package: com.hp.hpl.jena.query,
+ com.hp.hpl.jena.rdf.model,
+ com.hp.hpl.jena.tdb,
+ com.hp.hpl.jena.vocabulary,
+ org.junit,
+ org.junit.runner,
+ org.junit.runners

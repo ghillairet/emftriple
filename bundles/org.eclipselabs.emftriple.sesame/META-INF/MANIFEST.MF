@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: %Bundle-Name
+Bundle-Name: EMF Triple Sesame Connector
 Bundle-SymbolicName: org.eclipselabs.emftriple.sesame;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-ClassPath: .
-Bundle-Vendor: %Bundle-Vendor
+Bundle-Vendor: Eclipse Labs
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.eclipselabs.emftriple.sesame.handlers,
@@ -12,6 +12,12 @@ Export-Package: org.eclipselabs.emftriple.sesame.handlers,
  org.eclipselabs.emftriple.sesame.map,
  org.eclipselabs.emftriple.sesame.resource,
  org.eclipselabs.emftriple.sesame.streams
-Require-Bundle: org.eclipse.emf.ecore;bundle-version="2.7.0",
- org.openrdf.sesame;bundle-version="2.7.0",
- org.eclipselabs.emftriple;bundle-version="1.0.0"
+Require-Bundle: org.eclipse.emf.ecore,
+ org.eclipselabs.emftriple
+Import-Package: info.aduna.iteration,
+ org.openrdf.model,
+ org.openrdf.model.impl,
+ org.openrdf.model.vocabulary,
+ org.openrdf.repository,
+ org.openrdf.rio,
+ org.openrdf.rio.helpers

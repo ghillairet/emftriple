@@ -54,13 +54,13 @@ public class TTLBasicTest {
 		assertTrue(root.getArrayAttribute().contains("foobar"));
 		assertTrue(root.getArrayAttribute().contains("bar"));
 	}
-	
+
 	@Test
 	public void testLoadTwo() throws IOException {
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("*", new TTLResourceFactory());
 		ResourceSet resourceSet = new ResourceSetImpl();
 		Resource r = resourceSet.createResource(URI.createURI("platform:/plugin/org.eclipselabs.emftriple.junit/tests/file-test-2.ttl"));
-		
+
 		r.load(null);
 		assertEquals(2, r.getContents().size());
 		

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.eclipselabs.emftriple.source.feature"
-      label="EMFTriple Feature"
+      label="EMF Triple SDK"
       version="1.0.0.qualifier"
-      provider-name="EclipseLabs">
+      provider-name="Eclipse Labs">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
@@ -32,28 +32,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipselabs.emftriple.jena.junit.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipselabs.emftriple.junit.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipselabs.emftriple.sesame.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipselabs.emftriple.sesame.junit.source"
          download-size="0"
          install-size="0"
          version="0.0.0"

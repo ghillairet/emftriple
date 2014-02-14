@@ -1,14 +1,15 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: %Bundle-Name
+Bundle-Name: EMF Triple Jena Connector
 Bundle-SymbolicName: org.eclipselabs.emftriple.jena;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: .
-Bundle-Vendor: %Bundle-Vendor
-Require-Bundle: org.eclipselabs.emftriple;bundle-version="1.0.0",
- org.apache.jena;bundle-version="2.7.0"
+Bundle-Vendor: Eclipse Labs
+Require-Bundle: org.eclipselabs.emftriple
 Export-Package: org.eclipselabs.emftriple.jena.io,
  org.eclipselabs.emftriple.jena.map,
  org.eclipselabs.emftriple.jena.resource,
  org.eclipselabs.emftriple.jena.streams
+Import-Package: com.hp.hpl.jena.rdf.model,
+ org.openjena.riot

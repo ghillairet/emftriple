@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: %Bundle-Name
+Bundle-Name: EMF Triple
 Bundle-SymbolicName: org.eclipselabs.emftriple
 Bundle-Version: 1.0.0.qualifier
 Bundle-ClassPath: .
@@ -8,7 +8,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: 
  org.eclipselabs.emftriple,
  org.eclipselabs.emftriple.vocabularies
-Bundle-Vendor: %Bundle-Vendor
+Bundle-Vendor: Eclipse Labs
 Require-Bundle: org.eclipse.xtend.lib;visibility:=reexport,
  com.google.guava;visibility:=reexport,
  org.eclipse.xtext.xbase.lib;visibility:=reexport,

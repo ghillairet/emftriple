@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.eclipselabs.emftriple.jena.feature"
-      label="EMF Triple for Jena"
+      label="EMF Triple Jena Connector"
       version="1.0.0.qualifier"
       provider-name="Eclipse Labs">
 
@@ -18,9 +18,12 @@
    </license>
 
    <requires>
-      <import plugin="org.eclipse.emf.ecore"/>
-      <import plugin="org.eclipse.emf.common"/>
-      <import plugin="org.eclipselabs.emftriple"/>
+      <import plugin="org.eclipselabs.emftriple" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtend.lib"/>
+      <import plugin="com.google.guava"/>
+      <import plugin="org.eclipse.xtext.xbase.lib"/>
+      <import plugin="org.apache.jena"/>
+      <import plugin="org.apache.jena.tdb"/>
    </requires>
 
    <plugin

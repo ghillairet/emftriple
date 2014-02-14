@@ -32,19 +32,9 @@
 
 	<repositories>
 		<repository>
-			<id>jena</id>
+			<id>dependencies</id>
 			<layout>p2</layout>
-			<url>http://ghillairet.github.com/p2/jena/update-site/releases</url>
-		</repository>
-		<repository>
-			<id>sesame</id>
-			<layout>p2</layout>
-			<url>http://ghillairet.github.com/p2/sesame/update-site/releases/2.7.1</url>
-		</repository>
-		<repository>
-			<id>tdb</id>
-			<layout>p2</layout>
-			<url>http://ghillairet.github.com/p2/tdb/update-site/releases</url>
+			<url>http://ghillairet.github.com/p2</url>
 		</repository>
 		<repository>
 			<id>kepler</id>
@@ -71,24 +61,54 @@
 						<goals>
 							<goal>compile</goal>
 						</goals>
-						<!-- By default the plugin will look for eclipse settings, and if non were found will generate to -->
+						<!-- By default the plugin will look for eclipse settings, and if non 
+							were found will generate to -->
 						<!-- ${basedir}/src/main/generated-sources/xtend -->
-						<!-- You can optionally configure a different target folder like so  : -->
+						<!-- You can optionally configure a different target folder like so 
+							: -->
 						<configuration>
-							<outputDirectory>${basedir}/src/main/xtend-gen</outputDirectory>
-							<testOutputDirectory>${basedir}/src/test/xtend-gen</testOutputDirectory>
+							<outputDirectory>${basedir}/xtend-gen</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
 
-			<!-- 
-			<plugin> 
-				<groupId>org.eclipse.tycho</groupId> 
-				<artifactId>target-platform-configuration</artifactId> 
-				<version>${tycho-version}</version> 
-			</plugin> 
-			-->
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<resolver>p2</resolver>
+					<pomDependencies>consider</pomDependencies>
+					<environments>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>macosx</os>
+							<ws>cocoa</ws>
+							<arch>x86_64</arch>
+						</environment>
+					</environments>
+				</configuration>
+			</plugin>
 
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>

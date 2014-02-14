@@ -12,14 +12,15 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipselabs.emftriple.tdb.handlers.TDBHandler;
 import org.eclipselabs.emftriple.jena.resource.RDFResourceFactory;
 import org.eclipselabs.emftriple.junit.model.Book;
 import org.eclipselabs.emftriple.junit.model.ModelFactory;
 import org.eclipselabs.emftriple.junit.model.ModelPackage;
+import org.eclipselabs.emftriple.tdb.handlers.TDBHandler;
 import org.eclipselabs.emftriple.vocabularies.RDF;
 import org.junit.Test;
 
+import com.hp.hpl.jena.query.ReadWrite;
 import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
@@ -47,14 +48,15 @@ public class TDBBasicTest {
 		r.getContents().add(b);
 		
 		r.save(null);
-		
+
+		dataset.begin(ReadWrite.READ);
 		assertTrue(dataset.containsNamedModel(namedGraphURI));
-		
+
 		Model model = dataset.getNamedModel(namedGraphURI);
 		assertNotNull(model);
-		
+
 		assertEquals(1, model.listSubjects().toList().size());
-		
+
 		com.hp.hpl.jena.rdf.model.Resource res = model.listSubjects().next();
 		assertEquals("http://m.rdf#/", res.getURI());
 		assertEquals(4, res.listProperties().toList().size());
@@ -75,6 +77,9 @@ public class TDBBasicTest {
 		assertEquals("SciFi", tag1.getLexicalForm());
 		Literal tag2 = tags.get(1).getLiteral();
 		assertEquals("Fantasy", tag2.getLexicalForm());
+		
+		dataset.commit();
+		dataset.close();
 	}
 
 	protected Model createModel() {

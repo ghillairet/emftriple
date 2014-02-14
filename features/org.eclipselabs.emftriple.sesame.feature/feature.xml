@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.eclipselabs.emftriple.sesame.feature"
-      label="EMF Triple for Sesame"
+      label="EMF Triple Sesame Connector"
       version="1.0.0.qualifier"
       provider-name="Eclipse Labs">
 
@@ -16,12 +16,6 @@
    <license url="http://www.example.com/license">
       [Enter License Description here.]
    </license>
-
-   <requires>
-      <import plugin="org.eclipse.emf.common"/>
-      <import plugin="org.eclipselabs.emftriple"/>
-<!--      <import plugin="org.eclipselabs.emftriple.sail"/> -->      
-   </requires>
 
    <plugin
          id="org.eclipselabs.emftriple.sesame"
