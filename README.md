@@ -56,7 +56,7 @@ Resulting RDF/XML document:
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     xmlns:j.0="http://www.eclipselabs.org/emf/junit#//"
     xmlns:j.1="http://www.eclipselabs.org/emf/junit#//Book/" >
-  <rdf:Description rdf:about="http://my.rdf#/">
+  <rdf:Description rdf:about="http://m.rdf#/">
     <j.1:tags>Fantasy</j.1:tags>
     <j.1:tags>SciFI</j.1:tags>
     <j.1:title>The Book</j.1:title>
