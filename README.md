@@ -13,13 +13,8 @@ can also work over the TDB store.
 
 Current version: 1.0.0
 
-Releases:
+Update Site: <http://ghillairet.github.com/p2> (composite update site with Jena and Sesame OSGI Bundles)
 
- - Update Site: http://ghillairet.github.com/p2 (Composite site with Jena and Sesame OSGI Bunbles)
-
-Snapshots:
-
- - Update Site: http://ghillairet.github.com/p2/emftriple/snapshots
 
 ## Getting Started
 
