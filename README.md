@@ -13,8 +13,7 @@ can also work over the TDB store.
 
 Current version: 1.0.0
 
-Update Site: <http://ghillairet.github.com/p2> (composite update site with Jena and Sesame OSGI bundles)
-
+Update Site: <http://ghillairet.github.com/p2> (Composite update site with Jena and Sesame OSGI bundles. See the [content](http://ghillairet.github.io/p2/compositeContent.xml) from your browser.)
 
 ## Getting Started
 
