@@ -152,23 +152,39 @@ Resource r = resourceSet.createResource(URI.createURI("http://my.rdf"));
     mvn clean install
     ```
 
-4. Add the required Maven dependency:
+4. Add the required Maven dependencies. Note that [Tycho dependencies from Maven are not transitive](http://wiki.eclipse.org/Tycho/How_Tos/Dependency_on_pom-first_artifacts#Pom-first_dependencies_of_manifest-first_projects_are_not_fully_transitive), so you have to explicitly add the the dependencies of EMFTriple as well.
+
+    For Sesame:
 
     ```xml
-    <!-- EMFTriple Jena -->
-    <dependency>
-        <groupId>org.eclipselabs</groupId>
-        <artifactId>org.eclipselabs.emftriple.jena</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
-    </dependency>
-
-    <!-- EMFTriple Sesame -->
     <dependency>
         <groupId>org.eclipselabs</groupId>
         <artifactId>org.eclipselabs.emftriple.sesame</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </dependency>
+    
+	<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>slf4j-simple</artifactId>
+		<version>1.7.13</version>
+	</dependency>
     ```
 
+    For Jena:
+    
+    ```xml
+    <dependency>
+        <groupId>org.eclipselabs</groupId>
+        <artifactId>org.eclipselabs.emftriple.jena</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </dependency>
+    
+	<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>slf4j-simple</artifactId>
+		<version>1.7.13</version>
+	</dependency>
+    ```
+    
 ## License
 This software is distributed under the terms of the Eclipse Public License 1.0 - http://www.eclipse.org/legal/epl-v10.html.
