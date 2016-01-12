@@ -163,11 +163,19 @@ Resource r = resourceSet.createResource(URI.createURI("http://my.rdf"));
         <version>1.0.0-SNAPSHOT</version>
     </dependency>
     
-	<dependency>
-		<groupId>org.slf4j</groupId>
-		<artifactId>slf4j-simple</artifactId>
-		<version>1.7.13</version>
-	</dependency>
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-simple</artifactId>
+        <version>1.7.13</version>
+    </dependency>
+
+    <!-- for using a Sail Repository -->
+
+    <dependency>
+        <groupId>org.openrdf.sesame</groupId>
+        <artifactId>sesame-repository-sail</artifactId>
+        <version>2.8.8</version>
+    </dependency>
     ```
 
     For Jena:
@@ -179,11 +187,11 @@ Resource r = resourceSet.createResource(URI.createURI("http://my.rdf"));
         <version>1.0.0-SNAPSHOT</version>
     </dependency>
     
-	<dependency>
-		<groupId>org.slf4j</groupId>
-		<artifactId>slf4j-simple</artifactId>
-		<version>1.7.13</version>
-	</dependency>
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-simple</artifactId>
+        <version>1.7.13</version>
+    </dependency>
     ```
     
 ## License
