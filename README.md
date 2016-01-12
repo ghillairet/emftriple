@@ -88,19 +88,19 @@ Initialize the TDB dataset.
 Dataset dataset = TDBFactory.createDataset();
 ```
 
-Register the RDF Resource.Factory and create a new ResourceSet.
+Register the RDF `Resource.Factory` and create a new `ResourceSet`.
 
 ```java
 Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("*", new RDFResourceFactory());
 ResourceSet resourceSet = new ResourceSetImpl();
 ```
-Add to the resourceSet the URIHandler specific to TDB with the required dataset.
+Add to the `resourceSet` the `URIHandler` specific to TDB with the required dataset.
 
 ```java
 resourceSet.getURIConverter().getURIHandlers().add(0, new TDBHandler(dataset));
 ```
 
-Create a resource as usual, this one will be saved or loaded from the named graph http://my.rdf in
+Create a resource as usual, this one will be saved or loaded from the named graph `http://my.rdf` in
 the dataset.
 
 ```java
@@ -116,14 +116,14 @@ Repository repo = new SailRepository(new MemoryStore());
 repo.initialize();
 ```
 
-Register the RDF Resource.Factory and create a new ResourceSet.
+Register the RDF `Resource.Factory` and create a new `ResourceSet`.
 
 ```java
 Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("*", new RDFResourceFactory());
 ResourceSet resourceSet = new ResourceSetImpl();
 ```
 
-Add to the resourceSet the URIHandler specific to SailRepository with the required repository.
+Add to the `resourceSet` the `URIHandler` specific to `SailRepository` with the required repository.
 
 ```java
 resourceSet.getURIConverter().getURIHandlers().add(0, new RepositoryHandler(repo));
@@ -146,7 +146,7 @@ Resource r = resourceSet.createResource(URI.createURI("http://my.rdf"));
 
 2. Import the root project in Eclipse using Import Maven Projects of the [m2e plugin](http://www.eclipse.org/m2e/).
 
-3. Compile and generate update site:
+3. Compile and generate update site (use `-DskipTests` if some tests not related to your required artifact fail).
 
     ```
     mvn clean install
