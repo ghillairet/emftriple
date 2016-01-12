@@ -17,7 +17,7 @@ Update Site: <http://ghillairet.github.com/p2> (Composite update site with Jena 
 
 ## Getting Started
 
-Register the desired `Resource.Factory`, e.g. `RDFResourceFactory` for generating RDF/XML files. Registering a `Resource.Factory` is the only thing you have to do to work with RDF.
+Register the desired `Resource.Factory`, e.g. `RDFResourceFactory` for generating RDF/XML files. Registering a `Resource.Factory` is the only thing you have to do to work with RDF. The `RDFResourceFactory` is implemented for both Jena and Sesame (`examples/org.eclipselabs.emftriple.examples.maven.jena` and `examples/org.eclipselabs.emftriple.examples.maven.sesame`, respectively).
 
 ```java
 Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("*", new RDFResourceFactory());
@@ -27,7 +27,7 @@ Create your resources and fill it with some objects. The `Book` class is defined
 
 ```java
 ResourceSet resourceSet = new ResourceSetImpl();
-Resource r = resourceSet.createResource(URI.createURI("my.rdf"));
+Resource r = resourceSet.createResource(URI.createURI("http://my.rdf"));
 
 Book b = ModelFactory.eINSTANCE.createBook();
 b.setTitle("The Book");
@@ -37,23 +37,23 @@ b.getTags().add("Fantasy");
 r.getContents().add(b);
 ```
 
-Save it.
+Save it to a stream.
 
 ```java
-r.save(null);
+r.save(System.out, null);
 ```
 
-Resulting RDF/XML document:
+The Jena version produces the following RDF/XML document:
 
 ```xml
 <rdf:RDF
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-    xmlns:j.0="http://www.eclipselabs.org/emf/junit#//"
-    xmlns:j.1="http://www.eclipselabs.org/emf/junit#//Book/" >
-  <rdf:Description rdf:about="http://m.rdf#/">
-    <j.1:tags>Fantasy</j.1:tags>
-    <j.1:tags>SciFI</j.1:tags>
-    <j.1:title>The Book</j.1:title>
+    xmlns:j.0="http://www.eclipselabs.org/emf/junit#//Book/"
+    xmlns:j.1="http://www.eclipselabs.org/emf/junit#//" > 
+  <rdf:Description rdf:about="http://my.rdf#/">
+    <j.0:tags>Fantasy</j.0:tags>
+    <j.0:tags>SciFI</j.0:tags>
+    <j.0:title>The Book</j.0:title>
     <rdf:type rdf:resource="http://www.eclipselabs.org/emf/junit#//Book"/>
   </rdf:Description>
 </rdf:RDF>

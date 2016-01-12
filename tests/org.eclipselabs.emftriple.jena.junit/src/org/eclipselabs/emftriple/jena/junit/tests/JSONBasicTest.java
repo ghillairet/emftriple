@@ -14,7 +14,6 @@ import org.eclipselabs.emftriple.jena.resource.RDFJSONResourceFactory;
 import org.eclipselabs.emftriple.junit.model.Book;
 import org.eclipselabs.emftriple.junit.model.ModelFactory;
 import org.eclipselabs.emftriple.junit.model.ModelPackage;
-import org.junit.Assert;
 import org.junit.Test;
 
 public class JSONBasicTest {
