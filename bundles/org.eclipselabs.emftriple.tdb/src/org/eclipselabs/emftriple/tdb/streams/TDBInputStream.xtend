@@ -13,7 +13,7 @@ class TDBInputStream extends RDFInputStream {
 
 	private final Dataset dataset
 
-	new(Dataset dataset, URI uri, Map<? extends Object,? extends Object> options) {
+	new(Dataset dataset, URI uri, Map<?, ?> options) {
 		super(uri, options)
 		this.dataset = dataset
 	}

@@ -7,16 +7,16 @@ import org.eclipse.emf.ecore.resource.Resource
 
 class EObjectMapper {
 
-	def to(Resource resource, Map<? extends Object,? extends Object> options) {
+	def to(Resource resource, Map<?, ?> options) {
 		to(ModelFactory::createDefaultModel, resource, options)
 	}
 
-	def to(Model model, Resource resource, Map<? extends Object,? extends Object> options) {
+	def to(Model model, Resource resource, Map<?, ?> options) {
 		val serializer = new Serializer
 		serializer.to(resource, if (model == null) ModelFactory::createDefaultModel else model)
 	}
 
-	def from(Model graph, Resource resource, Map<? extends Object,? extends Object> options) {
+	def from(Model graph, Resource resource, Map<?, ?> options) {
 		val deserializer = new Deserializer
 		deserializer.from(graph, resource)
 	}

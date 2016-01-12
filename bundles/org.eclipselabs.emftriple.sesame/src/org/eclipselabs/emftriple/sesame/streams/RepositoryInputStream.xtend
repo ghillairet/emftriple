@@ -16,9 +16,9 @@ class RepositoryInputStream extends InputStream implements Loadable {
 	
 	protected final Repository repository
 	protected final URI uri
-	protected final Map<? extends Object,? extends Object> options 
+	protected final Map<?, ?> options 
 
-	new(Repository repository, URI uri, Map<? extends Object,? extends Object> options) {
+	new(Repository repository, URI uri, Map<?, ?> options) {
 		this.uri = uri
 		this.options = options
 		this.repository = repository

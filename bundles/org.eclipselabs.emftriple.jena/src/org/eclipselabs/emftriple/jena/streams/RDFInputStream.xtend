@@ -10,9 +10,9 @@ import java.util.Map
 class RDFInputStream extends InputStream implements Loadable {
 
 	protected final URI uri
-	protected final Map<? extends Object,? extends Object> options
+	protected final Map<?, ?> options
 
-	new(URI uri,  Map<? extends Object,? extends Object> options) {
+	new(URI uri,  Map<?, ?> options) {
 		this.options = options
 		this.uri = uri
 	}

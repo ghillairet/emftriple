@@ -13,10 +13,10 @@ import org.eclipselabs.emftriple.jena.map.EObjectMapper
 class RDFOutputStream extends ByteArrayOutputStream implements Saveable {
 
 	protected final URI uri
-	protected final Map<? extends Object,? extends Object> options
+	protected final Map<?, ?> options
 	protected Model model
 
-	new(URI uri, Map<? extends Object,? extends Object> options) {
+	new(URI uri, Map<?, ?> options) {
 		this.uri = uri
 		this.options = options
 	}

@@ -23,7 +23,7 @@ class RDFResource extends ResourceImpl {
 		super(uri)
 	}
 
-	override protected doLoad(InputStream inputStream, Map<? extends Object,? extends Object> options) throws IOException {
+	override protected doLoad(InputStream inputStream, Map<?, ?> options) throws IOException {
 		if (inputStream instanceof Loadable) {
 			(inputStream as Loadable).loadResource(this)
 		} else {
@@ -34,7 +34,7 @@ class RDFResource extends ResourceImpl {
 		}
 	}
 
-	override protected doSave(OutputStream outputStream, Map<? extends Object,? extends Object> options) throws IOException {
+	override protected doSave(OutputStream outputStream, Map<?, ?> options) throws IOException {
 		if (outputStream instanceof Saveable) {
 			(outputStream as Saveable).saveResource(this)
 		} else {

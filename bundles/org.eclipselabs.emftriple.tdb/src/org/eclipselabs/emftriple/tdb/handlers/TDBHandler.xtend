@@ -21,14 +21,14 @@ class TDBHandler extends URIHandlerImpl {
 		true
 	}
 
-	override createOutputStream(URI uri, Map<? extends Object,? extends Object> options) throws IOException {
+	override createOutputStream(URI uri, Map<?, ?> options) throws IOException {
 		if (dataset == null) {
 			throw new IOException("Dataset must be defined")
 		}
 		new TDBOutputStream(dataset, uri, if (options == null) Collections::emptyMap else options)
 	}
 
-	override createInputStream(URI uri, Map<? extends Object,? extends Object> options) throws IOException {
+	override createInputStream(URI uri, Map<?, ?> options) throws IOException {
 		if (dataset == null) {
 			throw new IOException("Dataset must be defined")
 		}
