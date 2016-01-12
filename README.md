@@ -63,13 +63,15 @@ Resulting RDF/XML document:
 
 Jena:
 
+* `org.eclipselabs.emftriple.jena.resource.NTResourceFactory`      -> N-Triples
 * `org.eclipselabs.emftriple.jena.resource.RDFResourceFactory`     -> RDF/XML
-* `org.eclipselabs.emftriple.jena.resource.TTLResourceFactory`     -> Turtle
 * `org.eclipselabs.emftriple.jena.resource.RDFJSONResourceFactory` -> RDF/JSON
+* `org.eclipselabs.emftriple.jena.resource.TTLResourceFactory`     -> Turtle
 
 Sesame:
 
-* `org.eclipselabs.emftriple.sesame.resource.RDFResourceFactory`     -> RDF/XML
+* `org.eclipselabs.emftriple.sesame.resource.NTResourceFactory`     -> N-Triples
+* `org.eclipselabs.emftriple.sesame.resource.RDFResourceFactory`    -> RDF/XML
 * `org.eclipselabs.emftriple.sesame.resource.TTLResourceFactory`    -> Turtle
 
 ## RDF Stores
