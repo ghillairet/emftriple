@@ -148,7 +148,7 @@ Resource r = resourceSet.createResource(URI.createURI("http://my.rdf"));
 
 2. Import the root project in Eclipse using Import Maven Projects of the [m2e plugin](http://www.eclipse.org/m2e/).
 
-3. Compile and generate update site (use `-DskipTests` if some tests not related to your required artifact fail).
+3. Compile and generate update site.
 
     ```
     mvn clean install
