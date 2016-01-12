@@ -23,7 +23,7 @@ Register the desired `Resource.Factory`, e.g. `RDFResourceFactory` for generatin
 Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("*", new RDFResourceFactory());
 ```
 
-Create your resources and fill it with some objects.
+Create your resources and fill it with some objects. The `Book` class is defined in the `org.eclipselabs.emftriple.junit` project.
 
 ```java
 ResourceSet resourceSet = new ResourceSetImpl();
@@ -193,6 +193,16 @@ Resource r = resourceSet.createResource(URI.createURI("http://my.rdf"));
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-simple</artifactId>
         <version>1.7.13</version>
+    </dependency>
+    ```
+    
+    The example metamodel is available in the `org.eclipselabs.emftriple.junit` project:
+    
+    ```xml
+    <dependency>
+        <groupId>org.eclipselabs</groupId>
+        <artifactId>org.eclipselabs.emftriple.junit</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
     </dependency>
     ```
     
