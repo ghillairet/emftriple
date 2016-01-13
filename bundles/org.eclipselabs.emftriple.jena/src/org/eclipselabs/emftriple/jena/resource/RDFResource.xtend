@@ -4,15 +4,14 @@ import com.hp.hpl.jena.rdf.model.Model
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
-import java.util.Collections
 import java.util.Map
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.URIConverter.Loadable
 import org.eclipse.emf.ecore.resource.URIConverter.Saveable
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl
 import org.eclipselabs.emftriple.jena.io.RDFReader
-import org.eclipselabs.emftriple.jena.map.EObjectMapper
 import org.eclipselabs.emftriple.jena.io.RDFWriter
+import org.eclipselabs.emftriple.jena.map.EObjectMapper
 
 class RDFResource extends ResourceImpl {
 
@@ -28,9 +27,7 @@ class RDFResource extends ResourceImpl {
 			(inputStream as Loadable).loadResource(this)
 		} else {
 			val mapper = new EObjectMapper
-			mapper.from(read(inputStream), this, 
-				if (options == null) Collections::emptyMap else options
-			)
+			mapper.from(read(inputStream), this)
 		}
 	}
 
@@ -39,9 +36,7 @@ class RDFResource extends ResourceImpl {
 			(outputStream as Saveable).saveResource(this)
 		} else {
 			val mapper = new EObjectMapper
-			write(outputStream, mapper.to(this, 
-				if (options == null) Collections::emptyMap else options
-			))
+			write(outputStream, mapper.to(this))
 		}
 	}
 	
