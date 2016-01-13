@@ -1,24 +1,23 @@
 package org.eclipselabs.emftriple.sesame.map
 
-import java.util.Map
 import org.eclipse.emf.ecore.resource.Resource
 import org.openrdf.model.Model
 import org.openrdf.model.impl.LinkedHashModel
 
 class EObjectMapper {
 
-	def to(Resource resource, Map<? extends Object,? extends Object> options) {
-		to(new LinkedHashModel(newArrayList), resource, options)
+	def to(Resource resource) {
+		to(new LinkedHashModel(newArrayList), resource)
 	}
 	
-	def to(Model graph, Resource resource, Map<? extends Object,? extends Object> options) {
+	def to(Model graph, Resource resource) {
 		val serializer = new Serializer
 		serializer.to(resource,
 			if (graph == null) new LinkedHashModel(newArrayList) else graph
 		)
 	}
 
-	def from(Model graph, Resource resource, Map<? extends Object,? extends Object> options) {
+	def from(Model graph, Resource resource) {
 		val deserializer = new Deserializer
 		deserializer.from(graph, resource)		
 	}

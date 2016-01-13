@@ -3,7 +3,6 @@ package org.eclipselabs.emftriple.tdb.streams
 import com.hp.hpl.jena.query.Dataset
 import com.hp.hpl.jena.query.ReadWrite
 import java.io.IOException
-import java.util.Map
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipselabs.emftriple.jena.map.EObjectMapper
@@ -13,8 +12,8 @@ class TDBInputStream extends RDFInputStream {
 
 	private final Dataset dataset
 
-	new(Dataset dataset, URI uri, Map<? extends Object,? extends Object> options) {
-		super(uri, options)
+	new(Dataset dataset, URI uri) {
+		super(uri)
 		this.dataset = dataset
 	}
 
@@ -26,7 +25,7 @@ class TDBInputStream extends RDFInputStream {
 			if (dataset.containsNamedModel(namedGraphURI)) {
 				val model = dataset.getNamedModel(namedGraphURI)
 				val mapper = new EObjectMapper
-				mapper.from(model, resource, options)
+				mapper.from(model, resource)
 			}
 		} finally {
 			dataset.end 

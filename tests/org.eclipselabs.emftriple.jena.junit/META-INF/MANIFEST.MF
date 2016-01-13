@@ -10,7 +10,9 @@ Require-Bundle: org.eclipselabs.emftriple,
  org.eclipselabs.emftriple.junit,
  org.eclipselabs.emftriple.tdb,
  org.apache.jena;bundle-version="2.11.1",
- org.apache.jena.tdb;bundle-version="1.0.1"
+ org.apache.jena.tdb;bundle-version="1.0.1",
+ org.slf4j.api;bundle-version="1.7.2",
+ org.apache.xerces;bundle-version="2.9.0"
 Export-Package: org.eclipselabs.emftriple.jena.junit.suite,
  org.eclipselabs.emftriple.jena.junit.tests
 Import-Package: com.hp.hpl.jena.query,

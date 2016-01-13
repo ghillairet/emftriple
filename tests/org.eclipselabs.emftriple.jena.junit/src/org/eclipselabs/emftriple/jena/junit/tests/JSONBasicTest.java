@@ -1,6 +1,7 @@
 package org.eclipselabs.emftriple.jena.junit.tests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -19,10 +20,13 @@ public class JSONBasicTest {
 
 	@Test
 	public void testSaveOne() throws IOException {
-		String expected = 
-				"{\"http://m.rdf#/\":{" +
-				"\"http://www.eclipselabs.org/emf/junit#//Book/title\":[{\"type\":\"literal\",\"value\":\"TheBook\"}]," +
-				"\"http://www.w3.org/1999/02/22-rdf-syntax-ns#type\":[{\"type\":\"uri\",\"value\":\"http://www.eclipselabs.org/emf/junit#//Book\"}]}}";
+		final String front = "{\"http://m.rdf#/\":{";
+		final String end = "}}";
+		final String type = "\"http://www.w3.org/1999/02/22-rdf-syntax-ns#type\":[{\"type\":\"uri\",\"value\":\"http://www.eclipselabs.org/emf/junit#//Book\"}]";
+		final String book = "\"http://www.eclipselabs.org/emf/junit#//Book/title\":[{\"type\":\"literal\",\"value\":\"TheBook\"}]";
+		final String delimiter = ",";
+		String expected1 = front + book + delimiter + type + end;
+		String expected2 = front + type + delimiter + book + end;
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("*", new RDFJSONResourceFactory());
 		ResourceSet resourceSet = new ResourceSetImpl();
 		Resource r = resourceSet.createResource(URI.createURI("http://m.rdf"));
@@ -34,7 +38,10 @@ public class JSONBasicTest {
 
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		r.save(out, null);
-		assertEquals(expected, new String(out.toByteArray()).trim().replaceAll("\\n|\\s", ""));
+
+		final String actual = new String(out.toByteArray()).trim().replaceAll("\\n|\\s", "");
+		assertTrue("\n" + actual + "\ndoes not match:\n" + expected1 + "\n" + expected2,
+				expected1.equals(actual) || expected2.equals(actual));
 	}
 
 	@Test

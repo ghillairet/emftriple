@@ -2,7 +2,6 @@ package org.eclipselabs.emftriple.tdb.handlers
 
 import com.hp.hpl.jena.query.Dataset
 import java.io.IOException
-import java.util.Collections
 import java.util.Map
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.impl.URIHandlerImpl
@@ -21,18 +20,18 @@ class TDBHandler extends URIHandlerImpl {
 		true
 	}
 
-	override createOutputStream(URI uri, Map<? extends Object,? extends Object> options) throws IOException {
+	override createOutputStream(URI uri, Map<?, ?> options) throws IOException {
 		if (dataset == null) {
 			throw new IOException("Dataset must be defined")
 		}
-		new TDBOutputStream(dataset, uri, if (options == null) Collections::emptyMap else options)
+		new TDBOutputStream(dataset, uri)
 	}
 
-	override createInputStream(URI uri, Map<? extends Object,? extends Object> options) throws IOException {
+	override createInputStream(URI uri, Map<?, ?> options) throws IOException {
 		if (dataset == null) {
 			throw new IOException("Dataset must be defined")
 		}
-		new TDBInputStream(dataset, uri, if (options == null) Collections::emptyMap else options)
+		new TDBInputStream(dataset, uri)
 	}
 
 }

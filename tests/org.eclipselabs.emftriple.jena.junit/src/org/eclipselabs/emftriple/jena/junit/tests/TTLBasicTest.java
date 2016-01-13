@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -17,6 +18,9 @@ import org.eclipselabs.emftriple.junit.model.ModelPackage;
 import org.eclipselabs.emftriple.junit.model.PrimaryObject;
 import org.eclipselabs.emftriple.junit.model.TargetObject;
 import org.junit.Test;
+
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 
 public class TTLBasicTest {
 
@@ -68,11 +72,15 @@ public class TTLBasicTest {
 		assertEquals(ModelPackage.Literals.PRIMARY_OBJECT, r.getContents().get(1).eClass());
 		
 		PrimaryObject root1 = (PrimaryObject) r.getContents().get(0);
-		assertEquals(1, root1.getId());
-		assertEquals("Foo", root1.getName());
 		PrimaryObject root2 = (PrimaryObject) r.getContents().get(1);
-		assertEquals(2, root2.getId());
-		assertEquals("Bar", root2.getName());
+
+		Map<Integer, String> contents = ImmutableMap.<Integer, String>builder().
+				put(root1.getId(), root1.getName()).
+				put(root2.getId(), root2.getName()).
+				build();
+
+		assertEquals("Foo", contents.get(1));
+		assertEquals("Bar", contents.get(2));
 	}
 
 }
