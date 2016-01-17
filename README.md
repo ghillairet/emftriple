@@ -1,7 +1,7 @@
 RDF Binding for EMF
 ---
 
-[![Build Status](https://travis-ci.org/szarnyasg/emftriple.svg?branch=master)](https://travis-ci.org/szarnyasg/emftriple)
+[![Build Status](https://travis-ci.org/ghillairet/emftriple.svg?branch=master)](https://travis-ci.org/ghillairet/emftriple)
 
 EMFTriple is an RDF binding for EMF that will help you persist your EMF models in RDF instead of XMI. EMFTriple can work on
 regular RDF files and RDF data stores such as the various Sesame implementations (SailRepository) and Jena TDB.
@@ -15,7 +15,7 @@ can also work over the TDB store.
 
 Current version: 1.1.0
 
-Update Site: <http://ghillairet.github.com/p2> (Composite update site with Jena and Sesame OSGI bundles. See the [content](http://ghillairet.github.io/p2/compositeContent.xml) from your browser.)
+Update Site: <http://ghillairet.github.io/p2> (Composite update site with Jena and Sesame OSGI bundles. See the [content](http://ghillairet.github.io/p2/compositeContent.xml) from your browser.)
 
 ## Getting Started
 
