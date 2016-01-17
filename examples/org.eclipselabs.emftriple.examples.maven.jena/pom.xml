@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>org.eclipselabs</artifactId>
 	<groupId>org.eclipselabs.emftriples.examples.maven.jena</groupId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.1.0-SNAPSHOT</version>
 
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
@@ -17,13 +17,13 @@
 		<dependency>
 			<groupId>org.eclipselabs</groupId>
 			<artifactId>org.eclipselabs.emftriple.jena</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+			<version>1.1.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.eclipselabs</groupId>
 			<artifactId>org.eclipselabs.emftriple.junit</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+			<version>1.1.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>

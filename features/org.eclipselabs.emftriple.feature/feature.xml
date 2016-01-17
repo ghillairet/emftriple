@@ -2,7 +2,7 @@
 <feature
       id="org.eclipselabs.emftriple.feature"
       label="EMF Triple"
-      version="1.0.0.qualifier"
+      version="1.1.0.qualifier"
       provider-name="Eclipse Labs">
 
    <description url="http://www.example.com/description">

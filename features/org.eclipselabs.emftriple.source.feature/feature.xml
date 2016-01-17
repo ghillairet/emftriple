@@ -2,7 +2,7 @@
 <feature
       id="org.eclipselabs.emftriple.source.feature"
       label="EMF Triple SDK"
-      version="1.0.0.qualifier"
+      version="1.1.0.qualifier"
       provider-name="Eclipse Labs">
 
    <description url="http://www.example.com/description">
