@@ -164,9 +164,9 @@ Resource r = resourceSet.createResource(URI.createURI("http://my.rdf"));
     <dependency>
         <groupId>org.eclipselabs</groupId>
         <artifactId>org.eclipselabs.emftriple.sesame</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.1.0-SNAPSHOT</version>
     </dependency>
-    
+
     <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-simple</artifactId>
@@ -183,30 +183,31 @@ Resource r = resourceSet.createResource(URI.createURI("http://my.rdf"));
     ```
 
     For Jena:
-    
+
     ```xml
     <dependency>
         <groupId>org.eclipselabs</groupId>
         <artifactId>org.eclipselabs.emftriple.jena</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.1.0-SNAPSHOT</version>
     </dependency>
-    
+
     <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-simple</artifactId>
         <version>1.7.13</version>
     </dependency>
     ```
-    
+
     The example metamodel is available in the `org.eclipselabs.emftriple.junit` project:
-    
+
     ```xml
     <dependency>
         <groupId>org.eclipselabs</groupId>
         <artifactId>org.eclipselabs.emftriple.junit</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.1.0-SNAPSHOT</version>
     </dependency>
     ```
-    
+
 ## License
 This software is distributed under the terms of the Eclipse Public License 1.0 - http://www.eclipse.org/legal/epl-v10.html.
+
